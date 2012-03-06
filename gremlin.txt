@@ -1,0 +1,44 @@
+cd gremlin
+./gremlin.sh
+f = new Neo4jGraph('mov/perl')
+f.E.count()                   
+
+V = f.idx(T.v) [[type:'COMMIT']] >> 1
+V.map
+V.outE
+V.outE[[label:'CHANGED']]
+V.outE[[label:'CHANGED']].inV.map
+V.outE[[label:'CHANGED']].inV.paths
+g.V(24)
+
+
+
+./gremlin.sh
+g = new TinkerGraph()                    
+g.loadGraphML('data/graph-example-1.xml')
+m = [:]                                  
+g.E.inV.groupCount(m)                    
+n = m.sort{a,b -> a.value <=> b.value}   
+for( i in m)          
+if( i.getValue() == 1)
+n.remove(i.getKey())
+
+
+./gremlin.sh
+f = new Neo4jGraph('mov/perl')
+f.idx(T.v)[[isMerge:'true']].count()
+m =[:]
+f.idx(T.e)[[label:'PARENT']].outV.groupCount(m)
+n = m.sort{a,b -> a.value <=> b.value}   
+
+for( i in m)          
+if( i.getValue() == 1)
+n.remove(i.getKey())
+println n.size()
+
+
+for(i in n)
+println i.getKey().hash
+
+
+
