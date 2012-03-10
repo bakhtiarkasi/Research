@@ -109,24 +109,25 @@ class Commit
 	    
 	    parentHash = parents.at(0)[0]
 	    puts "\nHard reset Git repository to rev: " + parentHash;
-            #%x[git reset --hard #{parentHash}]
+            %x[git reset --hard #{parentHash}]
 
 	    parents.each do |x|
            
 		remoteCode = x[0]
                 if parentHash != remoteCode
+			puts "\n Starting Process for " + hashCode;
 	   		puts "\nChecking out 'new' branch for " + remoteCode;
-			#%x[git checkout -b new #{remoteCode}]
+			%x[git checkout -b new #{remoteCode}]
 	   
 	   		puts "\nChecking out Git blead repository";
-           		#%x[git checkout blead]    
+           		%x[git checkout blead]    
            
            		puts"\n\n Merge new into blead"
-           		#puts %x[git merge new]
+           		puts %x[git merge new]
            		puts"\n\n";
 
 			puts "\nDeleting the new branch"; 
-	    		#%x[git branch -D new]
+	    		%x[git branch -D new]
 
 	   	end
 			
@@ -140,7 +141,6 @@ class ProcessSummary
 	
 	def processDate(hCode)
 
-		puts "Processing Date Information"
 		# declare a new commits object
 		changeSet = Commit.new
 		changeSet.hashCode = hCode
@@ -176,8 +176,7 @@ class ProcessSummary
 	
 	def processFiles(hCode)
 		
-		puts "Processing File Information"
-		changeSet = $commitsMap[hCode]
+	        changeSet = $commitsMap[hCode]
 		fileNames = []
 		
 		gitSummary = %x[git show --pretty="format:" --name-only #{hCode}]
@@ -198,7 +197,6 @@ class ProcessSummary
 
 	def setRemoteHash(hCode)
 
-	   puts "Set remote hash code"
 	   $dateTemp = nil
 	   changeSet = $commitsMap[hCode]
 	   changeSet.parents.keys.each do |x|
@@ -217,18 +215,16 @@ class ProcessSummary
          end
 
 
-	def getMergeFixEstimates(masterCode, remoteCode)
+	def getMergeFixEstimates(masterCode, remoteCode, numConflicts)
          
         	conflict = true;
-	        
-
+	        parentHash = getParentHash(remoteCode);
+                @prevCommit = remoteCode;
 	        Dir.chdir($workDir) do
                        while conflict == true
 	                 	puts "\nHard reset Git repository to rev: " + masterCode;
                          	%x[git reset --hard #{masterCode}]
-
-				puts "\nDeleting the new branch"; 
-				%x[git branch -D new]    
+ 
            
 	   			 puts "\nChecking out 'new' branch for " + parentHash;
 	   			 %x[git checkout -b new #{parentHash}]
@@ -250,12 +246,38 @@ class ProcessSummary
 			            puts dateInfo;
 		   		    if dateInfo.start_with?("CONFLICT (content): ")
 					conflict = true;
+					@prevCommit = parentHash; 
 					parentHash = getParentHash(parentHash);
 		   	    	    end
                           	end
+				puts "\nDeleting the new branch"; 
+				%x[git branch -D new]   
+
 				puts conflict;
 				puts"\n\n";
-                         end	
+                         end
+			 
+			 mergeCode = getChildtHash(masterCode)
+			 d1 = getCommitDate(parentHash);
+			 d2 = getCommitDate(@prevCommit);
+			 d3 = getCommitDate(mergeCode);
+			 print "Number of conflicts: "
+                         puts numConflicts;
+			 puts "Last clean commit: " + parentHash;
+			 print "Last clean commit date D1: "
+                         puts d1;
+                         puts "Last conflicting commit: "+ @prevCommit;
+			 print "Last conflicting date D2: "
+                         puts d2;
+                         puts "Current Merge Id: "+ mergeCode;
+			 print "Current Merge Date D3: "
+                         puts d3;
+			 print "D3 - D1 (Merge - L.Clean): "
+                         puts (d3 - d1).to_i
+			 print "D3 - D2 (Merge - L.Conf): "
+			 puts (d3 - d2).to_i
+			 puts"\n=============================================================================\n\n" 
+			 	
                 end 
         end
 
@@ -277,13 +299,82 @@ class ProcessSummary
 		
         end
 
+
+	def processMergeLogs(logFile)
+		#Create a read only object of the file
+		mergeConfs = File.new(logFile, "r")
+		
+		conflictsHash = Hash.new;
+        	conflictsCount = Hash.new;
+			
+		#iterate contents of the file
+		mergeConfs.each do |logResult|
+
+			# split results on section seperator
+			gitSummary = logResult.split("=============================================================================");
+	
+			
+			#saving git summary into objects
+			gitSummary.each do |dateInfo|
+            			dateInfo.strip!
+	    			mergeLogInfo = dateInfo.split("\n")  
+	    			
+	    			mergeLogInfo.each do |conflictInfo|    
+	       				conflictInfo.strip!
+					if conflictInfo.start_with?("Hard reset Git repository to rev: ")
+						@parentFile = dateInfo.sub("Hard reset Git repository to rev: ", "").strip;
+                
+                			elsif conflictInfo.start_with?("Checking out 'new' branch for ")
+						@remoteFile = dateInfo.sub("Checking out 'new' branch for ", "").strip;
+					elsif conflictInfo.start_with?("CONFLICT (content): ")
+						if conflictsHash.has_key?(@parentFile)
+							conflictsCount[@parentFile] = conflictsCount[@parentFile] + 1
+						else
+							conflictsHash[@parentFile] = @remoteFile;
+							conflictsCount[@parentFile] = 1;
+                                                end 
+					end
+            			end
+	 		end
+     		end
+		for ss in 0...conflictsHash.keys.length
+			getMergeFixEstimates(conflictsHash.keys[ss], conflictsHash[conflictsHash.keys[ss]], conflictsCount[conflictsHash.keys[ss]]);
+		end
+        end
+	
+
+	def getCommitDate(remoteCode)
+		gitSummary = %x[git show --name-only #{remoteCode}]
+          
+		# split results on a newline char
+		gitSummary = gitSummary.split("\n");
+		
+		#saving git summary into objects
+		gitSummary.each do |dateInfo|
+                   		   dateInfo.strip!
+	   			    if dateInfo.start_with?("Date: ")
+		                       dateInfo = dateInfo.sub("Date: ", "").strip
+		                       return DateTime.parse(dateInfo);
+	                            end
+                          end
+        end
+
+	def getChildtHash(masterCode)
+		
+		$commitsMap.keys.each do |hashCode|
+                	if $commitsMap[hashCode].parents.at(0)[0] == masterCode
+				return hashCode
+                        end  
+		end
+		
+			
+	end
 end
 
 
 gitSummary = ProcessSummary.new
 
 
-	        
 puts "\nGetting Git repository for Perl5";
 #%x[git clone git://perl5.git.perl.org/perl.git #{$workDir}]
 
@@ -293,7 +384,11 @@ mergeConfs = File.new("/Users/bkasi/Documents/Research/merge.ids", "r")
 Dir.chdir($workDir)
 
 #iterate contents of the file
-mergeConfs.each do |hashCode|		    
+puts "Processing Date Information"
+puts "Processing File Information"  
+puts "Set remote hash code"
+mergeConfs.each do |hashCode|		 
+		    
                    gitSummary.processDate(hashCode);
 		   gitSummary.processFiles(hashCode);
 		   gitSummary.setRemoteHash(hashCode);
@@ -305,21 +400,13 @@ $commitsMap.keys.each do |hashCode|
 end
 
 $commitsMap.keys.each do |hashCode|
-                    $commitsMap[hashCode].startMergeProcess();
-		    puts"\n=============================================================================\n\n"
+                   # $commitsMap[hashCode].startMergeProcess();
+		   # puts"\n=============================================================================\n\n"
                 end
 
-#conflictsHash = ["3b8a5fb","6606016","216e7de","d4fb0a1","edb80b8","65d043b","7ce0928"]
-#remoteHash = ["85d7fce","e3f38af","f1bef09","2547c83","454155d","d96f3ac","4e2ac26"]
 
-conflictsHash = ["6606016"]
-remoteHash = ["e3f38af"]
+gitSummary.processMergeLogs("/Users/bkasi/Documents/Research/MergeConf-185.log");
 
-for ss in 0...conflictsHash.length
-#	gitSummary.getMergeFixEstimates(conflictsHash[ss], remoteHash[ss]);
-end
-
-#$commitsMap[$commitsMap.keys[1]].startMergeProcess();
 
 
 
