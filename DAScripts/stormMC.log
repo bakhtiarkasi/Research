@@ -1,0 +1,3575 @@
+
+Getting Git repository for Perl5
+Processing Date Information
+Processing File Information
+Set remote hash code
+
+Hard reset Git repository to rev: 8581cce
+
+Clean local git folder
+
+ Starting Process for 3e99760ecf7d4ca606aa48ccdbe27bae08ed8246
+
+Checking out 'new' branch for 6d32c6c
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/Config.java
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    4 +
+ bin/build_release.sh                               |    1 +
+ conf/defaults.yaml                                 |    1 +
+ src/clj/backtype/storm/daemon/drpc.clj             |    7 +-
+ src/clj/backtype/storm/daemon/nimbus.clj           |    6 +-
+ src/clj/backtype/storm/testing.clj                 |    9 +-
+ src/clj/backtype/storm/zookeeper.clj               |   16 +++-
+ src/jvm/backtype/storm/Config.java                 |    9 ++-
+ .../storm/coordination/CoordinatedBolt.java        |   19 +++--
+ test/clj/backtype/storm/cluster_test.clj           |   52 ++++++-------
+ test/clj/backtype/storm/nimbus_test.clj            |   49 ++++++------
+ test/clj/backtype/storm/transactional_test.clj     |   78 ++++++++++----------
+ 12 files changed, 136 insertions(+), 115 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: c6712a1
+
+Clean local git folder
+
+ Starting Process for bcbc1c831ba4fb32de278570edbcbb2e15e9cfad
+
+Checking out 'new' branch for 45a62dd
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/clj/backtype/storm/kryo.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   14 ++-
+ src/clj/backtype/storm/clojure.clj                 |   66 ++++++--
+ src/clj/backtype/storm/kryo.clj                    |    2 -
+ src/clj/backtype/storm/testing.clj                 |    3 +-
+ src/jvm/backtype/storm/clojure/ClojureBolt.java    |    8 +-
+ src/jvm/backtype/storm/clojure/ClojureSpout.java   |    8 +-
+ .../backtype/storm/task/OutputCollectorImpl.java   |    2 +-
+ .../storm/testing/MemoryTransactionalSpout.java    |    3 +
+ src/jvm/backtype/storm/tuple/Tuple.java            |  137 ++++++++++++++---
+ .../backtype/storm/utils/IndifferentAccessMap.java |  160 ++++++++++++++++++++
+ test/clj/backtype/storm/integration_test.clj       |   40 ++++-
+ test/clj/backtype/storm/transactional_test.clj     |    4 +-
+ test/clj/backtype/storm/tuple_test.clj             |   36 +++++
+ 13 files changed, 431 insertions(+), 52 deletions(-)
+ delete mode 100644 src/clj/backtype/storm/kryo.clj
+ create mode 100644 src/jvm/backtype/storm/utils/IndifferentAccessMap.java
+ create mode 100644 test/clj/backtype/storm/tuple_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 2a0cb9e
+
+Clean local git folder
+
+ Starting Process for 1b4e89bc9cd4e3f16f8cbae038fa0336c642c961
+
+Checking out 'new' branch for 8bf19c2
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ bin/storm                                    |    5 +++--
+ src/clj/backtype/storm/daemon/supervisor.clj |    4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 52f051d
+
+Clean local git folder
+
+ Starting Process for 8c63426af2f277ffece05e3fd45cf90131d39a80
+
+Checking out 'new' branch for bc104ce
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/jvm/backtype/storm/testing/TestSerObjectSerialization.java
+Removing src/jvm/backtype/storm/serialization/ValuesSerializer.java
+Removing src/jvm/backtype/storm/serialization/ValuesDeserializer.java
+Removing src/jvm/backtype/storm/serialization/TupleSerializer.java
+Removing src/jvm/backtype/storm/serialization/TupleDeserializer.java
+Removing src/jvm/backtype/storm/serialization/SerializationFactory.java
+Removing src/jvm/backtype/storm/serialization/JavaSerialization.java
+Removing src/jvm/backtype/storm/serialization/ISerialization.java
+Removing src/jvm/backtype/storm/serialization/FieldSerialization.java
+Auto-merging src/clj/backtype/storm/testing.clj
+Merge made by the 'recursive' strategy.
+ conf/defaults.yaml                                 |    2 +-
+ project.clj                                        |    1 +
+ src/clj/backtype/storm/bootstrap.clj               |    2 +-
+ src/clj/backtype/storm/daemon/nimbus.clj           |   22 +-
+ src/clj/backtype/storm/daemon/task.clj             |    4 +-
+ src/clj/backtype/storm/daemon/worker.clj           |    4 +-
+ src/clj/backtype/storm/kryo.clj                    |    2 +
+ src/clj/backtype/storm/testing.clj                 |    2 +-
+ src/jvm/backtype/storm/Config.java                 |   59 +++--
+ .../storm/serialization/FieldSerialization.java    |   33 ---
+ .../storm/serialization/ISerialization.java        |   31 ---
+ .../storm/serialization/ITupleDeserializer.java    |    8 +
+ .../storm/serialization/ITupleSerializer.java      |    9 +
+ .../storm/serialization/JavaSerialization.java     |   30 ---
+ .../backtype/storm/serialization/KryoFactory.java  |   74 ++++++
+ .../storm/serialization/KryoTupleDeserializer.java |   35 +++
+ .../storm/serialization/KryoTupleSerializer.java   |   47 ++++
+ .../serialization/KryoValuesDeserializer.java      |   20 ++
+ .../storm/serialization/KryoValuesSerializer.java  |   27 +++
+ .../storm/serialization/SerializationFactory.java  |  240 --------------------
+ .../storm/serialization/TupleDeserializer.java     |   49 ----
+ .../storm/serialization/TupleSerializer.java       |   58 -----
+ .../storm/serialization/ValuesDeserializer.java    |   49 ----
+ .../storm/serialization/ValuesSerializer.java      |   54 -----
+ .../backtype/storm/task/OutputCollectorImpl.java   |    2 +-
+ src/jvm/backtype/storm/testing/TestSerObject.java  |    7 +
+ .../storm/testing/TestSerObjectSerialization.java  |   28 ---
+ src/jvm/backtype/storm/utils/ListDelegate.java     |  130 +++++++++++
+ src/jvm/backtype/storm/utils/Utils.java            |    1 -
+ test/clj/backtype/storm/serialization_test.clj     |   57 ++---
+ 30 files changed, 435 insertions(+), 652 deletions(-)
+ create mode 100644 src/clj/backtype/storm/kryo.clj
+ delete mode 100644 src/jvm/backtype/storm/serialization/FieldSerialization.java
+ delete mode 100644 src/jvm/backtype/storm/serialization/ISerialization.java
+ create mode 100644 src/jvm/backtype/storm/serialization/ITupleDeserializer.java
+ create mode 100644 src/jvm/backtype/storm/serialization/ITupleSerializer.java
+ delete mode 100644 src/jvm/backtype/storm/serialization/JavaSerialization.java
+ create mode 100644 src/jvm/backtype/storm/serialization/KryoFactory.java
+ create mode 100644 src/jvm/backtype/storm/serialization/KryoTupleDeserializer.java
+ create mode 100644 src/jvm/backtype/storm/serialization/KryoTupleSerializer.java
+ create mode 100644 src/jvm/backtype/storm/serialization/KryoValuesDeserializer.java
+ create mode 100644 src/jvm/backtype/storm/serialization/KryoValuesSerializer.java
+ delete mode 100644 src/jvm/backtype/storm/serialization/SerializationFactory.java
+ delete mode 100644 src/jvm/backtype/storm/serialization/TupleDeserializer.java
+ delete mode 100644 src/jvm/backtype/storm/serialization/TupleSerializer.java
+ delete mode 100644 src/jvm/backtype/storm/serialization/ValuesDeserializer.java
+ delete mode 100644 src/jvm/backtype/storm/serialization/ValuesSerializer.java
+ delete mode 100644 src/jvm/backtype/storm/testing/TestSerObjectSerialization.java
+ create mode 100644 src/jvm/backtype/storm/utils/ListDelegate.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: b18321b
+
+Clean local git folder
+
+ Starting Process for 14a842d308ef040ca1192cc6e3e86e769d07043a
+
+Checking out 'new' branch for ca93795
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ README.markdown |    7 +++++--
+ 1 files changed, 5 insertions(+), 2 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 4b1ccd9
+
+Clean local git folder
+
+ Starting Process for 468ed6ab77e7a223dd8a74201e64e6b3e4faafed
+
+Checking out 'new' branch for edbddf2
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ project.clj                              |    2 -
+ src/clj/backtype/storm/cluster.clj       |    9 ++--
+ src/clj/backtype/storm/daemon/common.clj |   12 +++--
+ src/clj/backtype/storm/daemon/nimbus.clj |   62 ++++++++++++++++++++---------
+ 4 files changed, 55 insertions(+), 30 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 46f860b
+
+Clean local git folder
+
+ Starting Process for a62fcce5e672dcf777673941c864aa93b0cc6d5a
+
+Checking out 'new' branch for 2529452
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/util.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/supervisor.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f597bb1
+
+Clean local git folder
+
+ Starting Process for d3269be3ac4028d2dc92cf1d177f5f87c7d79ca2
+
+Checking out 'new' branch for c1b8943
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/nimbus_test.clj
+Auto-merging test/clj/backtype/storm/integration_test.clj
+CONFLICT (content): Merge conflict in test/clj/backtype/storm/integration_test.clj
+Auto-merging src/jvm/backtype/storm/utils/Time.java
+Auto-merging src/jvm/backtype/storm/tuple/Tuple.java
+CONFLICT (content): Merge conflict in src/jvm/backtype/storm/tuple/Tuple.java
+Removing src/jvm/backtype/storm/testing/TrackerAggregator.java
+Removing src/jvm/backtype/storm/task/OutputCollectorImpl.java
+Removing src/jvm/backtype/storm/task/IInternalOutputCollector.java
+Removing src/jvm/backtype/storm/task/CoordinatedBolt.java
+Removing src/jvm/backtype/storm/serialization/ValuesSerializer.java
+Removing src/jvm/backtype/storm/serialization/ValuesDeserializer.java
+Removing src/jvm/backtype/storm/serialization/TupleSerializer.java
+Removing src/jvm/backtype/storm/serialization/TupleDeserializer.java
+Removing src/jvm/backtype/storm/serialization/ISerialization.java
+Removing src/jvm/backtype/storm/serialization/FieldSerialization.java
+Removing src/jvm/backtype/storm/drpc/SpoutAdder.java
+Auto-merging src/jvm/backtype/storm/drpc/KeyedFairBolt.java
+Removing src/jvm/backtype/storm/drpc/DRPCScheme.java
+Removing src/dev/resources/tester.rb
+Removing src/dev/resources/tester.py
+Auto-merging src/clj/backtype/storm/util.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/util.clj
+Auto-merging src/clj/backtype/storm/ui/helpers.clj
+Auto-merging src/clj/backtype/storm/ui/core.clj
+Auto-merging src/clj/backtype/storm/thrift.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/thrift.clj
+Auto-merging src/clj/backtype/storm/testing.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/log.clj
+Auto-merging src/clj/backtype/storm/daemon/worker.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/worker.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/nimbus.clj
+Auto-merging src/clj/backtype/storm/daemon/common.clj
+Auto-merging src/clj/backtype/storm/config.clj
+Auto-merging src/clj/backtype/storm/cluster.clj
+Auto-merging src/clj/backtype/storm/clojure.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/clojure.clj
+Auto-merging src/clj/backtype/storm/bootstrap.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/bootstrap.clj
+Auto-merging project.clj
+CONFLICT (content): Merge conflict in project.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 5046c24
+
+Clean local git folder
+
+ Starting Process for f2266958346807d8f62f3c790bccf26cb7880def
+
+Checking out 'new' branch for 20e1ef9
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/supervisor.clj |    4 ++--
+ src/clj/backtype/storm/daemon/worker.clj     |   13 ++++++++-----
+ src/clj/backtype/storm/timer.clj             |    8 ++++++--
+ 3 files changed, 16 insertions(+), 9 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f2a7046
+
+Clean local git folder
+
+ Starting Process for 41d0e3315e7cb04d002b0f8a03ade444a04c472c
+
+Checking out 'new' branch for 1e35566
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/nimbus.clj           |    4 +-
+ src/clj/backtype/storm/scheduler/EvenScheduler.clj |   22 ++--
+ src/jvm/backtype/storm/scheduler/Cluster.java      |   30 ++---
+ .../storm/scheduler/SchedulerAssignment.java       |  123 ++++++--------------
+ .../storm/scheduler/SchedulerAssignmentImpl.java   |   86 ++++++++++++++
+ test/clj/backtype/storm/scheduler_test.clj         |   22 ++--
+ 6 files changed, 158 insertions(+), 129 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/scheduler/SchedulerAssignmentImpl.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: a8a5536
+
+Clean local git folder
+
+ Starting Process for ab5935cf7d0cb9d9b1dea68ecd68bb24b9ce5bbd
+
+Checking out 'new' branch for 393357b
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ bin/to_maven.sh |   21 +++++++++++++++++++++
+ 1 files changed, 21 insertions(+), 0 deletions(-)
+ create mode 100644 bin/to_maven.sh
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 8a64e43
+
+Clean local git folder
+
+ Starting Process for 526dcc0ae86968a36a90502a77de9ab2a8db1f14
+
+Checking out 'new' branch for d4e3d3d
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/integration_test.clj
+Auto-merging src/jvm/backtype/storm/tuple/Tuple.java
+CONFLICT (content): Merge conflict in src/jvm/backtype/storm/tuple/Tuple.java
+CONFLICT (modify/delete): src/jvm/backtype/storm/drpc/CoordinatedBolt.java deleted in new and modified in HEAD. Version HEAD of src/jvm/backtype/storm/drpc/CoordinatedBolt.java left in tree.
+Auto-merging src/jvm/backtype/storm/clojure/ClojureSpout.java
+Auto-merging src/jvm/backtype/storm/clojure/ClojureBolt.java
+Auto-merging src/clj/backtype/storm/testing.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/testing.clj
+Removing src/clj/backtype/storm/kryo.clj
+Auto-merging src/clj/backtype/storm/clojure.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 998b792
+
+Clean local git folder
+
+ Starting Process for fc5ae41661724a03e06d8352e94b18fe29c149b9
+
+Checking out 'new' branch for 896ec13
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/storm.thrift
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/util.clj
+Auto-merging conf/defaults.yaml
+Merge made by the 'recursive' strategy.
+ conf/defaults.yaml                                 |    1 +
+ project.clj                                        |    2 +-
+ src/clj/backtype/storm/daemon/drpc.clj             |   38 +-
+ src/clj/backtype/storm/util.clj                    |   20 +-
+ src/jvm/backtype/storm/Config.java                 |    6 +-
+ src/jvm/backtype/storm/ILocalDRPC.java             |    3 +-
+ .../backtype/storm/drpc/DRPCInvocationsClient.java |   74 +
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |   21 +-
+ src/jvm/backtype/storm/drpc/ReturnResults.java     |   14 +-
+ .../backtype/storm/generated/DistributedRPC.java   | 1925 -------------------
+ .../storm/generated/DistributedRPCInvocations.java | 2015 ++++++++++++++++++++
+ src/jvm/backtype/storm/utils/DRPCClient.java       |   31 -
+ src/py/storm/DistributedRPC-remote                 |   21 -
+ src/py/storm/DistributedRPC.py                     |  482 -----
+ src/py/storm/DistributedRPCInvocations-remote      |   99 +
+ src/py/storm/DistributedRPCInvocations.py          |  531 ++++++
+ src/py/storm/__init__.py                           |    2 +-
+ src/storm.thrift                                   |    5 +-
+ 18 files changed, 2787 insertions(+), 2503 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/drpc/DRPCInvocationsClient.java
+ create mode 100644 src/jvm/backtype/storm/generated/DistributedRPCInvocations.java
+ create mode 100755 src/py/storm/DistributedRPCInvocations-remote
+ create mode 100644 src/py/storm/DistributedRPCInvocations.py
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 8c3918b
+
+Clean local git folder
+
+ Starting Process for 0d8a195f48af016b65c3d42df37ef77ab0a65e2f
+
+Checking out 'new' branch for d64c8e5
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    4 +-
+ README.markdown                                    |    6 +-
+ .../storm/coordination/CoordinatedBolt.java        |  131 ++++++++++++--------
+ .../TransactionalTopologyBuilder.java              |    2 +-
+ 4 files changed, 89 insertions(+), 54 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 6f99d47
+
+Clean local git folder
+
+ Starting Process for dabd1a9c0bb553e59f119ab867dad095d591466e
+
+Checking out 'new' branch for 58aeabf
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/worker.clj
+Auto-merging src/clj/backtype/storm/daemon/executor.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/executor.clj
+Auto-merging src/clj/backtype/storm/daemon/common.clj
+Auto-merging src/clj/backtype/storm/cluster.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 2cf102d
+
+Clean local git folder
+
+ Starting Process for b74d32322c0b89b2e3870b1b74aee210374f0fe4
+
+Checking out 'new' branch for 2f66e58
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging CHANGELOG.md
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    1 +
+ .../storm/serialization/SerializationFactory.java  |    2 ++
+ src/jvm/backtype/storm/tuple/Values.java           |    4 ++++
+ 3 files changed, 7 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 19c79c1
+
+Clean local git folder
+
+ Starting Process for edbddf234bdd4003ef3b1b5fe88b460e42c3cf40
+
+Checking out 'new' branch for aa91046
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/executor.clj
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/cluster.clj                 |    9 +-
+ src/clj/backtype/storm/daemon/common.clj           |   28 +++----
+ .../storm/daemon/{task.clj => executor.clj}        |    4 +-
+ src/clj/backtype/storm/daemon/nimbus.clj           |   84 +++++++++++++++-----
+ src/clj/backtype/storm/daemon/worker.clj           |    4 +-
+ src/clj/backtype/storm/testing.clj                 |    2 +-
+ src/clj/backtype/storm/util.clj                    |   25 ++++++
+ 7 files changed, 109 insertions(+), 47 deletions(-)
+ rename src/clj/backtype/storm/daemon/{task.clj => executor.clj} (99%)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 26cc00a
+
+Clean local git folder
+
+ Starting Process for fc63b2d286a73944ca9035b2ac3665b5d187d90b
+
+Checking out 'new' branch for 238f1c9
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/util.clj
+Auto-merging project.clj
+CONFLICT (content): Merge conflict in project.clj
+Auto-merging conf/defaults.yaml
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 3e048a1
+
+Clean local git folder
+
+ Starting Process for e253bc9eab74bd804417997171e07884613efb28
+
+Checking out 'new' branch for 9282e47
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging CHANGELOG.md
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 3d0692a
+
+Clean local git folder
+
+ Starting Process for 3e048a140c140e7d87d40b19766919be588af421
+
+Checking out 'new' branch for 45d0640
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging conf/defaults.yaml
+Merge made by the 'recursive' strategy.
+ conf/defaults.yaml                               |    2 +-
+ project.clj                                      |    2 +-
+ src/clj/backtype/storm/daemon/supervisor.clj     |    7 ++++---
+ src/jvm/backtype/storm/task/TopologyContext.java |   14 +++++++-------
+ src/jvm/backtype/storm/utils/ShellProcess.java   |    2 +-
+ 5 files changed, 14 insertions(+), 13 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 0f5740f
+
+Clean local git folder
+
+ Starting Process for 0c7cf730c259d336347c4e1861df543f1b14b3e7
+
+Checking out 'new' branch for 695f977
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/common.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   12 +
+ bin/storm                                          |    3 +-
+ conf/defaults.yaml                                 |    6 +-
+ project.clj                                        |    4 +-
+ src/clj/backtype/storm/cluster.clj                 |  103 ++--
+ src/clj/backtype/storm/command/rebalance.clj       |   14 +-
+ src/clj/backtype/storm/daemon/common.clj           |   54 +-
+ src/clj/backtype/storm/daemon/nimbus.clj           |  117 ++--
+ src/clj/backtype/storm/daemon/supervisor.clj       |    9 +-
+ src/clj/backtype/storm/daemon/task.clj             |   11 +-
+ src/clj/backtype/storm/daemon/worker.clj           |   24 +-
+ src/clj/backtype/storm/testing.clj                 |   13 +-
+ src/clj/backtype/storm/thrift.clj                  |    8 +-
+ src/clj/backtype/storm/ui/core.clj                 |  122 +++-
+ src/clj/backtype/storm/util.clj                    |    3 +
+ src/clj/backtype/storm/zookeeper.clj               |   12 +-
+ src/jvm/backtype/storm/Config.java                 |   28 +-
+ src/jvm/backtype/storm/generated/Nimbus.java       |  778 ++++++++++++++++++++
+ .../backtype/storm/generated/RebalanceOptions.java |  233 ++++++-
+ src/jvm/backtype/storm/task/TopologyContext.java   |   18 +-
+ src/jvm/backtype/storm/utils/ShellProcess.java     |    2 +-
+ src/py/storm/Nimbus-remote                         |    7 +
+ src/py/storm/Nimbus.py                             |  187 +++++
+ src/py/storm/ttypes.py                             |   36 +-
+ src/storm.thrift                                   |    3 +
+ src/ui/public/js/jquery.cookies.2.2.0.min.js       |   18 +
+ test/clj/backtype/storm/cluster_test.clj           |    4 +-
+ test/clj/backtype/storm/nimbus_test.clj            |   62 +-
+ 28 files changed, 1643 insertions(+), 248 deletions(-)
+ create mode 100644 src/ui/public/js/jquery.cookies.2.2.0.min.js
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: d3f28a6
+
+Clean local git folder
+
+ Starting Process for 46f860bf5ca1dab7c485e8b193998da6883d085e
+
+Checking out 'new' branch for 0876c31
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/nimbus_test.clj
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/util.clj
+Auto-merging src/clj/backtype/storm/daemon/worker.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+Auto-merging conf/defaults.yaml
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                 |   68 ++++++++++++++++++++++++++
+ conf/defaults.yaml                           |    2 +
+ src/clj/backtype/storm/daemon/nimbus.clj     |   23 +++++++++
+ src/clj/backtype/storm/daemon/supervisor.clj |    4 +-
+ src/clj/backtype/storm/daemon/worker.clj     |   13 +++--
+ src/clj/backtype/storm/timer.clj             |   22 +++-----
+ src/clj/backtype/storm/util.clj              |    4 ++
+ src/jvm/backtype/storm/Config.java           |   16 ++++++
+ src/jvm/backtype/storm/utils/Time.java       |   21 +++++---
+ test/clj/backtype/storm/nimbus_test.clj      |   34 +++++++++++++
+ 10 files changed, 178 insertions(+), 29 deletions(-)
+ create mode 100644 CHANGELOG.md
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 09372b1
+
+Clean local git folder
+
+ Starting Process for 33272f32fad813fe062a239fca527f1019e17d25
+
+Checking out 'new' branch for df4692c
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                    |    3 ++-
+ README.markdown                 |    2 ++
+ src/clj/backtype/storm/util.clj |    5 ++---
+ 3 files changed, 6 insertions(+), 4 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: b3c3239
+
+Clean local git folder
+
+ Starting Process for 7013666812f01580b11b46615e370eaf7e3c6f1a
+
+Checking out 'new' branch for bcbc1c8
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ bin/storm                  |    2 +-
+ log4j/storm.log.properties |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 2640983
+
+Clean local git folder
+
+ Starting Process for 18dd7423be41313c7476b8981a650dab9b3429a6
+
+Checking out 'new' branch for 9807286
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/jvm/backtype/storm/task/TopologyContext.java |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: abeecaf
+
+Clean local git folder
+
+ Starting Process for eadd18742af28ba18bdf663b604028e1e4bb8733
+
+Checking out 'new' branch for d0e6831
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ conf/defaults.yaml                                 |    1 +
+ src/clj/backtype/storm/daemon/drpc.clj             |   34 +-
+ src/jvm/backtype/storm/Config.java                 |    6 +-
+ src/jvm/backtype/storm/ILocalDRPC.java             |    3 +-
+ .../backtype/storm/drpc/DRPCInvocationsClient.java |   74 +
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |   21 +-
+ src/jvm/backtype/storm/drpc/ReturnResults.java     |   14 +-
+ .../backtype/storm/generated/DistributedRPC.java   | 1925 -------------------
+ .../storm/generated/DistributedRPCInvocations.java | 2015 ++++++++++++++++++++
+ src/jvm/backtype/storm/utils/DRPCClient.java       |   31 -
+ src/py/storm/DistributedRPC-remote                 |   21 -
+ src/py/storm/DistributedRPC.py                     |  482 -----
+ src/py/storm/DistributedRPCInvocations-remote      |   99 +
+ src/py/storm/DistributedRPCInvocations.py          |  531 ++++++
+ src/py/storm/__init__.py                           |    2 +-
+ src/storm.thrift                                   |    5 +-
+ 16 files changed, 2772 insertions(+), 2492 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/drpc/DRPCInvocationsClient.java
+ create mode 100644 src/jvm/backtype/storm/generated/DistributedRPCInvocations.java
+ create mode 100755 src/py/storm/DistributedRPCInvocations-remote
+ create mode 100644 src/py/storm/DistributedRPCInvocations.py
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 2240ad3
+
+Clean local git folder
+
+ Starting Process for 12fde1426aab1cf9cf85590e73a1de10901063b4
+
+Checking out 'new' branch for 5df7182
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/jvm/backtype/storm/utils/ThreadResourceManager.java
+Auto-merging src/jvm/backtype/storm/generated/ExecutorSummary.java
+Auto-merging src/jvm/backtype/storm/generated/ExecutorStats.java
+Auto-merging src/jvm/backtype/storm/generated/ExecutorSpecificStats.java
+Auto-merging project.clj
+Auto-merging CHANGELOG.md
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   15 +-
+ conf/defaults.yaml                                 |    9 +-
+ project.clj                                        |    4 +-
+ src/clj/backtype/storm/bootstrap.clj               |   22 +-
+ src/clj/backtype/storm/cluster.clj                 |   27 +-
+ src/clj/backtype/storm/daemon/acker.clj            |   84 ++--
+ src/clj/backtype/storm/daemon/common.clj           |  137 +++--
+ src/clj/backtype/storm/daemon/executor.clj         |  567 ++++++++++++++++++
+ src/clj/backtype/storm/daemon/nimbus.clj           |  615 ++++++++++++--------
+ src/clj/backtype/storm/daemon/supervisor.clj       |   51 +-
+ src/clj/backtype/storm/daemon/task.clj             |  592 ++++---------------
+ src/clj/backtype/storm/daemon/worker.clj           |  351 +++++++-----
+ src/clj/backtype/storm/disruptor.clj               |   67 +++
+ src/clj/backtype/storm/messaging/loader.clj        |   41 +-
+ src/clj/backtype/storm/messaging/local.clj         |    6 +-
+ src/clj/backtype/storm/messaging/protocol.clj      |    8 +-
+ src/clj/backtype/storm/messaging/zmq.clj           |   38 +-
+ .../backtype/storm/scheduler/DefaultScheduler.clj  |   43 ++
+ src/clj/backtype/storm/scheduler/EvenScheduler.clj |   64 ++
+ src/clj/backtype/storm/stats.clj                   |   61 +-
+ src/clj/backtype/storm/testing.clj                 |   67 ++-
+ src/clj/backtype/storm/thrift.clj                  |    4 +-
+ src/clj/backtype/storm/timer.clj                   |    1 +
+ src/clj/backtype/storm/ui/core.clj                 |  117 ++--
+ src/clj/backtype/storm/ui/helpers.clj              |   17 +
+ src/clj/backtype/storm/util.clj                    |  184 +++++--
+ src/clj/zilch/mq.clj                               |    3 +
+ src/jvm/backtype/storm/Config.java                 |   71 ++-
+ src/jvm/backtype/storm/Constants.java              |    5 +-
+ .../storm/coordination/CoordinatedBolt.java        |    1 +
+ src/jvm/backtype/storm/generated/ExecutorInfo.java |  420 +++++++++++++
+ ...ecificStats.java => ExecutorSpecificStats.java} |   32 +-
+ .../{TaskStats.java => ExecutorStats.java}         |   44 +-
+ .../{TaskSummary.java => ExecutorSummary.java}     |  166 +++---
+ src/jvm/backtype/storm/generated/Nimbus.java       |  110 ++++-
+ src/jvm/backtype/storm/generated/TopologyInfo.java |  134 +++---
+ .../backtype/storm/generated/TopologySummary.java  |  122 ++++-
+ .../storm/grouping/CustomStreamGrouping.java       |    5 +-
+ src/jvm/backtype/storm/hooks/BaseTaskHook.java     |    4 -
+ src/jvm/backtype/storm/hooks/ITaskHook.java        |    1 -
+ src/jvm/backtype/storm/hooks/info/BoltAckInfo.java |    4 +-
+ .../backtype/storm/hooks/info/BoltFailInfo.java    |    4 +-
+ .../backtype/storm/hooks/info/SpoutAckInfo.java    |    4 +-
+ .../backtype/storm/hooks/info/SpoutFailInfo.java   |    4 +-
+ src/jvm/backtype/storm/scheduler/Cluster.java      |  371 ++++++++++++
+ .../backtype/storm/scheduler/ExecutorDetails.java  |   32 +
+ src/jvm/backtype/storm/scheduler/INimbus.java      |    2 +-
+ src/jvm/backtype/storm/scheduler/IScheduler.java   |   18 +
+ .../storm/scheduler/SchedulerAssignment.java       |   39 ++
+ .../storm/scheduler/SchedulerAssignmentImpl.java   |   86 +++
+ .../storm/scheduler/SupervisorDetails.java         |   43 ++-
+ src/jvm/backtype/storm/scheduler/Topologies.java   |   39 ++
+ .../backtype/storm/scheduler/TopologyDetails.java  |   49 ++-
+ .../storm/serialization/ITupleSerializer.java      |    2 +-
+ .../storm/serialization/KryoTupleDeserializer.java |   69 +--
+ .../storm/serialization/KryoTupleSerializer.java   |   94 +---
+ .../serialization/KryoValuesDeserializer.java      |   19 +-
+ .../storm/serialization/KryoValuesSerializer.java  |   23 +-
+ .../storm/serialization/SerializationFactory.java  |   38 +-
+ .../serialization/types/ArrayListSerializer.java   |   19 +
+ .../serialization/types/HashMapSerializer.java     |   19 +
+ .../serialization/types/HashSetSerializer.java     |   19 +
+ src/jvm/backtype/storm/spout/NoOpSpout.java        |   36 ++
+ .../storm/task/GeneralTopologyContext.java         |   42 +-
+ src/jvm/backtype/storm/task/ShellBolt.java         |    5 +-
+ src/jvm/backtype/storm/task/TopologyContext.java   |   83 +--
+ .../backtype/storm/task/WorkerTopologyContext.java |   89 +++
+ .../backtype/storm/testing/AckFailMapTracker.java  |   35 ++
+ src/jvm/backtype/storm/testing/FeederSpout.java    |   29 +-
+ .../storm/testing/MemoryTransactionalSpout.java    |   17 +-
+ src/jvm/backtype/storm/testing/NGrouping.java      |    4 +-
+ .../backtype/storm/testing/TestGlobalCount.java    |    4 +-
+ .../storm/topology/BaseConfigurationDeclarer.java  |    8 +-
+ .../topology/ComponentConfigurationDeclarer.java   |    3 +-
+ .../TransactionalSpoutCoordinator.java             |    5 +-
+ src/jvm/backtype/storm/tuple/MessageId.java        |   18 +-
+ src/jvm/backtype/storm/tuple/Tuple.java            |  305 +---------
+ src/jvm/backtype/storm/tuple/TupleImpl.java        |  321 ++++++++++
+ src/jvm/backtype/storm/utils/DisruptorQueue.java   |  118 ++++
+ src/jvm/backtype/storm/utils/MutableInt.java       |   26 +
+ src/jvm/backtype/storm/utils/MutableObject.java    |   21 +
+ src/jvm/backtype/storm/utils/RotatingMap.java      |  106 ++++
+ .../storm/utils/ThreadResourceManager.java         |   29 -
+ src/jvm/backtype/storm/utils/TimeCacheMap.java     |   13 +-
+ src/jvm/backtype/storm/utils/Utils.java            |    2 +-
+ src/jvm/backtype/storm/utils/VersionedStore.java   |    7 +-
+ src/py/storm/Nimbus.py                             |   19 +-
+ src/py/storm/ttypes.py                             |  177 +++++--
+ src/storm.thrift                                   |   28 +-
+ test/clj/backtype/storm/clojure_test.clj           |  131 +++++
+ test/clj/backtype/storm/grouping_test.clj          |   29 +
+ test/clj/backtype/storm/integration_test.clj       |  288 +++-------
+ test/clj/backtype/storm/multilang_test.clj         |   54 ++
+ test/clj/backtype/storm/nimbus_test.clj            |  341 ++++++++----
+ test/clj/backtype/storm/scheduler_test.clj         |  244 ++++++++
+ test/clj/backtype/storm/serialization_test.clj     |   13 +-
+ test/clj/backtype/storm/supervisor_test.clj        |   43 +-
+ 97 files changed, 5597 insertions(+), 2403 deletions(-)
+ create mode 100644 src/clj/backtype/storm/daemon/executor.clj
+ create mode 100644 src/clj/backtype/storm/disruptor.clj
+ create mode 100644 src/clj/backtype/storm/scheduler/DefaultScheduler.clj
+ create mode 100644 src/clj/backtype/storm/scheduler/EvenScheduler.clj
+ create mode 100644 src/jvm/backtype/storm/generated/ExecutorInfo.java
+ rename src/jvm/backtype/storm/generated/{TaskSpecificStats.java => ExecutorSpecificStats.java} (90%)
+ rename src/jvm/backtype/storm/generated/{TaskStats.java => ExecutorStats.java} (95%)
+ rename src/jvm/backtype/storm/generated/{TaskSummary.java => ExecutorSummary.java} (83%)
+ create mode 100644 src/jvm/backtype/storm/scheduler/Cluster.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/ExecutorDetails.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/IScheduler.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/SchedulerAssignment.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/SchedulerAssignmentImpl.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/Topologies.java
+ create mode 100644 src/jvm/backtype/storm/serialization/types/ArrayListSerializer.java
+ create mode 100644 src/jvm/backtype/storm/serialization/types/HashMapSerializer.java
+ create mode 100644 src/jvm/backtype/storm/serialization/types/HashSetSerializer.java
+ create mode 100644 src/jvm/backtype/storm/spout/NoOpSpout.java
+ create mode 100644 src/jvm/backtype/storm/task/WorkerTopologyContext.java
+ create mode 100644 src/jvm/backtype/storm/testing/AckFailMapTracker.java
+ create mode 100644 src/jvm/backtype/storm/tuple/TupleImpl.java
+ create mode 100644 src/jvm/backtype/storm/utils/DisruptorQueue.java
+ create mode 100644 src/jvm/backtype/storm/utils/MutableInt.java
+ create mode 100644 src/jvm/backtype/storm/utils/MutableObject.java
+ create mode 100644 src/jvm/backtype/storm/utils/RotatingMap.java
+ delete mode 100644 src/jvm/backtype/storm/utils/ThreadResourceManager.java
+ create mode 100644 test/clj/backtype/storm/clojure_test.clj
+ create mode 100644 test/clj/backtype/storm/multilang_test.clj
+ create mode 100644 test/clj/backtype/storm/scheduler_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: fce5783
+
+Clean local git folder
+
+ Starting Process for fbe2047e2412927b6e1137adcc96415402159b9e
+
+Checking out 'new' branch for 2708e40
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging src/clj/backtype/storm/daemon/common.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    1 +
+ conf/defaults.yaml                                 |    1 +
+ src/clj/backtype/storm/daemon/common.clj           |    2 +
+ src/clj/backtype/storm/daemon/executor.clj         |    9 +-
+ src/clj/backtype/storm/daemon/supervisor.clj       |    2 +-
+ src/clj/backtype/storm/daemon/task.clj             |   15 +-
+ src/clj/backtype/storm/daemon/worker.clj           |   27 ++
+ src/clj/backtype/storm/testing.clj                 |   40 ++-
+ src/jvm/backtype/storm/Config.java                 |    6 +
+ src/jvm/backtype/storm/task/TopologyContext.java   |   30 ++-
+ .../backtype/storm/task/WorkerTopologyContext.java |   34 ++-
+ src/jvm/backtype/storm/tuple/Tuple.java            |  302 ++------------------
+ src/jvm/backtype/storm/tuple/TupleImpl.java        |  291 +++++++++++++++++++-
+ 13 files changed, 454 insertions(+), 306 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: c6058e6
+
+Clean local git folder
+
+ Starting Process for a6af7ef2b8f7c3107027c1a2af9e2e013bd4b73d
+
+Checking out 'new' branch for 668da62
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    3 +
+ bin/build_release.sh                               |    1 +
+ conf/defaults.yaml                                 |    1 +
+ src/clj/backtype/storm/daemon/drpc.clj             |    7 +-
+ src/clj/backtype/storm/testing.clj                 |    9 +-
+ src/clj/backtype/storm/zookeeper.clj               |   16 +++-
+ src/jvm/backtype/storm/Config.java                 |    9 ++-
+ .../storm/coordination/CoordinatedBolt.java        |   19 +++--
+ test/clj/backtype/storm/cluster_test.clj           |   52 ++++++-------
+ test/clj/backtype/storm/nimbus_test.clj            |   49 ++++++------
+ test/clj/backtype/storm/transactional_test.clj     |   78 ++++++++++----------
+ 11 files changed, 131 insertions(+), 113 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 62db063
+
+Clean local git folder
+
+ Starting Process for 49cd5cda3d2c479cc304305a32c4ef9c32b2cd1b
+
+Checking out 'new' branch for 35c70ed
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/nimbus_test.clj
+CONFLICT (content): Merge conflict in test/clj/backtype/storm/nimbus_test.clj
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+Auto-merging conf/defaults.yaml
+Auto-merging bin/storm
+CONFLICT (content): Merge conflict in bin/storm
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: e01055f
+
+Clean local git folder
+
+ Starting Process for 3b2917d3478952065ab0dd84fa5b50e11be386f6
+
+Checking out 'new' branch for 9bfb89e
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ bin/storm |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: eeb7f55
+
+Clean local git folder
+
+ Starting Process for 2ba30d21159de6592165e7d7d68dc74784a48223
+
+Checking out 'new' branch for e70fa8c
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ bin/javadoc.sh |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: a2556b6
+
+Clean local git folder
+
+ Starting Process for e9efb3993653ed78cdcff2d6f99d3eea3c4ea718
+
+Checking out 'new' branch for 35c70ed
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    2 +
+ .../testing/OpaqueMemoryTransactionalSpout.java    |  169 ++++++++++++++++++++
+ .../IOpaquePartitionedTransactionalSpout.java      |    1 +
+ ...paquePartitionedTransactionalSpoutExecutor.java |   17 ++-
+ test/clj/backtype/storm/transactional_test.clj     |   90 ++++++++++-
+ 5 files changed, 276 insertions(+), 3 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/testing/OpaqueMemoryTransactionalSpout.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 3b2917d
+
+Clean local git folder
+
+ Starting Process for 875d679c25ebfa954164baf1d42295efac76c72b
+
+Checking out 'new' branch for 22ca072
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 31f06a9
+
+Clean local git folder
+
+ Starting Process for 26409830d4c0a59b7236269b041bbed6a81f7960
+
+Checking out 'new' branch for 3226a1c
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ bin/storm                                    |   26 ++++++++++++++++++++++----
+ src/clj/backtype/storm/daemon/supervisor.clj |    1 +
+ 2 files changed, 23 insertions(+), 4 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 436ae85
+
+Clean local git folder
+
+ Starting Process for f2a704607267952359c9ccfe96d6dcc18e67bebc
+
+Checking out 'new' branch for 365eaeb
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+Auto-merging src/clj/backtype/storm/daemon/common.clj
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/common.clj     |   40 +++++----
+ src/clj/backtype/storm/daemon/nimbus.clj     |    9 ++-
+ src/jvm/backtype/storm/Config.java           |   20 +----
+ src/jvm/backtype/storm/generated/Nimbus.java |  110 ++++++++++++++++++++++--
+ src/py/storm/Nimbus.py                       |   19 ++++-
+ src/storm.thrift                             |    2 +-
+ test/clj/backtype/storm/integration_test.clj |   24 +++++
+ test/clj/backtype/storm/nimbus_test.clj      |  121 +++++++++++++++++++++-----
+ 8 files changed, 276 insertions(+), 69 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 436ae85
+
+Clean local git folder
+
+ Starting Process for 3dc29e0dfde9923b54239714f5d7333cd1d11495
+
+Checking out 'new' branch for d84ac47
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/scheduler_test.clj
+Auto-merging src/jvm/backtype/storm/scheduler/SchedulerAssignment.java
+CONFLICT (content): Merge conflict in src/jvm/backtype/storm/scheduler/SchedulerAssignment.java
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 748ecd1
+
+Clean local git folder
+
+ Starting Process for dba0286b473be702e72bdfc24ae034dd1e48dd83
+
+Checking out 'new' branch for 7db6aa8
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/worker.clj
+Auto-merging src/clj/backtype/storm/daemon/executor.clj
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/executor.clj |    2 --
+ src/clj/backtype/storm/daemon/worker.clj   |    2 --
+ 2 files changed, 0 insertions(+), 4 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 66810d6
+
+Clean local git folder
+
+ Starting Process for 66c1dfd15945c87a7e8adf970d890efe65f787f0
+
+Checking out 'new' branch for 33272f3
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ bin/storm          |   17 +++++++++--------
+ conf/defaults.yaml |    2 ++
+ 2 files changed, 11 insertions(+), 8 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: a3431a9
+
+Clean local git folder
+
+ Starting Process for 5ab6711b71f185e78f2b4677e548754cf3c1d8aa
+
+Checking out 'new' branch for 156560d
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/spout/ShellSpout.java
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    3 ++
+ src/clj/backtype/storm/LocalCluster.clj            |   30 +++++++++++++++++--
+ src/clj/backtype/storm/daemon/task.clj             |   19 ++++++++++--
+ src/jvm/backtype/storm/ILocalCluster.java          |   19 ++++++++++--
+ src/jvm/backtype/storm/clojure/ClojureSpout.java   |   20 ++++++++++++-
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |    9 +----
+ src/jvm/backtype/storm/spout/ISpout.java           |   14 +++++++++
+ src/jvm/backtype/storm/spout/ShellSpout.java       |    9 +++++-
+ src/jvm/backtype/storm/testing/FeederSpout.java    |    4 +-
+ .../backtype/storm/testing/FixedTupleSpout.java    |    8 +++++
+ .../storm/topology/base/BaseRichSpout.java         |    8 +++++
+ .../TransactionalSpoutCoordinator.java             |    5 +--
+ 12 files changed, 122 insertions(+), 26 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 5b37123
+
+Clean local git folder
+
+ Starting Process for 4b1ccd9676532429ffdadcac93434a61396da7a2
+
+Checking out 'new' branch for 066cd0a
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ README.markdown |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 8475a74
+
+Clean local git folder
+
+ Starting Process for 601d54aee16dc5938fa81b7d19e2a0a3006fa4f8
+
+Checking out 'new' branch for 28a0a27
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/jvm/backtype/storm/utils/ThreadResourceManager.java
+Auto-merging src/jvm/backtype/storm/generated/ExecutorSummary.java
+Auto-merging src/jvm/backtype/storm/generated/ExecutorStats.java
+Auto-merging src/jvm/backtype/storm/generated/ExecutorSpecificStats.java
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/testing.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/nimbus.clj
+Auto-merging src/clj/backtype/storm/daemon/common.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 8c011bf
+
+Clean local git folder
+
+ Starting Process for 748ecd14324e83223de618b6c6e814bbbb54cb08
+
+Checking out 'new' branch for 345cdc2
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/worker.clj
+Auto-merging src/clj/backtype/storm/cluster.clj
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/cluster.clj       |   14 +++++++++-----
+ src/clj/backtype/storm/daemon/worker.clj |    1 +
+ test/clj/backtype/storm/nimbus_test.clj  |    4 ++--
+ 3 files changed, 12 insertions(+), 7 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: d1bc264
+
+Clean local git folder
+
+ Starting Process for 02cda16b0a8724d86956072fa08e4a723affcd88
+
+Checking out 'new' branch for 61cc199
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                 |    3 +++
+ README.markdown                              |    2 ++
+ bin/storm                                    |   26 +++++++++++++++++++++-----
+ src/clj/backtype/storm/config.clj            |    2 +-
+ src/clj/backtype/storm/daemon/supervisor.clj |    4 ++--
+ src/clj/backtype/storm/daemon/worker.clj     |    2 +-
+ src/clj/backtype/storm/ui/core.clj           |   12 ++++++------
+ src/clj/backtype/storm/ui/helpers.clj        |    4 ++++
+ 8 files changed, 40 insertions(+), 15 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: e712c45
+
+Clean local git folder
+
+ Starting Process for b7699f0b28420d7c3b79b07e03d9385ca0ce4f9e
+
+Checking out 'new' branch for 3f3ce81
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/nimbus.clj           |    1 -
+ src/jvm/backtype/storm/scheduler/INimbus.java      |   20 +++++++++++++
+ src/jvm/backtype/storm/scheduler/ISupervisor.java  |   16 +++++++++++
+ .../backtype/storm/scheduler/SupervisorInfo.java   |   19 +++++++++++++
+ src/jvm/backtype/storm/scheduler/TopologyInfo.java |   29 ++++++++++++++++++++
+ src/jvm/backtype/storm/scheduler/WorkerSlot.java   |   11 +++++++
+ 6 files changed, 95 insertions(+), 1 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/scheduler/INimbus.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/ISupervisor.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/SupervisorInfo.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/TopologyInfo.java
+ create mode 100644 src/jvm/backtype/storm/scheduler/WorkerSlot.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 506c8ad
+
+Clean local git folder
+
+ Starting Process for e2d2adec9b29eafb63dd8f8f44c03ae2e9db2984
+
+Checking out 'new' branch for 3651b49
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   18 +++-
+ src/clj/backtype/storm/daemon/acker.clj            |    2 +-
+ .../storm/coordination/CoordinatedBolt.java        |    2 +-
+ src/jvm/backtype/storm/task/TopologyContext.java   |   18 +++
+ .../storm/topology/base/BaseBatchBolt.java         |    7 +-
+ .../storm/topology/base/BaseComponent.java         |    3 +-
+ .../BaseOpaquePartitionedTransactionalSpout.java   |    8 ++
+ .../base/BasePartitionedTransactionalSpout.java    |    7 +-
+ .../topology/base/BaseTransactionalSpout.java      |    6 +-
+ .../ICommitterTransactionalSpout.java              |   14 +++
+ .../TransactionalSpoutBatchExecutor.java           |   28 ++++-
+ .../TransactionalSpoutCoordinator.java             |   51 +++++----
+ .../TransactionalTopologyBuilder.java              |   24 +++-
+ .../IOpaquePartitionedTransactionalSpout.java      |   27 +++++
+ ...paquePartitionedTransactionalSpoutExecutor.java |  119 ++++++++++++++++++++
+ .../state/RotatingTransactionalState.java          |   25 ++++-
+ test/clj/backtype/storm/integration_test.clj       |   15 ++-
+ test/clj/backtype/storm/transactional_test.clj     |   46 +++++---
+ 18 files changed, 336 insertions(+), 84 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseOpaquePartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ICommitterTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/IOpaquePartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/OpaquePartitionedTransactionalSpoutExecutor.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: d5cc24f
+
+Clean local git folder
+
+ Starting Process for 1b12455403356937509279fc68f750ae95a4704b
+
+Checking out 'new' branch for ba71589
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/dev/resources/tester.py
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   10 +-
+ README.markdown                                    |    3 +
+ src/clj/backtype/storm/clojure.clj                 |   70 +------
+ src/clj/backtype/storm/daemon/task.clj             |   21 ++-
+ src/clj/backtype/storm/daemon/worker.clj           |    6 +-
+ src/clj/backtype/storm/testing.clj                 |    2 +-
+ src/clj/backtype/storm/thrift.clj                  |   22 ++-
+ src/clj/backtype/storm/timer.clj                   |    9 +-
+ src/dev/resources/tester.py                        |    8 -
+ src/dev/resources/tester_bolt.py                   |   18 ++
+ src/dev/resources/tester_spout.py                  |   29 +++
+ src/jvm/backtype/storm/clojure/ClojureSpout.java   |   20 ++-
+ src/jvm/backtype/storm/clojure/RichShellBolt.java  |    4 +-
+ src/jvm/backtype/storm/clojure/RichShellSpout.java |   34 +++
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |    9 +-
+ src/jvm/backtype/storm/hooks/BaseTaskHook.java     |    4 +
+ src/jvm/backtype/storm/hooks/ITaskHook.java        |    1 +
+ src/jvm/backtype/storm/spout/ISpout.java           |   14 ++
+ src/jvm/backtype/storm/spout/ShellSpout.java       |   94 ++++++++-
+ src/jvm/backtype/storm/task/ShellBolt.java         |  222 ++++++++++----------
+ src/jvm/backtype/storm/task/TopologyContext.java   |   11 +-
+ src/jvm/backtype/storm/testing/FeederSpout.java    |    4 +-
+ .../backtype/storm/testing/FixedTupleSpout.java    |    8 +
+ .../storm/topology/base/BaseRichSpout.java         |    8 +
+ .../TransactionalSpoutCoordinator.java             |    5 +-
+ src/jvm/backtype/storm/tuple/Fields.java           |   11 +-
+ src/jvm/backtype/storm/utils/InprocMessaging.java  |   23 +--
+ src/jvm/backtype/storm/utils/ShellProcess.java     |   92 ++++++++
+ src/multilang/py/storm.py                          |  139 +++++++++---
+ test/clj/backtype/storm/fields_test.clj            |   40 ++++
+ test/clj/backtype/storm/integration_test.clj       |   12 +-
+ 31 files changed, 674 insertions(+), 279 deletions(-)
+ delete mode 100644 src/dev/resources/tester.py
+ create mode 100644 src/dev/resources/tester_bolt.py
+ create mode 100644 src/dev/resources/tester_spout.py
+ create mode 100644 src/jvm/backtype/storm/clojure/RichShellSpout.java
+ create mode 100644 src/jvm/backtype/storm/utils/ShellProcess.java
+ create mode 100644 test/clj/backtype/storm/fields_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: b9f2cbf
+
+Clean local git folder
+
+ Starting Process for b88a8fd874031efdf7fffa55518aa2e8f859705c
+
+Checking out 'new' branch for 5d245da
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/jvm/backtype/storm/drpc/CoordinatedBolt.java
+Removing src/clj/backtype/storm/kryo.clj
+Auto-merging bin/storm
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   14 +-
+ README.markdown                                    |    1 +
+ bin/javadoc.sh                                     |    2 +-
+ bin/storm                                          |    4 +-
+ conf/defaults.yaml                                 |    4 +
+ log4j/storm.log.properties                         |    4 +-
+ project.clj                                        |    2 +-
+ src/clj/backtype/storm/bootstrap.clj               |   76 ++--
+ src/clj/backtype/storm/clojure.clj                 |  107 +++--
+ src/clj/backtype/storm/config.clj                  |   10 +-
+ src/clj/backtype/storm/daemon/acker.clj            |   11 +-
+ src/clj/backtype/storm/daemon/common.clj           |  114 +++-
+ src/clj/backtype/storm/daemon/nimbus.clj           |   91 ++--
+ src/clj/backtype/storm/daemon/supervisor.clj       |    5 +-
+ src/clj/backtype/storm/daemon/task.clj             |   29 +-
+ src/clj/backtype/storm/daemon/worker.clj           |   18 +-
+ src/clj/backtype/storm/kryo.clj                    |    2 -
+ src/clj/backtype/storm/testing.clj                 |  205 +++++--
+ src/clj/backtype/storm/thrift.clj                  |  102 ++--
+ src/clj/backtype/storm/timer.clj                   |   10 +-
+ src/clj/backtype/storm/util.clj                    |   31 +-
+ src/jvm/backtype/storm/Config.java                 |   29 +-
+ src/jvm/backtype/storm/Constants.java              |    4 +-
+ src/jvm/backtype/storm/clojure/ClojureBolt.java    |   32 +-
+ src/jvm/backtype/storm/clojure/ClojureSpout.java   |   35 +-
+ src/jvm/backtype/storm/clojure/RichShellBolt.java  |   34 ++
+ .../storm/coordination/BatchBoltExecutor.java      |   90 +++
+ .../storm/coordination/BatchOutputCollector.java   |   27 +
+ .../coordination/BatchOutputCollectorImpl.java     |   31 +
+ .../storm/coordination/CoordinatedBolt.java        |  327 +++++++++++
+ .../backtype/storm/coordination/IBatchBolt.java    |   13 +
+ src/jvm/backtype/storm/drpc/CoordinatedBolt.java   |  240 --------
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |   11 +-
+ src/jvm/backtype/storm/drpc/JoinResult.java        |    9 +-
+ src/jvm/backtype/storm/drpc/KeyedFairBolt.java     |    8 +-
+ .../storm/drpc/LinearDRPCInputDeclarer.java        |    3 +-
+ .../storm/drpc/LinearDRPCTopologyBuilder.java      |   64 ++-
+ src/jvm/backtype/storm/drpc/PrepareRequest.java    |    9 +-
+ src/jvm/backtype/storm/drpc/ReturnResults.java     |    8 +-
+ src/jvm/backtype/storm/generated/Bolt.java         |  160 +-----
+ .../backtype/storm/generated/ComponentCommon.java  |  273 +++++++++-
+ src/jvm/backtype/storm/generated/SpoutSpec.java    |  101 +----
+ .../serialization/KryoValuesDeserializer.java      |   11 +-
+ .../storm/serialization/KryoValuesSerializer.java  |   13 +
+ .../storm/serialization/SerializationFactory.java  |   33 +-
+ .../storm/spout/ISpoutOutputCollector.java         |    1 -
+ src/jvm/backtype/storm/task/IOutputCollector.java  |    6 +-
+ src/jvm/backtype/storm/task/OutputCollector.java   |    3 +-
+ .../backtype/storm/task/OutputCollectorImpl.java   |    2 +-
+ src/jvm/backtype/storm/task/ShellBolt.java         |    1 -
+ src/jvm/backtype/storm/task/TopologyContext.java   |   52 +-
+ src/jvm/backtype/storm/testing/BoltTracker.java    |   34 +-
+ .../backtype/storm/testing/CountingBatchBolt.java  |   38 ++
+ .../backtype/storm/testing/CountingCommitBolt.java |   40 ++
+ .../storm/testing/DelegateOutputCollector.java     |   40 ++
+ src/jvm/backtype/storm/testing/FeederSpout.java    |   10 +-
+ src/jvm/backtype/storm/testing/FixedTuple.java     |    4 +
+ .../backtype/storm/testing/FixedTupleSpout.java    |   39 ++-
+ src/jvm/backtype/storm/testing/IdentityBolt.java   |   25 +
+ .../storm/testing/KeyedCountingBatchBolt.java      |   44 ++
+ .../storm/testing/KeyedCountingCommitterBolt.java  |    7 +
+ .../storm/testing/KeyedSummingBatchBolt.java       |   43 ++
+ .../storm/testing/MemoryTransactionalSpout.java    |  154 +++++
+ .../testing/MemoryTransactionalSpoutMeta.java      |   21 +
+ .../backtype/storm/testing/NonRichBoltTracker.java |   34 ++
+ src/jvm/backtype/storm/testing/SpoutTracker.java   |    7 +-
+ .../storm/testing/TestAggregatesCounter.java       |    4 +-
+ src/jvm/backtype/storm/testing/TestConfBolt.java   |   45 ++
+ .../backtype/storm/testing/TestGlobalCount.java    |    4 +-
+ .../backtype/storm/testing/TestPlannerBolt.java    |    8 +-
+ .../backtype/storm/testing/TestPlannerSpout.java   |   32 +-
+ .../backtype/storm/testing/TestWordCounter.java    |    4 +-
+ src/jvm/backtype/storm/testing/TestWordSpout.java  |   21 +-
+ .../backtype/storm/testing/TupleCaptureBolt.java   |   37 +-
+ .../storm/topology/BaseConfigurationDeclarer.java  |   29 +
+ .../backtype/storm/topology/BasicBoltExecutor.java |   15 +-
+ src/jvm/backtype/storm/topology/BoltDeclarer.java  |    5 +
+ .../topology/ComponentConfigurationDeclarer.java   |   11 +
+ .../backtype/storm/topology/FailedException.java   |   19 +
+ src/jvm/backtype/storm/topology/IComponent.java    |   12 +-
+ src/jvm/backtype/storm/topology/IRichSpout.java    |    9 +-
+ src/jvm/backtype/storm/topology/InputDeclarer.java |   34 +-
+ src/jvm/backtype/storm/topology/SpoutDeclarer.java |    5 +
+ .../backtype/storm/topology/TopologyBuilder.java   |  158 ++++--
+ .../storm/topology/base/BaseBasicBolt.java         |   16 +
+ .../storm/topology/base/BaseBatchBolt.java         |   11 +
+ .../storm/topology/base/BaseComponent.java         |   12 +
+ .../base/BasePartitionedTransactionalSpout.java    |   11 +
+ .../backtype/storm/topology/base/BaseRichBolt.java |    9 +
+ .../storm/topology/base/BaseRichSpout.java         |   25 +
+ .../storm/topology/base/BaseTransactionalBolt.java |    7 +
+ .../topology/base/BaseTransactionalSpout.java      |   12 +
+ .../backtype/storm/transactional/ICommitter.java   |    9 +
+ .../storm/transactional/ITransactionalSpout.java   |   69 +++
+ .../storm/transactional/TransactionAttempt.java    |   44 ++
+ .../TransactionalSpoutBatchExecutor.java           |   60 ++
+ .../TransactionalSpoutCoordinator.java             |  191 +++++++
+ .../TransactionalTopologyBuilder.java              |  446 +++++++++++++++
+ .../IPartitionedTransactionalSpout.java            |   44 ++
+ .../PartitionedTransactionalSpoutExecutor.java     |  120 ++++
+ .../state/RotatingTransactionalState.java          |  113 ++++
+ .../transactional/state/TransactionalState.java    |  123 ++++
+ src/jvm/backtype/storm/tuple/MessageId.java        |    4 +-
+ src/jvm/backtype/storm/tuple/Tuple.java            |  139 ++++-
+ .../backtype/storm/utils/IndifferentAccessMap.java |  160 ++++++
+ .../backtype/storm/utils/ThriftTopologyUtils.java  |   41 ++
+ src/jvm/backtype/storm/utils/Utils.java            |   81 +++-
+ src/py/storm/ttypes.py                             |  268 +++++-----
+ src/storm.thrift                                   |   36 +-
+ test/clj/backtype/storm/drpc_test.clj              |   38 ++-
+ test/clj/backtype/storm/integration_test.clj       |  196 ++++++--
+ test/clj/backtype/storm/nimbus_test.clj            |    4 +-
+ test/clj/backtype/storm/transactional_test.clj     |  587 ++++++++++++++++++++
+ test/clj/backtype/storm/tuple_test.clj             |   36 ++
+ 114 files changed, 5060 insertions(+), 1316 deletions(-)
+ delete mode 100644 src/clj/backtype/storm/kryo.clj
+ create mode 100644 src/jvm/backtype/storm/clojure/RichShellBolt.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchBoltExecutor.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchOutputCollector.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchOutputCollectorImpl.java
+ create mode 100644 src/jvm/backtype/storm/coordination/CoordinatedBolt.java
+ create mode 100644 src/jvm/backtype/storm/coordination/IBatchBolt.java
+ delete mode 100644 src/jvm/backtype/storm/drpc/CoordinatedBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/CountingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/CountingCommitBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/DelegateOutputCollector.java
+ create mode 100644 src/jvm/backtype/storm/testing/IdentityBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedCountingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedCountingCommitterBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedSummingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/MemoryTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/testing/MemoryTransactionalSpoutMeta.java
+ create mode 100644 src/jvm/backtype/storm/testing/NonRichBoltTracker.java
+ create mode 100644 src/jvm/backtype/storm/testing/TestConfBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/BaseConfigurationDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/BoltDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/ComponentConfigurationDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/FailedException.java
+ create mode 100644 src/jvm/backtype/storm/topology/SpoutDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseBasicBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseComponent.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BasePartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseRichBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseRichSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseTransactionalBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ICommitter.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ITransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionAttempt.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalSpoutBatchExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalSpoutCoordinator.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalTopologyBuilder.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/IPartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/PartitionedTransactionalSpoutExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/state/RotatingTransactionalState.java
+ create mode 100644 src/jvm/backtype/storm/transactional/state/TransactionalState.java
+ create mode 100644 src/jvm/backtype/storm/utils/IndifferentAccessMap.java
+ create mode 100644 src/jvm/backtype/storm/utils/ThriftTopologyUtils.java
+ create mode 100644 test/clj/backtype/storm/transactional_test.clj
+ create mode 100644 test/clj/backtype/storm/tuple_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f84d181
+
+Clean local git folder
+
+ Starting Process for 55ceb6d7f10b5b0c3d49ef48cc6585c5240835bc
+
+Checking out 'new' branch for 7918fad
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/nimbus_test.clj
+Auto-merging src/clj/backtype/storm/zookeeper.clj
+Auto-merging src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/nimbus.clj
+Auto-merging src/clj/backtype/storm/daemon/common.clj
+Auto-merging src/clj/backtype/storm/config.clj
+Auto-merging CHANGELOG.md
+CONFLICT (content): Merge conflict in CHANGELOG.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: d20a7a3
+
+Clean local git folder
+
+ Starting Process for 8cf23578728fdee421a838965c285d10ffcee722
+
+Checking out 'new' branch for 4762dd3
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/config.clj            |    2 +-
+ src/clj/backtype/storm/daemon/supervisor.clj |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 7a9ff26
+
+Clean local git folder
+
+ Starting Process for 33c9cfdfd06ef3894f678aa53b5ad9e212d3cf9a
+
+Checking out 'new' branch for 66275c1
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/jvm/backtype/storm/tuple/Fields.java |   11 ++++++-
+ test/clj/backtype/storm/fields_test.clj  |   40 ++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 2 deletions(-)
+ create mode 100644 test/clj/backtype/storm/fields_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 554c49e
+
+Clean local git folder
+
+ Starting Process for e7b00ef53b8df27020e94bd5450644ec67456806
+
+Checking out 'new' branch for 3343cc8
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/integration_test.clj
+Auto-merging src/jvm/backtype/storm/task/TopologyContext.java
+Auto-merging src/clj/backtype/storm/clojure.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                      |    4 +
+ README.markdown                                   |    1 +
+ src/clj/backtype/storm/clojure.clj                |   69 ++-------------------
+ src/clj/backtype/storm/daemon/task.clj            |    2 +
+ src/clj/backtype/storm/daemon/worker.clj          |    6 +-
+ src/clj/backtype/storm/testing.clj                |    2 +-
+ src/jvm/backtype/storm/hooks/BaseTaskHook.java    |    4 +
+ src/jvm/backtype/storm/hooks/ITaskHook.java       |    1 +
+ src/jvm/backtype/storm/task/TopologyContext.java  |    8 ++-
+ src/jvm/backtype/storm/tuple/Fields.java          |   11 +++-
+ src/jvm/backtype/storm/utils/InprocMessaging.java |   23 +------
+ test/clj/backtype/storm/fields_test.clj           |   40 ++++++++++++
+ test/clj/backtype/storm/integration_test.clj      |    8 ++-
+ 13 files changed, 87 insertions(+), 92 deletions(-)
+ create mode 100644 test/clj/backtype/storm/fields_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: de3de42
+
+Clean local git folder
+
+ Starting Process for 3244f193b52e274c860f0c9c656c7a43c206df88
+
+Checking out 'new' branch for b34a753
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/jvm/backtype/storm/drpc/CoordinatedBolt.java
+Auto-merging src/jvm/backtype/storm/Config.java
+Removing src/clj/backtype/storm/kryo.clj
+Auto-merging conf/defaults.yaml
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   87 +++
+ README.markdown                                    |    5 +
+ bin/javadoc.sh                                     |    2 +-
+ bin/storm                                          |  237 +++++++--
+ conf/defaults.yaml                                 |    8 +-
+ log4j/storm.log.properties                         |    4 +-
+ project.clj                                        |    2 +-
+ src/clj/backtype/storm/bootstrap.clj               |   76 ++--
+ src/clj/backtype/storm/clojure.clj                 |  107 +++--
+ src/clj/backtype/storm/config.clj                  |   10 +-
+ src/clj/backtype/storm/daemon/acker.clj            |   11 +-
+ src/clj/backtype/storm/daemon/common.clj           |  114 +++-
+ src/clj/backtype/storm/daemon/nimbus.clj           |  132 ++---
+ src/clj/backtype/storm/daemon/supervisor.clj       |   30 +-
+ src/clj/backtype/storm/daemon/task.clj             |   29 +-
+ src/clj/backtype/storm/daemon/worker.clj           |   18 +-
+ src/clj/backtype/storm/kryo.clj                    |    2 -
+ src/clj/backtype/storm/testing.clj                 |  205 +++++--
+ src/clj/backtype/storm/thrift.clj                  |  102 ++--
+ src/clj/backtype/storm/timer.clj                   |   38 +-
+ src/clj/backtype/storm/util.clj                    |   46 +-
+ src/jvm/backtype/storm/Config.java                 |   37 ++-
+ src/jvm/backtype/storm/Constants.java              |    4 +-
+ src/jvm/backtype/storm/clojure/ClojureBolt.java    |   32 +-
+ src/jvm/backtype/storm/clojure/ClojureSpout.java   |   35 +-
+ src/jvm/backtype/storm/clojure/RichShellBolt.java  |   34 ++
+ .../storm/coordination/BatchBoltExecutor.java      |   90 +++
+ .../storm/coordination/BatchOutputCollector.java   |   27 +
+ .../coordination/BatchOutputCollectorImpl.java     |   31 +
+ .../storm/coordination/CoordinatedBolt.java        |  327 +++++++++++
+ .../backtype/storm/coordination/IBatchBolt.java    |   13 +
+ src/jvm/backtype/storm/drpc/CoordinatedBolt.java   |  240 --------
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |   11 +-
+ src/jvm/backtype/storm/drpc/JoinResult.java        |    9 +-
+ src/jvm/backtype/storm/drpc/KeyedFairBolt.java     |    8 +-
+ .../storm/drpc/LinearDRPCInputDeclarer.java        |    3 +-
+ .../storm/drpc/LinearDRPCTopologyBuilder.java      |   64 ++-
+ src/jvm/backtype/storm/drpc/PrepareRequest.java    |    9 +-
+ src/jvm/backtype/storm/drpc/ReturnResults.java     |    8 +-
+ src/jvm/backtype/storm/generated/Bolt.java         |  160 +-----
+ .../backtype/storm/generated/ComponentCommon.java  |  273 +++++++++-
+ src/jvm/backtype/storm/generated/SpoutSpec.java    |  101 +----
+ .../serialization/KryoValuesDeserializer.java      |   11 +-
+ .../storm/serialization/KryoValuesSerializer.java  |   13 +
+ .../storm/serialization/SerializationFactory.java  |   33 +-
+ .../storm/spout/ISpoutOutputCollector.java         |    1 -
+ src/jvm/backtype/storm/task/IOutputCollector.java  |    6 +-
+ src/jvm/backtype/storm/task/OutputCollector.java   |    3 +-
+ .../backtype/storm/task/OutputCollectorImpl.java   |    2 +-
+ src/jvm/backtype/storm/task/ShellBolt.java         |    1 -
+ src/jvm/backtype/storm/task/TopologyContext.java   |   52 +-
+ src/jvm/backtype/storm/testing/BoltTracker.java    |   34 +-
+ .../backtype/storm/testing/CountingBatchBolt.java  |   38 ++
+ .../backtype/storm/testing/CountingCommitBolt.java |   40 ++
+ .../storm/testing/DelegateOutputCollector.java     |   40 ++
+ src/jvm/backtype/storm/testing/FeederSpout.java    |   10 +-
+ src/jvm/backtype/storm/testing/FixedTuple.java     |    4 +
+ .../backtype/storm/testing/FixedTupleSpout.java    |   39 ++-
+ src/jvm/backtype/storm/testing/IdentityBolt.java   |   25 +
+ .../storm/testing/KeyedCountingBatchBolt.java      |   44 ++
+ .../storm/testing/KeyedCountingCommitterBolt.java  |    7 +
+ .../storm/testing/KeyedSummingBatchBolt.java       |   43 ++
+ .../storm/testing/MemoryTransactionalSpout.java    |  154 +++++
+ .../testing/MemoryTransactionalSpoutMeta.java      |   21 +
+ .../backtype/storm/testing/NonRichBoltTracker.java |   34 ++
+ src/jvm/backtype/storm/testing/SpoutTracker.java   |    7 +-
+ .../storm/testing/TestAggregatesCounter.java       |    4 +-
+ src/jvm/backtype/storm/testing/TestConfBolt.java   |   45 ++
+ .../backtype/storm/testing/TestGlobalCount.java    |    4 +-
+ .../backtype/storm/testing/TestPlannerBolt.java    |    8 +-
+ .../backtype/storm/testing/TestPlannerSpout.java   |   32 +-
+ .../backtype/storm/testing/TestWordCounter.java    |    4 +-
+ src/jvm/backtype/storm/testing/TestWordSpout.java  |   21 +-
+ .../backtype/storm/testing/TupleCaptureBolt.java   |   37 +-
+ .../storm/topology/BaseConfigurationDeclarer.java  |   29 +
+ .../backtype/storm/topology/BasicBoltExecutor.java |   15 +-
+ src/jvm/backtype/storm/topology/BoltDeclarer.java  |    5 +
+ .../topology/ComponentConfigurationDeclarer.java   |   11 +
+ .../backtype/storm/topology/FailedException.java   |   19 +
+ src/jvm/backtype/storm/topology/IComponent.java    |   12 +-
+ src/jvm/backtype/storm/topology/IRichSpout.java    |    9 +-
+ src/jvm/backtype/storm/topology/InputDeclarer.java |   34 +-
+ src/jvm/backtype/storm/topology/SpoutDeclarer.java |    5 +
+ .../backtype/storm/topology/TopologyBuilder.java   |  158 ++++--
+ .../storm/topology/base/BaseBasicBolt.java         |   16 +
+ .../storm/topology/base/BaseBatchBolt.java         |   11 +
+ .../storm/topology/base/BaseComponent.java         |   12 +
+ .../base/BasePartitionedTransactionalSpout.java    |   11 +
+ .../backtype/storm/topology/base/BaseRichBolt.java |    9 +
+ .../storm/topology/base/BaseRichSpout.java         |   25 +
+ .../storm/topology/base/BaseTransactionalBolt.java |    7 +
+ .../topology/base/BaseTransactionalSpout.java      |   12 +
+ .../backtype/storm/transactional/ICommitter.java   |    9 +
+ .../storm/transactional/ITransactionalSpout.java   |   69 +++
+ .../storm/transactional/TransactionAttempt.java    |   44 ++
+ .../TransactionalSpoutBatchExecutor.java           |   60 ++
+ .../TransactionalSpoutCoordinator.java             |  191 +++++++
+ .../TransactionalTopologyBuilder.java              |  446 +++++++++++++++
+ .../IPartitionedTransactionalSpout.java            |   44 ++
+ .../PartitionedTransactionalSpoutExecutor.java     |  120 ++++
+ .../state/RotatingTransactionalState.java          |  113 ++++
+ .../transactional/state/TransactionalState.java    |  123 ++++
+ src/jvm/backtype/storm/tuple/MessageId.java        |    4 +-
+ src/jvm/backtype/storm/tuple/Tuple.java            |  139 ++++-
+ .../backtype/storm/utils/IndifferentAccessMap.java |  160 ++++++
+ .../backtype/storm/utils/ThriftTopologyUtils.java  |   41 ++
+ src/jvm/backtype/storm/utils/Time.java             |   21 +-
+ src/jvm/backtype/storm/utils/Utils.java            |   81 +++-
+ src/py/storm/ttypes.py                             |  268 +++++-----
+ src/storm.thrift                                   |   36 +-
+ test/clj/backtype/storm/drpc_test.clj              |   38 ++-
+ test/clj/backtype/storm/integration_test.clj       |  196 ++++++--
+ test/clj/backtype/storm/nimbus_test.clj            |   10 +-
+ test/clj/backtype/storm/transactional_test.clj     |  587 ++++++++++++++++++++
+ test/clj/backtype/storm/tuple_test.clj             |   36 ++
+ 115 files changed, 5410 insertions(+), 1424 deletions(-)
+ create mode 100644 CHANGELOG.md
+ delete mode 100644 src/clj/backtype/storm/kryo.clj
+ create mode 100644 src/jvm/backtype/storm/clojure/RichShellBolt.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchBoltExecutor.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchOutputCollector.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchOutputCollectorImpl.java
+ create mode 100644 src/jvm/backtype/storm/coordination/CoordinatedBolt.java
+ create mode 100644 src/jvm/backtype/storm/coordination/IBatchBolt.java
+ delete mode 100644 src/jvm/backtype/storm/drpc/CoordinatedBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/CountingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/CountingCommitBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/DelegateOutputCollector.java
+ create mode 100644 src/jvm/backtype/storm/testing/IdentityBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedCountingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedCountingCommitterBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedSummingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/MemoryTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/testing/MemoryTransactionalSpoutMeta.java
+ create mode 100644 src/jvm/backtype/storm/testing/NonRichBoltTracker.java
+ create mode 100644 src/jvm/backtype/storm/testing/TestConfBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/BaseConfigurationDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/BoltDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/ComponentConfigurationDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/FailedException.java
+ create mode 100644 src/jvm/backtype/storm/topology/SpoutDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseBasicBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseComponent.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BasePartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseRichBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseRichSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseTransactionalBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ICommitter.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ITransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionAttempt.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalSpoutBatchExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalSpoutCoordinator.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalTopologyBuilder.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/IPartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/PartitionedTransactionalSpoutExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/state/RotatingTransactionalState.java
+ create mode 100644 src/jvm/backtype/storm/transactional/state/TransactionalState.java
+ create mode 100644 src/jvm/backtype/storm/utils/IndifferentAccessMap.java
+ create mode 100644 src/jvm/backtype/storm/utils/ThriftTopologyUtils.java
+ create mode 100644 test/clj/backtype/storm/transactional_test.clj
+ create mode 100644 test/clj/backtype/storm/tuple_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 74a7947
+
+Clean local git folder
+
+ Starting Process for 2d72b94c6fbdbb72ad1e5d39e2ca4481f26d41fa
+
+Checking out 'new' branch for 51359f3
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md    |    3 ++-
+ README.markdown |    2 ++
+ 2 files changed, 4 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 8cf2357
+
+Clean local git folder
+
+ Starting Process for 7401175c52682d89dcfa5bdc08329df644732c73
+
+Checking out 'new' branch for 3559027
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: ebe8246
+
+Clean local git folder
+
+ Starting Process for ea2e088271e18d702475f92e032c00fa7fa47dfa
+
+Checking out 'new' branch for fbe2047
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/nimbus.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 06d716c
+
+Clean local git folder
+
+ Starting Process for 943561f4adcff1fa156a45d47014b3b6f94ca986
+
+Checking out 'new' branch for df6a418
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/drpc/DRPCSpout.java
+Removing src/jvm/backtype/storm/drpc/CoordinatedBolt.java
+Removing src/clj/backtype/storm/kryo.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   20 +-
+ README.markdown                                    |    6 +
+ bin/javadoc.sh                                     |    2 +-
+ bin/storm                                          |  237 +++++++--
+ conf/defaults.yaml                                 |    8 +
+ log4j/storm.log.properties                         |    4 +-
+ project.clj                                        |    2 +-
+ src/clj/backtype/storm/bootstrap.clj               |   76 ++--
+ src/clj/backtype/storm/clojure.clj                 |  107 +++--
+ src/clj/backtype/storm/cluster.clj                 |   25 +-
+ src/clj/backtype/storm/config.clj                  |   21 +-
+ src/clj/backtype/storm/daemon/acker.clj            |   11 +-
+ src/clj/backtype/storm/daemon/common.clj           |  114 +++-
+ src/clj/backtype/storm/daemon/nimbus.clj           |   91 ++--
+ src/clj/backtype/storm/daemon/supervisor.clj       |    5 +-
+ src/clj/backtype/storm/daemon/task.clj             |   33 +-
+ src/clj/backtype/storm/daemon/worker.clj           |   19 +-
+ src/clj/backtype/storm/kryo.clj                    |    2 -
+ src/clj/backtype/storm/messaging/local.clj         |   27 +-
+ src/clj/backtype/storm/messaging/protocol.clj      |    6 +-
+ src/clj/backtype/storm/messaging/zmq.clj           |    6 +-
+ src/clj/backtype/storm/testing.clj                 |  205 +++++--
+ src/clj/backtype/storm/thrift.clj                  |  102 ++--
+ src/clj/backtype/storm/timer.clj                   |   10 +-
+ src/clj/backtype/storm/util.clj                    |   36 +-
+ src/clj/backtype/storm/zookeeper.clj               |   65 +--
+ src/jvm/backtype/storm/Config.java                 |   45 ++-
+ src/jvm/backtype/storm/Constants.java              |    4 +-
+ src/jvm/backtype/storm/clojure/ClojureBolt.java    |   32 +-
+ src/jvm/backtype/storm/clojure/ClojureSpout.java   |   35 +-
+ src/jvm/backtype/storm/clojure/RichShellBolt.java  |   34 ++
+ .../storm/coordination/BatchBoltExecutor.java      |   90 +++
+ .../storm/coordination/BatchOutputCollector.java   |   27 +
+ .../coordination/BatchOutputCollectorImpl.java     |   31 +
+ .../storm/coordination/CoordinatedBolt.java        |  327 +++++++++++
+ .../backtype/storm/coordination/IBatchBolt.java    |   13 +
+ src/jvm/backtype/storm/drpc/CoordinatedBolt.java   |  240 --------
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |   11 +-
+ src/jvm/backtype/storm/drpc/JoinResult.java        |    9 +-
+ src/jvm/backtype/storm/drpc/KeyedFairBolt.java     |    8 +-
+ .../storm/drpc/LinearDRPCInputDeclarer.java        |    3 +-
+ .../storm/drpc/LinearDRPCTopologyBuilder.java      |   64 ++-
+ src/jvm/backtype/storm/drpc/PrepareRequest.java    |    9 +-
+ src/jvm/backtype/storm/drpc/ReturnResults.java     |    8 +-
+ src/jvm/backtype/storm/generated/Bolt.java         |  160 +-----
+ .../backtype/storm/generated/ComponentCommon.java  |  273 +++++++++-
+ src/jvm/backtype/storm/generated/SpoutSpec.java    |  101 +----
+ .../serialization/KryoValuesDeserializer.java      |   11 +-
+ .../storm/serialization/KryoValuesSerializer.java  |   13 +
+ .../storm/serialization/SerializationFactory.java  |   33 +-
+ .../storm/spout/ISpoutOutputCollector.java         |    1 -
+ src/jvm/backtype/storm/task/IOutputCollector.java  |    6 +-
+ src/jvm/backtype/storm/task/OutputCollector.java   |    3 +-
+ .../backtype/storm/task/OutputCollectorImpl.java   |    2 +-
+ src/jvm/backtype/storm/task/ShellBolt.java         |    1 -
+ src/jvm/backtype/storm/task/TopologyContext.java   |   52 +-
+ src/jvm/backtype/storm/testing/BoltTracker.java    |   34 +-
+ .../backtype/storm/testing/CountingBatchBolt.java  |   38 ++
+ .../backtype/storm/testing/CountingCommitBolt.java |   40 ++
+ .../storm/testing/DelegateOutputCollector.java     |   40 ++
+ src/jvm/backtype/storm/testing/FeederSpout.java    |   10 +-
+ src/jvm/backtype/storm/testing/FixedTuple.java     |    4 +
+ .../backtype/storm/testing/FixedTupleSpout.java    |   39 ++-
+ src/jvm/backtype/storm/testing/IdentityBolt.java   |   25 +
+ .../storm/testing/KeyedCountingBatchBolt.java      |   44 ++
+ .../storm/testing/KeyedCountingCommitterBolt.java  |    7 +
+ .../storm/testing/KeyedSummingBatchBolt.java       |   43 ++
+ .../storm/testing/MemoryTransactionalSpout.java    |  154 +++++
+ .../testing/MemoryTransactionalSpoutMeta.java      |   21 +
+ .../backtype/storm/testing/NonRichBoltTracker.java |   34 ++
+ src/jvm/backtype/storm/testing/SpoutTracker.java   |    7 +-
+ .../storm/testing/TestAggregatesCounter.java       |    4 +-
+ src/jvm/backtype/storm/testing/TestConfBolt.java   |   45 ++
+ .../backtype/storm/testing/TestGlobalCount.java    |    4 +-
+ .../backtype/storm/testing/TestPlannerBolt.java    |    8 +-
+ .../backtype/storm/testing/TestPlannerSpout.java   |   32 +-
+ .../backtype/storm/testing/TestWordCounter.java    |    4 +-
+ src/jvm/backtype/storm/testing/TestWordSpout.java  |   21 +-
+ .../backtype/storm/testing/TupleCaptureBolt.java   |   37 +-
+ .../storm/topology/BaseConfigurationDeclarer.java  |   29 +
+ .../backtype/storm/topology/BasicBoltExecutor.java |   15 +-
+ src/jvm/backtype/storm/topology/BoltDeclarer.java  |    5 +
+ .../topology/ComponentConfigurationDeclarer.java   |   11 +
+ .../backtype/storm/topology/FailedException.java   |   19 +
+ src/jvm/backtype/storm/topology/IComponent.java    |   12 +-
+ src/jvm/backtype/storm/topology/IRichSpout.java    |    9 +-
+ src/jvm/backtype/storm/topology/InputDeclarer.java |   34 +-
+ src/jvm/backtype/storm/topology/SpoutDeclarer.java |    5 +
+ .../backtype/storm/topology/TopologyBuilder.java   |  158 ++++--
+ .../storm/topology/base/BaseBasicBolt.java         |   16 +
+ .../storm/topology/base/BaseBatchBolt.java         |   11 +
+ .../storm/topology/base/BaseComponent.java         |   12 +
+ .../base/BasePartitionedTransactionalSpout.java    |   11 +
+ .../backtype/storm/topology/base/BaseRichBolt.java |    9 +
+ .../storm/topology/base/BaseRichSpout.java         |   25 +
+ .../storm/topology/base/BaseTransactionalBolt.java |    7 +
+ .../topology/base/BaseTransactionalSpout.java      |   12 +
+ .../backtype/storm/transactional/ICommitter.java   |    9 +
+ .../storm/transactional/ITransactionalSpout.java   |   69 +++
+ .../storm/transactional/TransactionAttempt.java    |   44 ++
+ .../TransactionalSpoutBatchExecutor.java           |   60 ++
+ .../TransactionalSpoutCoordinator.java             |  191 +++++++
+ .../TransactionalTopologyBuilder.java              |  446 +++++++++++++++
+ .../IPartitionedTransactionalSpout.java            |   44 ++
+ .../PartitionedTransactionalSpoutExecutor.java     |  120 ++++
+ .../state/RotatingTransactionalState.java          |  113 ++++
+ .../transactional/state/TransactionalState.java    |  122 ++++
+ src/jvm/backtype/storm/tuple/MessageId.java        |    4 +-
+ src/jvm/backtype/storm/tuple/Tuple.java            |  139 ++++-
+ .../backtype/storm/utils/IndifferentAccessMap.java |  160 ++++++
+ .../backtype/storm/utils/ThriftTopologyUtils.java  |   41 ++
+ src/jvm/backtype/storm/utils/Utils.java            |   94 +++-
+ src/py/storm/ttypes.py                             |  268 +++++-----
+ src/storm.thrift                                   |   36 +-
+ test/clj/backtype/storm/drpc_test.clj              |   38 ++-
+ test/clj/backtype/storm/integration_test.clj       |  196 ++++++--
+ test/clj/backtype/storm/nimbus_test.clj            |    7 +-
+ test/clj/backtype/storm/transactional_test.clj     |  587 ++++++++++++++++++++
+ test/clj/backtype/storm/tuple_test.clj             |   36 ++
+ 119 files changed, 5359 insertions(+), 1446 deletions(-)
+ delete mode 100644 src/clj/backtype/storm/kryo.clj
+ create mode 100644 src/jvm/backtype/storm/clojure/RichShellBolt.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchBoltExecutor.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchOutputCollector.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchOutputCollectorImpl.java
+ create mode 100644 src/jvm/backtype/storm/coordination/CoordinatedBolt.java
+ create mode 100644 src/jvm/backtype/storm/coordination/IBatchBolt.java
+ delete mode 100644 src/jvm/backtype/storm/drpc/CoordinatedBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/CountingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/CountingCommitBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/DelegateOutputCollector.java
+ create mode 100644 src/jvm/backtype/storm/testing/IdentityBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedCountingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedCountingCommitterBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedSummingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/MemoryTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/testing/MemoryTransactionalSpoutMeta.java
+ create mode 100644 src/jvm/backtype/storm/testing/NonRichBoltTracker.java
+ create mode 100644 src/jvm/backtype/storm/testing/TestConfBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/BaseConfigurationDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/BoltDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/ComponentConfigurationDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/FailedException.java
+ create mode 100644 src/jvm/backtype/storm/topology/SpoutDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseBasicBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseComponent.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BasePartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseRichBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseRichSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseTransactionalBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ICommitter.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ITransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionAttempt.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalSpoutBatchExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalSpoutCoordinator.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalTopologyBuilder.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/IPartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/PartitionedTransactionalSpoutExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/state/RotatingTransactionalState.java
+ create mode 100644 src/jvm/backtype/storm/transactional/state/TransactionalState.java
+ create mode 100644 src/jvm/backtype/storm/utils/IndifferentAccessMap.java
+ create mode 100644 src/jvm/backtype/storm/utils/ThriftTopologyUtils.java
+ create mode 100644 test/clj/backtype/storm/transactional_test.clj
+ create mode 100644 test/clj/backtype/storm/tuple_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 35772e8
+
+Clean local git folder
+
+ Starting Process for 2fd62d9e00461a4f470717ac80bf06b53770dac3
+
+Checking out 'new' branch for 4e7a187
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 35772e8..4e7a187
+Fast-forward
+ src/jvm/backtype/storm/Config.java |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: a2512e9
+
+Clean local git folder
+
+ Starting Process for df45a8dce1cbb78cd78475b608482186e99573cf
+
+Checking out 'new' branch for 4052d16
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/ui/core.clj |   15 +++++++++++++--
+ 1 files changed, 13 insertions(+), 2 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 3a2e9b1
+
+Clean local git folder
+
+ Starting Process for ca4c0dbd44b8da77cfb90f482ec123c457068221
+
+Checking out 'new' branch for efd8ad7
+
+Checking out Git Master repository
+
+
+ Merge new into master
+CONFLICT (modify/delete): src/clj/zilch/virtual_port.clj deleted in HEAD and modified in new. Version new of src/clj/zilch/virtual_port.clj left in tree.
+Auto-merging src/clj/backtype/storm/daemon/task.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/task.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 1df18c3
+
+Clean local git folder
+
+ Starting Process for 6b5e5635f31c3caed94c2e9f2640c55e7733a650
+
+Checking out 'new' branch for 73866f6
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/ui/core.clj           |  124 +++++++++++++++++---------
+ src/ui/public/js/jquery.cookies.2.2.0.min.js |   18 ++++
+ 2 files changed, 100 insertions(+), 42 deletions(-)
+ create mode 100644 src/ui/public/js/jquery.cookies.2.2.0.min.js
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 5bb217d
+
+Clean local git folder
+
+ Starting Process for 3c1065273c1f389afb30688e8972417bf8d53f41
+
+Checking out 'new' branch for 9771cf6
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/task.clj
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/task.clj |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: aca15ef
+
+Clean local git folder
+
+ Starting Process for b18321b5fcb77e0aa3e8820ba6cead9e59e494f4
+
+Checking out 'new' branch for 43426c7
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/daemon/executor.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    1 +
+ src/clj/backtype/storm/cluster.clj                 |   92 +++++-----
+ src/clj/backtype/storm/daemon/executor.clj         |    2 +-
+ src/clj/backtype/storm/daemon/nimbus.clj           |   22 ++-
+ src/clj/backtype/storm/ui/core.clj                 |   88 +++-------
+ src/clj/backtype/storm/util.clj                    |    3 +
+ src/clj/backtype/storm/zookeeper.clj               |    3 +-
+ .../backtype/storm/generated/RebalanceOptions.java |   22 ++--
+ src/jvm/backtype/storm/generated/TaskSummary.java  |  137 +--------------
+ src/jvm/backtype/storm/generated/TopologyInfo.java |  186 ++++++++++++++++++--
+ src/py/storm/ttypes.py                             |   91 ++++++-----
+ src/storm.thrift                                   |    2 +-
+ test/clj/backtype/storm/cluster_test.clj           |   31 ++--
+ 13 files changed, 351 insertions(+), 329 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: b7d7962
+
+Clean local git folder
+
+ Starting Process for d99f13d0ac93feeea1cb53c8eebc9a4009e51b75
+
+Checking out 'new' branch for a942da6
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/clj/zilch/virtual_port.clj
+Auto-merging src/clj/backtype/storm/testing.clj
+Auto-merging bin/storm
+CONFLICT (content): Merge conflict in bin/storm
+Auto-merging CHANGELOG.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 8e34af7
+
+Clean local git folder
+
+ Starting Process for 358608254ea6c1398319455f7e4673684961ee8b
+
+Checking out 'new' branch for 93e731d
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/jvm/backtype/storm/task/OutputCollectorImpl.java
+Removing src/jvm/backtype/storm/task/IInternalOutputCollector.java
+Removing src/jvm/backtype/storm/drpc/CoordinatedBolt.java
+Removing src/clj/backtype/storm/kryo.clj
+Auto-merging project.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   44 ++-
+ README.markdown                                    |    9 +
+ bin/javadoc.sh                                     |    2 +-
+ bin/storm                                          |  274 ++++++++--
+ bin/to_maven.sh                                    |    1 +
+ conf/defaults.yaml                                 |    8 +
+ log4j/storm.log.properties                         |    4 +-
+ project.clj                                        |    2 +-
+ src/clj/backtype/storm/bootstrap.clj               |   75 ++--
+ src/clj/backtype/storm/clojure.clj                 |  107 +++-
+ src/clj/backtype/storm/cluster.clj                 |   36 +-
+ src/clj/backtype/storm/config.clj                  |   23 +-
+ src/clj/backtype/storm/daemon/acker.clj            |   17 +-
+ src/clj/backtype/storm/daemon/common.clj           |  120 +++-
+ src/clj/backtype/storm/daemon/nimbus.clj           |   91 ++--
+ src/clj/backtype/storm/daemon/supervisor.clj       |    9 +-
+ src/clj/backtype/storm/daemon/task.clj             |  405 +++++++-------
+ src/clj/backtype/storm/daemon/worker.clj           |   41 +-
+ src/clj/backtype/storm/event.clj                   |   24 +-
+ src/clj/backtype/storm/kryo.clj                    |    2 -
+ src/clj/backtype/storm/messaging/local.clj         |   27 +-
+ src/clj/backtype/storm/messaging/protocol.clj      |    6 +-
+ src/clj/backtype/storm/messaging/zmq.clj           |    6 +-
+ src/clj/backtype/storm/testing.clj                 |  207 +++++--
+ src/clj/backtype/storm/thrift.clj                  |  102 ++--
+ src/clj/backtype/storm/timer.clj                   |   10 +-
+ src/clj/backtype/storm/tuple.clj                   |    4 -
+ src/clj/backtype/storm/ui/core.clj                 |   12 +-
+ src/clj/backtype/storm/ui/helpers.clj              |    4 +
+ src/clj/backtype/storm/util.clj                    |  109 ++--
+ src/clj/backtype/storm/zookeeper.clj               |   77 ++--
+ src/jvm/backtype/storm/Config.java                 |   45 ++-
+ src/jvm/backtype/storm/Constants.java              |    4 +-
+ src/jvm/backtype/storm/StormSubmitter.java         |    6 +
+ src/jvm/backtype/storm/clojure/ClojureBolt.java    |   32 +-
+ src/jvm/backtype/storm/clojure/ClojureSpout.java   |   35 +-
+ src/jvm/backtype/storm/clojure/RichShellBolt.java  |   34 ++
+ .../storm/coordination/BatchBoltExecutor.java      |   90 +++
+ .../storm/coordination/BatchOutputCollector.java   |   27 +
+ .../coordination/BatchOutputCollectorImpl.java     |   31 +
+ .../storm/coordination/CoordinatedBolt.java        |  327 +++++++++++
+ .../backtype/storm/coordination/IBatchBolt.java    |   13 +
+ src/jvm/backtype/storm/drpc/CoordinatedBolt.java   |  240 --------
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |   13 +-
+ src/jvm/backtype/storm/drpc/JoinResult.java        |    9 +-
+ src/jvm/backtype/storm/drpc/KeyedFairBolt.java     |    8 +-
+ .../storm/drpc/LinearDRPCInputDeclarer.java        |    3 +-
+ .../storm/drpc/LinearDRPCTopologyBuilder.java      |   64 ++-
+ src/jvm/backtype/storm/drpc/PrepareRequest.java    |    9 +-
+ src/jvm/backtype/storm/drpc/ReturnResults.java     |    8 +-
+ src/jvm/backtype/storm/generated/Bolt.java         |  160 +-----
+ .../backtype/storm/generated/ComponentCommon.java  |  273 +++++++++-
+ src/jvm/backtype/storm/generated/SpoutSpec.java    |  101 +----
+ .../storm/grouping/CustomStreamGrouping.java       |   10 +-
+ .../storm/serialization/KryoTupleDeserializer.java |   64 ++-
+ .../storm/serialization/KryoTupleSerializer.java   |   84 ++-
+ .../serialization/KryoValuesDeserializer.java      |   11 +-
+ .../storm/serialization/KryoValuesSerializer.java  |   13 +
+ .../storm/serialization/SerializationFactory.java  |   33 +-
+ .../storm/spout/ISpoutOutputCollector.java         |    1 -
+ .../storm/task/IInternalOutputCollector.java       |   12 -
+ src/jvm/backtype/storm/task/IOutputCollector.java  |    6 +-
+ src/jvm/backtype/storm/task/OutputCollector.java   |   37 ++-
+ .../backtype/storm/task/OutputCollectorImpl.java   |   85 ---
+ src/jvm/backtype/storm/task/ShellBolt.java         |    1 -
+ src/jvm/backtype/storm/task/TopologyContext.java   |   73 ++-
+ src/jvm/backtype/storm/testing/BoltTracker.java    |   34 +-
+ .../backtype/storm/testing/CountingBatchBolt.java  |   38 ++
+ .../backtype/storm/testing/CountingCommitBolt.java |   40 ++
+ src/jvm/backtype/storm/testing/FeederSpout.java    |   10 +-
+ src/jvm/backtype/storm/testing/FixedTuple.java     |    4 +
+ .../backtype/storm/testing/FixedTupleSpout.java    |   39 ++-
+ src/jvm/backtype/storm/testing/IdentityBolt.java   |   25 +
+ .../storm/testing/KeyedCountingBatchBolt.java      |   44 ++
+ .../storm/testing/KeyedCountingCommitterBolt.java  |    7 +
+ .../storm/testing/KeyedSummingBatchBolt.java       |   43 ++
+ .../storm/testing/MemoryTransactionalSpout.java    |  154 +++++
+ .../testing/MemoryTransactionalSpoutMeta.java      |   21 +
+ src/jvm/backtype/storm/testing/NGrouping.java      |    6 +-
+ .../backtype/storm/testing/NonRichBoltTracker.java |   34 ++
+ src/jvm/backtype/storm/testing/SpoutTracker.java   |    7 +-
+ .../storm/testing/TestAggregatesCounter.java       |    4 +-
+ src/jvm/backtype/storm/testing/TestConfBolt.java   |   45 ++
+ .../backtype/storm/testing/TestGlobalCount.java    |    4 +-
+ .../backtype/storm/testing/TestPlannerBolt.java    |    8 +-
+ .../backtype/storm/testing/TestPlannerSpout.java   |   32 +-
+ .../backtype/storm/testing/TestWordCounter.java    |    4 +-
+ src/jvm/backtype/storm/testing/TestWordSpout.java  |   23 +-
+ .../backtype/storm/testing/TupleCaptureBolt.java   |   37 +-
+ .../storm/topology/BaseConfigurationDeclarer.java  |   29 +
+ .../backtype/storm/topology/BasicBoltExecutor.java |   15 +-
+ src/jvm/backtype/storm/topology/BoltDeclarer.java  |    5 +
+ .../topology/ComponentConfigurationDeclarer.java   |   11 +
+ .../backtype/storm/topology/FailedException.java   |   19 +
+ src/jvm/backtype/storm/topology/IComponent.java    |   12 +-
+ src/jvm/backtype/storm/topology/IRichSpout.java    |    9 +-
+ src/jvm/backtype/storm/topology/InputDeclarer.java |   34 +-
+ src/jvm/backtype/storm/topology/SpoutDeclarer.java |    5 +
+ .../backtype/storm/topology/TopologyBuilder.java   |  158 ++++--
+ .../storm/topology/base/BaseBasicBolt.java         |   16 +
+ .../storm/topology/base/BaseBatchBolt.java         |    8 +
+ .../storm/topology/base/BaseComponent.java         |   11 +
+ .../BaseOpaquePartitionedTransactionalSpout.java   |    8 +
+ .../base/BasePartitionedTransactionalSpout.java    |    8 +
+ .../backtype/storm/topology/base/BaseRichBolt.java |    9 +
+ .../storm/topology/base/BaseRichSpout.java         |   25 +
+ .../storm/topology/base/BaseTransactionalBolt.java |    7 +
+ .../topology/base/BaseTransactionalSpout.java      |    8 +
+ .../backtype/storm/transactional/ICommitter.java   |    9 +
+ .../ICommitterTransactionalSpout.java              |   14 +
+ .../storm/transactional/ITransactionalSpout.java   |   69 +++
+ .../storm/transactional/TransactionAttempt.java    |   44 ++
+ .../TransactionalSpoutBatchExecutor.java           |   78 +++
+ .../TransactionalSpoutCoordinator.java             |  196 +++++++
+ .../TransactionalTopologyBuilder.java              |  460 +++++++++++++++
+ .../IOpaquePartitionedTransactionalSpout.java      |   27 +
+ .../IPartitionedTransactionalSpout.java            |   44 ++
+ ...paquePartitionedTransactionalSpoutExecutor.java |  119 ++++
+ .../PartitionedTransactionalSpoutExecutor.java     |  120 ++++
+ .../state/RotatingTransactionalState.java          |  128 +++++
+ .../transactional/state/TransactionalState.java    |  122 ++++
+ src/jvm/backtype/storm/tuple/MessageId.java        |    8 +-
+ src/jvm/backtype/storm/tuple/Tuple.java            |  149 ++++-
+ src/jvm/backtype/storm/utils/DRPCClient.java       |    2 +-
+ .../backtype/storm/utils/IndifferentAccessMap.java |  160 ++++++
+ .../storm/utils/ThreadResourceManager.java         |   29 +
+ .../backtype/storm/utils/ThriftTopologyUtils.java  |   41 ++
+ src/jvm/backtype/storm/utils/Utils.java            |  141 ++++-
+ src/py/storm/ttypes.py                             |  268 +++++-----
+ src/storm.thrift                                   |   36 +-
+ test/clj/backtype/storm/config_test.clj            |   10 +
+ test/clj/backtype/storm/drpc_test.clj              |   38 ++-
+ test/clj/backtype/storm/integration_test.clj       |  201 ++++++-
+ test/clj/backtype/storm/nimbus_test.clj            |    7 +-
+ test/clj/backtype/storm/transactional_test.clj     |  597 ++++++++++++++++++++
+ test/clj/backtype/storm/tuple_test.clj             |   36 ++
+ 136 files changed, 6143 insertions(+), 1890 deletions(-)
+ delete mode 100644 src/clj/backtype/storm/kryo.clj
+ create mode 100644 src/jvm/backtype/storm/clojure/RichShellBolt.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchBoltExecutor.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchOutputCollector.java
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchOutputCollectorImpl.java
+ create mode 100644 src/jvm/backtype/storm/coordination/CoordinatedBolt.java
+ create mode 100644 src/jvm/backtype/storm/coordination/IBatchBolt.java
+ delete mode 100644 src/jvm/backtype/storm/drpc/CoordinatedBolt.java
+ delete mode 100644 src/jvm/backtype/storm/task/IInternalOutputCollector.java
+ delete mode 100644 src/jvm/backtype/storm/task/OutputCollectorImpl.java
+ create mode 100644 src/jvm/backtype/storm/testing/CountingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/CountingCommitBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/IdentityBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedCountingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedCountingCommitterBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/KeyedSummingBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/testing/MemoryTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/testing/MemoryTransactionalSpoutMeta.java
+ create mode 100644 src/jvm/backtype/storm/testing/NonRichBoltTracker.java
+ create mode 100644 src/jvm/backtype/storm/testing/TestConfBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/BaseConfigurationDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/BoltDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/ComponentConfigurationDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/FailedException.java
+ create mode 100644 src/jvm/backtype/storm/topology/SpoutDeclarer.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseBasicBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseBatchBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseComponent.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseOpaquePartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BasePartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseRichBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseRichSpout.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseTransactionalBolt.java
+ create mode 100644 src/jvm/backtype/storm/topology/base/BaseTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ICommitter.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ICommitterTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/ITransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionAttempt.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalSpoutBatchExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalSpoutCoordinator.java
+ create mode 100644 src/jvm/backtype/storm/transactional/TransactionalTopologyBuilder.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/IOpaquePartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/IPartitionedTransactionalSpout.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/OpaquePartitionedTransactionalSpoutExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/partitioned/PartitionedTransactionalSpoutExecutor.java
+ create mode 100644 src/jvm/backtype/storm/transactional/state/RotatingTransactionalState.java
+ create mode 100644 src/jvm/backtype/storm/transactional/state/TransactionalState.java
+ create mode 100644 src/jvm/backtype/storm/utils/IndifferentAccessMap.java
+ create mode 100644 src/jvm/backtype/storm/utils/ThreadResourceManager.java
+ create mode 100644 src/jvm/backtype/storm/utils/ThriftTopologyUtils.java
+ create mode 100644 test/clj/backtype/storm/config_test.clj
+ create mode 100644 test/clj/backtype/storm/transactional_test.clj
+ create mode 100644 test/clj/backtype/storm/tuple_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: fc5ae41
+
+Clean local git folder
+
+ Starting Process for 02dabc54ee827bcf46a2a469bab2215235ebed81
+
+Checking out 'new' branch for a3094ef
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/util.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/util.clj
+Auto-merging src/clj/backtype/storm/daemon/worker.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging conf/defaults.yaml
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: c4a711a
+
+Clean local git folder
+
+ Starting Process for bfcfc1a932b3d49d792721a76ee9d131877d06e0
+
+Checking out 'new' branch for 39f41e6
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ .../coordination/BatchSubtopologyBuilder.java      |  419 ++++++++++++++++++++
+ .../backtype/storm/testing/BatchNumberList.java    |   55 +++
+ .../backtype/storm/testing/BatchProcessWord.java   |   22 +
+ src/jvm/backtype/storm/testing/BatchRepeatA.java   |   31 ++
+ .../backtype/storm/testing/PrepareBatchBolt.java   |   35 ++
+ test/clj/backtype/storm/subtopology_test.clj       |   49 +++
+ 6 files changed, 611 insertions(+), 0 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/coordination/BatchSubtopologyBuilder.java
+ create mode 100644 src/jvm/backtype/storm/testing/BatchNumberList.java
+ create mode 100644 src/jvm/backtype/storm/testing/BatchProcessWord.java
+ create mode 100644 src/jvm/backtype/storm/testing/BatchRepeatA.java
+ create mode 100644 src/jvm/backtype/storm/testing/PrepareBatchBolt.java
+ create mode 100644 test/clj/backtype/storm/subtopology_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 1837662
+
+Clean local git folder
+
+ Starting Process for ce2c9923605061db95eb0e27340e4afc3c3b997e
+
+Checking out 'new' branch for aaaa759
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/nimbus_test.clj
+Auto-merging src/clj/backtype/storm/zookeeper.clj
+Auto-merging src/clj/backtype/storm/ui/core.clj
+Auto-merging src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/daemon/task.clj
+Auto-merging src/clj/backtype/storm/daemon/supervisor.clj
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+Auto-merging project.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   18 ++
+ README.markdown                                    |    1 +
+ bin/build_release.sh                               |    1 +
+ bin/storm                                          |   14 ++-
+ conf/defaults.yaml                                 |    1 +
+ project.clj                                        |    2 +-
+ src/clj/backtype/storm/command/list.clj            |   23 +++
+ src/clj/backtype/storm/daemon/drpc.clj             |    7 +-
+ src/clj/backtype/storm/daemon/nimbus.clj           |    6 +-
+ src/clj/backtype/storm/daemon/supervisor.clj       |    4 +-
+ src/clj/backtype/storm/daemon/task.clj             |    2 +-
+ src/clj/backtype/storm/testing.clj                 |    9 +-
+ src/clj/backtype/storm/ui/core.clj                 |   15 ++-
+ src/clj/backtype/storm/zookeeper.clj               |   16 ++-
+ src/jvm/backtype/storm/Config.java                 |   19 ++-
+ .../storm/coordination/BatchOutputCollector.java   |    4 +-
+ .../coordination/BatchOutputCollectorImpl.java     |    5 +
+ .../storm/coordination/CoordinatedBolt.java        |   19 ++-
+ .../storm/grouping/CustomStreamGrouping.java       |    4 +-
+ src/jvm/backtype/storm/task/IBolt.java             |    2 +-
+ src/jvm/backtype/storm/task/ShellBolt.java         |   17 ++-
+ .../testing/OpaqueMemoryTransactionalSpout.java    |  169 ++++++++++++++++++++
+ .../storm/topology/BasicOutputCollector.java       |   11 +-
+ src/jvm/backtype/storm/topology/IBasicBolt.java    |    5 +
+ .../storm/topology/IBasicOutputCollector.java      |    1 +
+ .../IOpaquePartitionedTransactionalSpout.java      |    1 +
+ ...paquePartitionedTransactionalSpoutExecutor.java |   17 ++-
+ src/multilang/py/storm.py                          |    8 +-
+ test/clj/backtype/storm/cluster_test.clj           |   52 +++---
+ test/clj/backtype/storm/nimbus_test.clj            |   49 +++---
+ test/clj/backtype/storm/transactional_test.clj     |  168 +++++++++++++++-----
+ 31 files changed, 530 insertions(+), 140 deletions(-)
+ create mode 100644 src/clj/backtype/storm/command/list.clj
+ create mode 100644 src/jvm/backtype/storm/testing/OpaqueMemoryTransactionalSpout.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 3586082
+
+Clean local git folder
+
+ Starting Process for 8283fba12859c819375489b58467c8d232f1e2a2
+
+Checking out 'new' branch for a8d3d44
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/task.clj             |   61 ++++++++++++--------
+ src/clj/backtype/storm/util.clj                    |    1 -
+ src/jvm/backtype/storm/hooks/BaseTaskHook.java     |   30 ++++++++++
+ src/jvm/backtype/storm/hooks/TaskHook.java         |   15 +++++
+ src/jvm/backtype/storm/hooks/info/BoltAckInfo.java |   13 ++++
+ .../backtype/storm/hooks/info/BoltFailInfo.java    |   13 ++++
+ src/jvm/backtype/storm/hooks/info/EmitInfo.java    |   16 +++++
+ .../backtype/storm/hooks/info/SpoutAckInfo.java    |   11 ++++
+ .../backtype/storm/hooks/info/SpoutFailInfo.java   |   11 ++++
+ src/jvm/backtype/storm/task/TopologyContext.java   |   13 ++++-
+ test/clj/backtype/storm/integration_test.clj       |   42 +++++++++++++
+ 11 files changed, 200 insertions(+), 26 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/hooks/BaseTaskHook.java
+ create mode 100644 src/jvm/backtype/storm/hooks/TaskHook.java
+ create mode 100644 src/jvm/backtype/storm/hooks/info/BoltAckInfo.java
+ create mode 100644 src/jvm/backtype/storm/hooks/info/BoltFailInfo.java
+ create mode 100644 src/jvm/backtype/storm/hooks/info/EmitInfo.java
+ create mode 100644 src/jvm/backtype/storm/hooks/info/SpoutAckInfo.java
+ create mode 100644 src/jvm/backtype/storm/hooks/info/SpoutFailInfo.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: c72758b
+
+Clean local git folder
+
+ Starting Process for df18ab0166be8fb233001a6d464c1bc6587b5a5b
+
+Checking out 'new' branch for aaaa759
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging CHANGELOG.md
+CONFLICT (content): Merge conflict in CHANGELOG.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 1bc4665
+
+Clean local git folder
+
+ Starting Process for 678adb6371245ec471c5f639a691bfa0d6ac3cec
+
+Checking out 'new' branch for 182572b
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/Config.java
+Auto-merging src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/daemon/common.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |   10 +-
+ README.markdown                                    |    6 +-
+ conf/defaults.yaml                                 |    2 +
+ project.clj                                        |    3 +-
+ src/clj/backtype/storm/bootstrap.clj               |    4 +-
+ src/clj/backtype/storm/daemon/acker.clj            |   84 ++++---
+ src/clj/backtype/storm/daemon/common.clj           |   69 ++++--
+ src/clj/backtype/storm/daemon/executor.clj         |  221 ++++++++++-------
+ src/clj/backtype/storm/daemon/task.clj             |   10 +-
+ src/clj/backtype/storm/daemon/worker.clj           |   61 +++---
+ src/clj/backtype/storm/disruptor.clj               |   58 +++--
+ src/clj/backtype/storm/messaging/loader.clj        |   32 ++--
+ src/clj/backtype/storm/testing.clj                 |    2 +-
+ src/clj/backtype/storm/thrift.clj                  |    4 +-
+ src/clj/backtype/storm/util.clj                    |    6 +-
+ src/jvm/backtype/storm/Config.java                 |   20 ++-
+ src/jvm/backtype/storm/Constants.java              |    5 +-
+ .../storm/coordination/CoordinatedBolt.java        |  131 ++++++----
+ .../storm/serialization/ITupleSerializer.java      |    2 +-
+ .../storm/serialization/KryoTupleDeserializer.java |   14 +-
+ .../storm/serialization/KryoTupleSerializer.java   |   44 ++--
+ .../serialization/KryoValuesDeserializer.java      |   19 +-
+ .../storm/serialization/KryoValuesSerializer.java  |   23 +-
+ .../storm/serialization/SerializationFactory.java  |   38 ++--
+ .../serialization/types/ArrayListSerializer.java   |   19 ++
+ .../serialization/types/HashMapSerializer.java     |   19 ++
+ .../serialization/types/HashSetSerializer.java     |   19 ++
+ src/jvm/backtype/storm/spout/NoOpSpout.java        |   36 +++
+ .../storm/task/GeneralTopologyContext.java         |    7 +-
+ src/jvm/backtype/storm/task/ShellBolt.java         |    5 +-
+ .../backtype/storm/testing/AckFailMapTracker.java  |   35 +++
+ src/jvm/backtype/storm/testing/FeederSpout.java    |   29 ++-
+ .../backtype/storm/testing/TestGlobalCount.java    |    4 +-
+ .../TransactionalSpoutCoordinator.java             |    5 +-
+ .../TransactionalTopologyBuilder.java              |    2 +-
+ src/jvm/backtype/storm/tuple/MessageId.java        |   18 +-
+ src/jvm/backtype/storm/tuple/TupleImpl.java        |    1 -
+ src/jvm/backtype/storm/utils/DisruptorQueue.java   |  161 ++++++------
+ src/jvm/backtype/storm/utils/RotatingMap.java      |  106 ++++++++
+ src/jvm/backtype/storm/utils/TimeCacheMap.java     |    5 +-
+ src/jvm/backtype/storm/utils/Utils.java            |    2 +-
+ test/clj/backtype/storm/clojure_test.clj           |  131 ++++++++++
+ test/clj/backtype/storm/grouping_test.clj          |   29 +++
+ test/clj/backtype/storm/integration_test.clj       |  264 ++++----------------
+ test/clj/backtype/storm/multilang_test.clj         |   54 ++++
+ test/clj/backtype/storm/serialization_test.clj     |   13 +-
+ 46 files changed, 1144 insertions(+), 688 deletions(-)
+ create mode 100644 src/jvm/backtype/storm/serialization/types/ArrayListSerializer.java
+ create mode 100644 src/jvm/backtype/storm/serialization/types/HashMapSerializer.java
+ create mode 100644 src/jvm/backtype/storm/serialization/types/HashSetSerializer.java
+ create mode 100644 src/jvm/backtype/storm/spout/NoOpSpout.java
+ create mode 100644 src/jvm/backtype/storm/testing/AckFailMapTracker.java
+ create mode 100644 src/jvm/backtype/storm/utils/RotatingMap.java
+ create mode 100644 test/clj/backtype/storm/clojure_test.clj
+ create mode 100644 test/clj/backtype/storm/multilang_test.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: c36bd0d
+
+Clean local git folder
+
+ Starting Process for 2cf102df91b3b454b4a94bd0344c69bb0f5dec73
+
+Checking out 'new' branch for b568f93
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging CHANGELOG.md
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 9359ebb
+
+Clean local git folder
+
+ Starting Process for a4ca346b0703a8a8c7fc3eb331eb2e8d1e0fef51
+
+Checking out 'new' branch for b5b3a62
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging bin/storm
+CONFLICT (content): Merge conflict in bin/storm
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 8d3e385
+
+Clean local git folder
+
+ Starting Process for 506c8ad941cc0b9eb122b8339636eb921962198c
+
+Checking out 'new' branch for 980d0ca
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/utils/Utils.java
+Removing src/jvm/backtype/storm/testing/DelegateOutputCollector.java
+Removing src/jvm/backtype/storm/task/OutputCollectorImpl.java
+Removing src/jvm/backtype/storm/task/IInternalOutputCollector.java
+Removing src/jvm/backtype/storm/coordination/FailedBatchException.java
+Removing src/clj/backtype/storm/kryo.clj
+Auto-merging bin/storm
+CONFLICT (content): Merge conflict in bin/storm
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 1b4e89b
+
+Clean local git folder
+
+ Starting Process for d20a7a38f8c2c552f2c4bc327f4df5772ab66f37
+
+Checking out 'new' branch for 39ec53e
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/supervisor.clj |    4 ++--
+ src/clj/backtype/storm/daemon/worker.clj     |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 41d0e33
+
+Clean local git folder
+
+ Starting Process for 0d863929027453aafdd65f81772604d03986c8fb
+
+Checking out 'new' branch for ac3f9eb
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ test/clj/backtype/storm/nimbus_test.clj |   56 +++++++++++++++++++++++++++++++
+ 1 files changed, 56 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 3dfa3e7
+
+Clean local git folder
+
+ Starting Process for 9c14f8f3e0ea28b994f9b77b4f97f81bf4908a78
+
+Checking out 'new' branch for 4b38429
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/jvm/backtype/storm/coordination/CoordinatedBolt.java
+CONFLICT (content): Merge conflict in src/jvm/backtype/storm/coordination/CoordinatedBolt.java
+Auto-merging CHANGELOG.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 19c79c1
+
+Clean local git folder
+
+ Starting Process for 9aa2d64b8b672eab50b3269dff5fb0867136e709
+
+Checking out 'new' branch for dc511b6
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging CHANGELOG.md
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                               |    1 +
+ src/jvm/backtype/storm/StormSubmitter.java |    3 +++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 1e8707c
+
+Clean local git folder
+
+ Starting Process for 1989897c018bfb64955e304c5df83e2b8aba1925
+
+Checking out 'new' branch for e455ceb
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+Merge made by the 'recursive' strategy.
+ bin/build_release.sh                     |    2 ++
+ bin/storm                                |   10 +++++++++-
+ src/clj/backtype/storm/daemon/nimbus.clj |   10 ++++++++++
+ src/clj/backtype/storm/testing.clj       |    1 +
+ src/clj/backtype/storm/timer.clj         |    2 +-
+ test/clj/backtype/storm/nimbus_test.clj  |   27 +++++++++++++++++++++++++++
+ 6 files changed, 50 insertions(+), 2 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 4baf72e
+
+Clean local git folder
+
+ Starting Process for acf4ef4b51960edb7cbf37dc2b05d04f54c861fd
+
+Checking out 'new' branch for 6584476
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ .../storm/coordination/CoordinatedBolt.java        |   19 +++++++++++++------
+ 1 files changed, 13 insertions(+), 6 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 0357d95
+
+Clean local git folder
+
+ Starting Process for 17afe9291929579fae714b7b8bcd52cd0038f3e9
+
+Checking out 'new' branch for 62b5817
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    5 +-
+ bin/to_maven.sh                                    |    1 +
+ project.clj                                        |    2 +-
+ src/clj/backtype/storm/cluster.clj                 |   11 ++-
+ src/clj/backtype/storm/daemon/common.clj           |    4 +-
+ src/clj/backtype/storm/event.clj                   |   24 +++----
+ src/clj/backtype/storm/util.clj                    |   73 +++++++++-----------
+ src/clj/backtype/storm/zookeeper.clj               |   16 +++-
+ src/jvm/backtype/storm/drpc/DRPCSpout.java         |    2 +-
+ src/jvm/backtype/storm/task/TopologyContext.java   |   11 ++-
+ src/jvm/backtype/storm/testing/TestWordSpout.java  |    6 +-
+ .../TransactionalSpoutCoordinator.java             |    2 +-
+ 12 files changed, 86 insertions(+), 71 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 468ed6a
+
+Clean local git folder
+
+ Starting Process for 939c77a6c6a47c4a5caba4c0d453465c19eb8c30
+
+Checking out 'new' branch for b74d323
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/clj/backtype/storm/util.clj
+Merge made by the 'recursive' strategy.
+ CHANGELOG.md                                       |    3 +++
+ src/clj/backtype/storm/util.clj                    |    2 +-
+ src/jvm/backtype/storm/StormSubmitter.java         |    3 +++
+ .../storm/serialization/SerializationFactory.java  |    2 ++
+ src/jvm/backtype/storm/tuple/Values.java           |    4 ++++
+ 5 files changed, 13 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: ec812fa
+
+Clean local git folder
+
+ Starting Process for a6cf888896d772ab2a2efb942e7bf6ee992727d4
+
+Checking out 'new' branch for 469cd6b
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/jvm/backtype/storm/task/ShellBolt.java |   14 ++++++++++++--
+ 1 files changed, 12 insertions(+), 2 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 5124069
+
+Clean local git folder
+
+ Starting Process for 0b5135f5e2e60ad9297f12021c209344919f1d44
+
+Checking out 'new' branch for baae324
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/timer.clj |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 3e84ddf
+
+Clean local git folder
+
+ Starting Process for a8d85e4d6e6b736cd94235d4eaf37686b7887cb8
+
+Checking out 'new' branch for 969df63
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ conf/defaults.yaml                            |    1 +
+ src/clj/backtype/storm/bootstrap.clj          |    5 +-
+ src/clj/backtype/storm/daemon/supervisor.clj  |   11 ++--
+ src/clj/backtype/storm/daemon/task.clj        |   18 +++----
+ src/clj/backtype/storm/daemon/worker.clj      |   66 ++++++++++--------------
+ src/clj/backtype/storm/messaging/loader.clj   |   24 +++++++++
+ src/clj/backtype/storm/messaging/local.clj    |   42 ++++++++++++++++
+ src/clj/backtype/storm/messaging/protocol.clj |   17 ++++++
+ src/clj/backtype/storm/messaging/zmq.clj      |   50 +++++++++++++++++++
+ src/clj/backtype/storm/testing.clj            |   15 +++++-
+ src/clj/zilch/virtual_port.clj                |    2 +-
+ src/jvm/backtype/storm/Config.java            |   10 ++++
+ 12 files changed, 201 insertions(+), 60 deletions(-)
+ create mode 100644 src/clj/backtype/storm/messaging/loader.clj
+ create mode 100644 src/clj/backtype/storm/messaging/local.clj
+ create mode 100644 src/clj/backtype/storm/messaging/protocol.clj
+ create mode 100644 src/clj/backtype/storm/messaging/zmq.clj
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: b7ca3f4
+
+Clean local git folder
+
+ Starting Process for d6ff4555ed22706486cd8c66a54a32a957dab327
+
+Checking out 'new' branch for 862e1c7
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing src/jvm/backtype/storm/testing/TrackerAggregator.java
+Auto-merging src/jvm/backtype/storm/serialization/SerializationFactory.java
+Auto-merging src/clj/backtype/storm/util.clj
+Auto-merging src/clj/backtype/storm/testing.clj
+Merge made by the 'recursive' strategy.
+ src/clj/backtype/storm/daemon/acker.clj            |   95 +++++++++++
+ src/clj/backtype/storm/daemon/common.clj           |   57 ++++++--
+ src/clj/backtype/storm/daemon/nimbus.clj           |   12 +-
+ src/clj/backtype/storm/daemon/task.clj             |  164 ++++++--------------
+ src/clj/backtype/storm/daemon/worker.clj           |   34 +++--
+ src/clj/backtype/storm/testing.clj                 |   97 +++++++-----
+ src/clj/backtype/storm/thrift.clj                  |    3 +
+ src/clj/backtype/storm/ui/core.clj                 |    1 -
+ src/clj/backtype/storm/util.clj                    |   12 ++-
+ src/jvm/backtype/storm/Constants.java              |    4 +-
+ src/jvm/backtype/storm/clojure/ClojureBolt.java    |    6 +-
+ src/jvm/backtype/storm/clojure/ClojureSpout.java   |    6 +-
+ src/jvm/backtype/storm/drpc/CoordinatedBolt.java   |   20 ++--
+ src/jvm/backtype/storm/drpc/JoinResult.java        |    6 +-
+ .../storm/drpc/LinearDRPCInputDeclarer.java        |   12 +-
+ .../storm/drpc/LinearDRPCTopologyBuilder.java      |   84 ++++++-----
+ src/jvm/backtype/storm/drpc/PrepareRequest.java    |    8 +-
+ .../backtype/storm/generated/ComponentCommon.java  |   36 ++--
+ .../backtype/storm/generated/GlobalStreamId.java   |  127 ++++++++-------
+ src/jvm/backtype/storm/generated/SpoutStats.java   |  144 +++++++++---------
+ .../backtype/storm/generated/StormTopology.java    |  108 +++++++-------
+ src/jvm/backtype/storm/generated/TaskStats.java    |   96 ++++++------
+ src/jvm/backtype/storm/generated/TaskSummary.java  |   67 +++++----
+ .../storm/serialization/KryoTupleDeserializer.java |    6 +-
+ .../storm/serialization/KryoTupleSerializer.java   |    8 +-
+ .../serialization/KryoValuesDeserializer.java      |    2 +-
+ .../storm/serialization/KryoValuesSerializer.java  |    2 +-
+ ...{KryoFactory.java => SerializationFactory.java} |   46 ++++++-
+ .../storm/spout/ISpoutOutputCollector.java         |    4 +-
+ .../backtype/storm/spout/SpoutOutputCollector.java |    8 +-
+ src/jvm/backtype/storm/task/IOutputCollector.java  |    4 +-
+ src/jvm/backtype/storm/task/OutputCollector.java   |    8 +-
+ .../backtype/storm/task/OutputCollectorImpl.java   |    6 +-
+ src/jvm/backtype/storm/task/ShellBolt.java         |    8 +-
+ src/jvm/backtype/storm/task/TopologyContext.java   |   50 +++---
+ src/jvm/backtype/storm/testing/BoltTracker.java    |   79 ++--------
+ src/jvm/backtype/storm/testing/FixedTuple.java     |    4 +-
+ src/jvm/backtype/storm/testing/SpoutTracker.java   |   48 +++----
+ .../backtype/storm/testing/TrackerAggregator.java  |   72 ---------
+ .../backtype/storm/testing/TupleCaptureBolt.java   |   12 +-
+ .../storm/topology/BasicOutputCollector.java       |    4 +-
+ .../storm/topology/IBasicOutputCollector.java      |    4 +-
+ src/jvm/backtype/storm/topology/InputDeclarer.java |   28 ++--
+ .../storm/topology/OutputFieldsDeclarer.java       |    4 +-
+ .../storm/topology/OutputFieldsGetter.java         |    8 +-
+ .../backtype/storm/topology/TopologyBuilder.java   |   70 ++++----
+ src/jvm/backtype/storm/tuple/MessageId.java        |    2 +-
+ src/jvm/backtype/storm/tuple/Tuple.java            |   32 ++---
+ src/jvm/backtype/storm/utils/Container.java        |    7 +
+ .../storm/utils/RegisteredGlobalState.java         |   47 ++++++
+ src/jvm/backtype/storm/utils/ServiceRegistry.java  |    1 +
+ src/jvm/backtype/storm/utils/Utils.java            |   33 ++++-
+ src/py/storm/ttypes.py                             |  102 ++++++------
+ src/storm.thrift                                   |   24 ++--
+ test/clj/backtype/storm/drpc_test.clj              |    6 +-
+ test/clj/backtype/storm/grouping_test.clj          |   18 +-
+ test/clj/backtype/storm/integration_test.clj       |   93 ++++++------
+ test/clj/backtype/storm/nimbus_test.clj            |   50 +++---
+ test/clj/backtype/storm/supervisor_test.clj        |   30 ++--
+ 59 files changed, 1116 insertions(+), 1013 deletions(-)
+ create mode 100644 src/clj/backtype/storm/daemon/acker.clj
+ rename src/jvm/backtype/storm/serialization/{KryoFactory.java => SerializationFactory.java} (59%)
+ delete mode 100644 src/jvm/backtype/storm/testing/TrackerAggregator.java
+ create mode 100644 src/jvm/backtype/storm/utils/Container.java
+ create mode 100644 src/jvm/backtype/storm/utils/RegisteredGlobalState.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 7db6aa8
+
+Clean local git folder
+
+ Starting Process for ef059451029d0a155451c5fea7cca7dbaf102140
+
+Checking out 'new' branch for cfc87d2
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 7db6aa8..cfc87d2
+Fast-forward
+ .../TransactionalTopologyBuilder.java              |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 8f1a4be
+
+Clean local git folder
+
+ Starting Process for 96ae4a828535a9030b9e93827a47ac0cf33ce7d6
+
+Checking out 'new' branch for adf6484
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging test/clj/backtype/storm/nimbus_test.clj
+CONFLICT (content): Merge conflict in test/clj/backtype/storm/nimbus_test.clj
+Auto-merging src/clj/backtype/storm/testing.clj
+Auto-merging src/clj/backtype/storm/daemon/worker.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/worker.clj
+Auto-merging src/clj/backtype/storm/daemon/task.clj
+Auto-merging src/clj/backtype/storm/daemon/nimbus.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/daemon/nimbus.clj
+Auto-merging src/clj/backtype/storm/cluster.clj
+CONFLICT (content): Merge conflict in src/clj/backtype/storm/cluster.clj
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+

@@ -1,0 +1,2434 @@
+
+Getting Git repository for Perl5
+Processing Date Information
+Processing File Information
+Set remote hash code
+
+Hard reset Git repository to rev: c10d63d
+
+Clean local git folder
+
+ Starting Process for ae216fbbb548295005aba05d7f3e011cc9fd10c7
+
+Checking out 'new' branch for 39f74b2
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 924c869
+
+Clean local git folder
+
+ Starting Process for 7b703b7e9b6d31d2d09cb977e59c83f65bd70b6f
+
+Checking out 'new' branch for 833e741
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 9a1a00a
+
+Clean local git folder
+
+ Starting Process for 0ae973f995229bce0c5b9ffe25fe1f5340559656
+
+Checking out 'new' branch for 3d1fa4f
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/dist/changelog.txt
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/view/RedirectViewUriTemplateTests.java
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/view/RedirectViewTests.java
+CONFLICT (rename/delete): spring-webmvc/src/test/java/org/springframework/web/servlet/support/DefaultFlashMapManagerTests.java deleted in new and renamed in HEAD. Version HEAD of spring-webmvc/src/test/java/org/springframework/web/servlet/support/DefaultFlashMapManagerTests.java left in tree.
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/mvc/method/annotation/RequestMappingHandlerAdapterTests.java
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/mvc/UrlFilenameViewControllerTests.java
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/mvc/ParameterizableViewControllerTests.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/view/RedirectView.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/support/RequestContextUtils.java
+CONFLICT (rename/delete): spring-webmvc/src/main/java/org/springframework/web/servlet/support/DefaultFlashMapManager.java deleted in new and renamed in HEAD. Version HEAD of spring-webmvc/src/main/java/org/springframework/web/servlet/support/DefaultFlashMapManager.java left in tree.
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/FlashMapManager.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/DispatcherServlet.properties
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/DispatcherServlet.java
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f880055
+
+Clean local git folder
+
+ Starting Process for 5c0c37e74807547ebca5820f2c65b385aceffda9
+
+Checking out 'new' branch for 3798626
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f64c13a
+
+Clean local git folder
+
+ Starting Process for e2fbaa8470b647ffd9c0c8be5aa93f7dc3bf6c56
+
+Checking out 'new' branch for 37e024c
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 18006c7
+
+Clean local git folder
+
+ Starting Process for 98bf01adfbe8a10c12607d3c2f018b0a8b5d6353
+
+Checking out 'new' branch for f667db5
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f6c7d99
+
+Clean local git folder
+
+ Starting Process for caa50a1d41a7929ea11bcb1f03988e0bce20837d
+
+Checking out 'new' branch for 6e00456
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ build-spring-framework/resources/changelog.txt     |    4 +-
+ .../ConfigurationClassBeanDefinitionReader.java    |   23 +++++---
+ .../ConfigurationClassPostProcessor.java           |    6 +-
+ .../ReloadableResourceBundleMessageSource.java     |    6 +-
+ .../support/ResourceBundleMessageSource.java       |    6 +-
+ .../core/convert/TypeDescriptor.java               |    9 +--
+ .../springframework/core/io/AbstractResource.java  |    8 +-
+ .../java/org/springframework/core/io/Resource.java |    6 +-
+ .../org/springframework/core/io/VfsResource.java   |   28 ++++++---
+ .../core/io/support/PropertiesLoaderSupport.java   |    8 +--
+ .../java/org/springframework/util/ClassUtils.java  |   11 +++-
+ .../metadata/GenericTableMetaDataProvider.java     |   15 +++--
+ .../jdbc/core/namedparam/NamedParameterUtils.java  |    3 +
+ .../orm/hibernate3/package-info.java               |    8 +-
+ .../orm/hibernate4/package-info.java               |   10 ++--
+ .../DefaultProfileAnnotationConfigTests.java       |   57 +++++++++++++++++++
+ .../importresource/DefaultProfileConfig.java       |   37 ++++++++++++
+ .../DevProfileAnnotationConfigTests.java           |   39 +++++++++++++
+ .../junit4/profile/importresource/import.xml       |   13 ++++
+ .../jasperreports/AbstractJasperReportsView.java   |   60 ++++++++++----------
+ .../http/server/ServletServerHttpRequest.java      |    6 +-
+ 21 files changed, 271 insertions(+), 92 deletions(-)
+ create mode 100644 org.springframework.test/src/test/java/org/springframework/test/context/junit4/profile/importresource/DefaultProfileAnnotationConfigTests.java
+ create mode 100644 org.springframework.test/src/test/java/org/springframework/test/context/junit4/profile/importresource/DefaultProfileConfig.java
+ create mode 100644 org.springframework.test/src/test/java/org/springframework/test/context/junit4/profile/importresource/DevProfileAnnotationConfigTests.java
+ create mode 100644 org.springframework.test/src/test/java/org/springframework/test/context/junit4/profile/importresource/import.xml
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 90bed97
+
+Clean local git folder
+
+ Starting Process for f61410705c0a71a29c8023bca52e4ea2ee7c2a01
+
+Checking out 'new' branch for 64a69f7
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing org.springframework.web.servlet/src/test/java/org/springframework/web/servlet/support/DefaultFlashMapManagerTests.java
+Removing org.springframework.web.servlet/src/main/java/org/springframework/web/servlet/support/DefaultFlashMapManager.java
+Merge made by the 'recursive' strategy.
+ .gitignore                                         |    8 +
+ build-spring-framework/resources/changelog.txt     |    4 +
+ org.springframework.aop/pom.xml                    |   12 +-
+ org.springframework.asm/pom.xml                    |   75 ++--
+ org.springframework.aspects/pom.xml                |   12 +-
+ org.springframework.beans/pom.xml                  |   16 +-
+ org.springframework.context.support/pom.xml        |   22 +-
+ .../quartz/MethodInvokingJobDetailFactoryBean.java |    2 +-
+ .../scheduling/quartz/package-info.java            |    2 +-
+ org.springframework.context/pom.xml                |  548 +++++++++---------
+ org.springframework.core/pom.xml                   |  154 +++---
+ org.springframework.expression/pom.xml             |   12 +-
+ org.springframework.instrument.tomcat/pom.xml      |   13 +-
+ org.springframework.instrument/pom.xml             |   12 +-
+ org.springframework.integration-tests/pom.xml      |   39 +-
+ org.springframework.jdbc/pom.xml                   |   13 +-
+ org.springframework.jms/pom.xml                    |   24 +-
+ org.springframework.orm/pom.xml                    |  475 ++++++++--------
+ org.springframework.oxm/pom.xml                    |  204 ++++---
+ org.springframework.spring-library/pom.xml         |  192 +++----
+ org.springframework.spring-parent/pom.xml          |  162 +++---
+ org.springframework.test/pom.xml                   |   18 +-
+ org.springframework.transaction/pom.xml            |   12 +-
+ org.springframework.web.portlet/pom.xml            |   12 +-
+ org.springframework.web.servlet/pom.xml            |  625 ++++++++++----------
+ .../web/servlet/DispatcherServlet.java             |   35 +-
+ .../web/servlet/DispatcherServlet.properties       |    2 +-
+ .../web/servlet/FlashMapManager.java               |   63 +--
+ .../annotation/DelegatingWebMvcConfiguration.java  |   20 +-
+ .../handler/AbstractHandlerMethodMapping.java      |   31 +-
+ .../RequestPartMethodArgumentResolver.java         |   13 +-
+ .../servlet/support/AbstractFlashMapManager.java   |  221 +++++++
+ .../servlet/support/DefaultFlashMapManager.java    |  266 ---------
+ .../web/servlet/support/RequestContextUtils.java   |   15 +-
+ .../servlet/support/SessionFlashMapManager.java    |   55 ++
+ .../web/servlet/view/RedirectView.java             |   23 +-
+ .../mvc/ParameterizableViewControllerTests.java    |    8 +-
+ .../mvc/UrlFilenameViewControllerTests.java        |    6 +-
+ .../RequestMappingHandlerAdapterTests.java         |    6 +-
+ .../RequestPartMethodArgumentResolverTests.java    |   14 +-
+ ...vletAnnotationControllerHandlerMethodTests.java |   27 +
+ .../support/AbstractFlashMapManagerTests.java      |  297 ++++++++++
+ .../support/DefaultFlashMapManagerTests.java       |  322 ----------
+ .../web/servlet/view/RedirectViewTests.java        |   35 +-
+ .../servlet/view/RedirectViewUriTemplateTests.java |   19 +-
+ org.springframework.web.struts/pom.xml             |   47 +-
+ org.springframework.web/pom.xml                    |  386 ++++++------
+ .../RequestParamMethodArgumentResolver.java        |   13 +-
+ .../RequestParamMethodArgumentResolverTests.java   |   21 +-
+ spring-framework-reference/src/scheduling.xml      |    8 +-
+ 50 files changed, 2430 insertions(+), 2191 deletions(-)
+ create mode 100644 org.springframework.web.servlet/src/main/java/org/springframework/web/servlet/support/AbstractFlashMapManager.java
+ delete mode 100644 org.springframework.web.servlet/src/main/java/org/springframework/web/servlet/support/DefaultFlashMapManager.java
+ create mode 100644 org.springframework.web.servlet/src/main/java/org/springframework/web/servlet/support/SessionFlashMapManager.java
+ create mode 100644 org.springframework.web.servlet/src/test/java/org/springframework/web/servlet/support/AbstractFlashMapManagerTests.java
+ delete mode 100644 org.springframework.web.servlet/src/test/java/org/springframework/web/servlet/support/DefaultFlashMapManagerTests.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 51ae684
+
+Clean local git folder
+
+ Starting Process for 95e99fe2a3eb1739d785f029e7fe9637fe3e26f8
+
+Checking out 'new' branch for 0ca11d2
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: cdb6d74
+
+Clean local git folder
+
+ Starting Process for 39f74b23748b2a7d83e783d64d641b209728d5c6
+
+Checking out 'new' branch for 46bdb2d
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 1d0e484
+
+Clean local git folder
+
+ Starting Process for 347e8dfc86fc568e3579a7fb3b86cc44fe3c4ca1
+
+Checking out 'new' branch for 2a75c57
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 1d0e484..2a75c57
+Fast-forward
+ src/reference/docbook/beans-context-additional.xml |    2 +-
+ src/reference/docbook/beans-dependencies.xml       |    4 +-
+ src/reference/docbook/classic-spring.xml           |   10 ++--
+ src/reference/docbook/expressions.xml              |   44 ++++++++++----------
+ src/reference/docbook/jdbc.xml                     |    6 +-
+ src/reference/docbook/jms.xml                      |    6 +-
+ src/reference/docbook/mvc.xml                      |    2 +-
+ src/reference/docbook/new-in-3.0.xml               |    6 +-
+ src/reference/docbook/new-in-3.1.xml               |   38 ++++++++--------
+ src/reference/docbook/overview.xml                 |   26 ++++++------
+ src/reference/docbook/oxm.xml                      |   18 ++++----
+ src/reference/docbook/remoting.xml                 |    4 +-
+ src/reference/docbook/transaction.xml              |    6 +-
+ 13 files changed, 86 insertions(+), 86 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 6cca57a
+
+Clean local git folder
+
+ Starting Process for 6a162d488a92428110437f1034bfc08e0f1a77ce
+
+Checking out 'new' branch for e63ca04
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 6cca57a..e63ca04
+Fast-forward
+ build.gradle                                       |    1 +
+ .../json/MappingJackson2HttpMessageConverter.java  |  188 +++++++++++
+ .../springframework/web/client/RestTemplate.java   |   16 +-
+ .../MappingJacksonHttpMessageConverterTests.java   |   30 ++-
+ .../AnnotationDrivenBeanDefinitionParser.java      |   54 ++--
+ .../annotation/WebMvcConfigurationSupport.java     |  190 ++++++-----
+ .../servlet/view/json/MappingJackson2JsonView.java |  220 ++++++++++++
+ .../WebMvcConfigurationSupportTests.java           |   60 ++--
+ .../view/json/MappingJackson2JsonViewTest.java     |  352 ++++++++++++++++++++
+ .../view/json/MappingJacksonJsonViewTest.java      |    5 +-
+ src/dist/changelog.txt                             |    1 +
+ src/reference/docbook/mvc.xml                      |   13 +-
+ src/reference/docbook/remoting.xml                 |    4 +-
+ src/reference/docbook/view.xml                     |    4 +-
+ 14 files changed, 971 insertions(+), 167 deletions(-)
+ create mode 100644 spring-web/src/main/java/org/springframework/http/converter/json/MappingJackson2HttpMessageConverter.java
+ create mode 100644 spring-webmvc/src/main/java/org/springframework/web/servlet/view/json/MappingJackson2JsonView.java
+ create mode 100644 spring-webmvc/src/test/java/org/springframework/web/servlet/view/json/MappingJackson2JsonViewTest.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 15d1d82
+
+Clean local git folder
+
+ Starting Process for 833e74168a69e2ba9c84c47f3e1e78886092731b
+
+Checking out 'new' branch for 00d9c3f
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 15d1d82..00d9c3f
+Fast-forward
+ src/reference/docbook/beans.xml      |    2 +-
+ src/reference/docbook/spring.tld.xml |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 0690b58
+
+Clean local git folder
+
+ Starting Process for f5042d1928f96967b6fe7dec198b55eb4746baa1
+
+Checking out 'new' branch for b2291ff
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 95e99fe
+
+Clean local git folder
+
+ Starting Process for 0e8f5d877a3e0e98772030c9d565a9d133581d01
+
+Checking out 'new' branch for 1f4b33c
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 95e99fe..1f4b33c
+Fast-forward
+ .../java/org/springframework/core/Constants.java   |   10 ++--
+ .../org/springframework/core/ConstantsTests.java   |   43 ++++++++++++++-----
+ 2 files changed, 36 insertions(+), 17 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 9c8332a
+
+Clean local git folder
+
+ Starting Process for e7e74c83d84dcd552d0e75458c91bc920e64d4d4
+
+Checking out 'new' branch for a9f4206
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 9c8332a..a9f4206
+Fast-forward
+ .../web/servlet/view/freemarker/spring.ftl         |   14 +++++++-------
+ .../view/freemarker/FreeMarkerMacroTests.java      |    5 +++++
+ .../web/servlet/view/freemarker/test.ftl           |    3 +++
+ 3 files changed, 15 insertions(+), 7 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 18b67ee
+
+Clean local git folder
+
+ Starting Process for 7636913710d49fa331f2a29d40d404640a111155
+
+Checking out 'new' branch for 66df039
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ build-spring-framework/resources/changelog.txt     |    4 +-
+ .../cache/ehcache/EhCacheCacheManager.java         |   13 +++-
+ .../nativejdbc/JBossNativeJdbcExtractor.java       |   37 ++++++++---
+ .../jdbc/config/spring-jdbc-3.0.xsd                |    5 +-
+ .../jdbc/config/spring-jdbc-3.1.xsd                |    4 +-
+ .../orm/hibernate3/SessionFactoryUtils.java        |   21 ++++--
+ .../orm/hibernate4/SessionFactoryUtils.java        |   21 ++++--
+ .../mvc/condition/ConsumesRequestCondition.java    |    4 +-
+ .../mvc/condition/HeadersRequestCondition.java     |    4 +-
+ .../mvc/condition/ParamsRequestCondition.java      |    4 +-
+ .../condition/RequestMethodsRequestCondition.java  |    4 +-
+ .../ModelAndViewMethodReturnValueHandler.java      |   28 ++++++--
+ .../ModelAndViewMethodReturnValueHandlerTests.java |   67 +++++++++++++++++---
+ spring-framework-reference/src/view.xml            |    4 +
+ 14 files changed, 163 insertions(+), 57 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 544a29a
+
+Clean local git folder
+
+ Starting Process for 22de6b76f1c51fee960a129706d517f161bcd9b3
+
+Checking out 'new' branch for 3d5e245
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ build-spring-framework/resources/changelog.txt     |    5 +++-
+ .../beans/TypeConverterDelegate.java               |    3 ++
+ .../validation/DataBinderTests.java                |   25 +++++++++++++++++++-
+ 3 files changed, 31 insertions(+), 2 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 05d10a5
+
+Clean local git folder
+
+ Starting Process for 544a29a91a96a1a47292e674d6e56a8fd9a70213
+
+Checking out 'new' branch for 0053319
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ .../AnnotationCacheOperationSourceTest.java        |    4 +
+ .../interceptor/ExpressionEvalutatorTest.java      |   86 ++++++++++++++++++++
+ 2 files changed, 90 insertions(+), 0 deletions(-)
+ create mode 100644 org.springframework.context/src/test/java/org/springframework/cache/interceptor/ExpressionEvalutatorTest.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 2abcdaa
+
+Clean local git folder
+
+ Starting Process for e8bf25ba9dd8a8fcfaa8f76d249cb76b6c9a4a82
+
+Checking out 'new' branch for b0f80d6
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 2abcdaa..b0f80d6
+Fast-forward
+ build.gradle |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: e71cd06
+
+Clean local git folder
+
+ Starting Process for 1d06001359c8acacb2c535d3f85be43777a673b3
+
+Checking out 'new' branch for ed0576c
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating e71cd06..ed0576c
+Fast-forward
+ .../interceptor/AsyncExecutionAspectSupport.java   |  127 ++++++++++++++++++++
+ .../aop/interceptor/AsyncExecutionInterceptor.java |   83 ++++++++-----
+ .../org/springframework/aop/support/AopUtils.java  |    1 +
+ .../aspectj/AbstractAsyncExecutionAspect.aj        |   45 +++++---
+ .../aspectj/AnnotationAsyncExecutionAspect.aj      |   60 +++++++---
+ .../AnnotationAsyncExecutionAspectTests.java       |  100 +++++++++++-----
+ .../beans/factory/BeanFactoryUtils.java            |  110 +++++++++++++++++-
+ .../AnnotationAsyncExecutionInterceptor.java       |   70 +++++++++++
+ .../scheduling/annotation/Async.java               |   29 ++++-
+ .../annotation/AsyncAnnotationAdvisor.java         |   41 +++++--
+ .../AsyncAnnotationBeanPostProcessor.java          |   15 ++-
+ .../scheduling/config/spring-task-3.2.xsd          |    8 +-
+ .../AnnotationAsyncExecutionInterceptorTests.java  |   53 ++++++++
+ .../scheduling/annotation/AsyncExecutionTests.java |   65 +++++++++--
+ .../scheduling/annotation/EnableAsyncTests.java    |   81 ++++++++++++-
+ .../TransactionalTestExecutionListener.java        |    7 +-
+ .../interceptor/TransactionAspectSupport.java      |    4 +-
+ .../interceptor/TransactionAspectUtils.java        |  113 +++--------------
+ src/dist/changelog.txt                             |    1 +
+ src/reference/docbook/scheduling.xml               |   23 ++++
+ 20 files changed, 802 insertions(+), 234 deletions(-)
+ create mode 100644 spring-aop/src/main/java/org/springframework/aop/interceptor/AsyncExecutionAspectSupport.java
+ create mode 100644 spring-context/src/main/java/org/springframework/scheduling/annotation/AnnotationAsyncExecutionInterceptor.java
+ create mode 100644 spring-context/src/test/java/org/springframework/scheduling/annotation/AnnotationAsyncExecutionInterceptorTests.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 7cdfaf3
+
+Clean local git folder
+
+ Starting Process for e85e6147f01ddb4c7931033285b317bd633926ec
+
+Checking out 'new' branch for 3514cc5
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 624ba72
+
+Clean local git folder
+
+ Starting Process for 37d547c506f9fab4f478c1e4bc0f1b8e553bd950
+
+Checking out 'new' branch for 7535e24
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/dist/changelog.txt
+Auto-merging spring-jms/src/test/java/org/springframework/jms/config/jmsNamespaceHandlerTests.xml
+Auto-merging spring-jms/src/main/resources/org/springframework/jms/config/spring-jms-3.1.xsd
+Auto-merging spring-jms/src/main/java/org/springframework/jms/config/JmsListenerContainerParser.java
+Auto-merging spring-jms/src/main/java/org/springframework/jms/config/JcaListenerContainerParser.java
+Auto-merging spring-core/src/main/java/org/springframework/core/env/AbstractEnvironment.java
+Auto-merging spring-context/src/test/java/org/springframework/context/annotation/p2.properties
+Auto-merging spring-context/src/test/java/org/springframework/context/annotation/p1.properties
+Auto-merging spring-context/src/test/java/org/springframework/context/annotation/PropertySourceAnnotationTests.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassParser.java
+Merge made by the 'recursive' strategy.
+ .../core/env/CompositePropertySource.java          |   65 +++++++++++++++++
+ .../annotation/ConfigurationClassParser.java       |   30 +++++++--
+ .../annotation/PropertySourceAnnotationTests.java  |   36 ++++++++++
+ .../context/annotation/p1.properties               |    3 +-
+ .../context/annotation/p2.properties               |    3 +-
+ .../core/env/AbstractEnvironment.java              |   73 +++++++++++++++-----
+ .../jms/config/JcaListenerContainerParser.java     |    3 +-
+ .../jms/config/JmsListenerContainerParser.java     |   13 +++-
+ .../springframework/jms/config/spring-jms-3.1.xsd  |    8 ++
+ .../jms/config/jmsNamespaceHandlerTests.xml        |    5 +-
+ src/dist/changelog.txt                             |   15 ++--
+ 11 files changed, 218 insertions(+), 36 deletions(-)
+ create mode 100644 org.springframework.core/src/main/java/org/springframework/core/env/CompositePropertySource.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 3eff364
+
+Clean local git folder
+
+ Starting Process for ee36c80ca961a5b2af233cd26a5483d57939c0af
+
+Checking out 'new' branch for 0a5392e
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/reference/docbook/remoting.xml
+Auto-merging src/reference/docbook/new-in-3.1.xml
+Auto-merging src/reference/docbook/mvc.xml
+Auto-merging src/reference/docbook/beans-extension-points.xml
+Auto-merging src/reference/docbook/beans-dependencies.xml
+Auto-merging src/dist/changelog.txt
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/support/ServletUriComponentsBuilderTests.java
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/support/AbstractFlashMapManagerTests.java
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/mvc/method/annotation/RequestPartMethodArgumentResolverTests.java
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/context/ContextLoaderTests.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/view/jasperreports/AbstractJasperReportsView.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/view/RedirectView.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/support/SessionFlashMapManager.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/support/ServletUriComponentsBuilder.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/support/AbstractFlashMapManager.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/RequestPartMethodArgumentResolver.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/config/annotation/WebMvcConfigurationSupport.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/FlashMapManager.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/FlashMap.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/DispatcherServlet.java
+Auto-merging spring-webmvc-portlet/src/main/java/org/springframework/web/portlet/context/PortletContextResource.java
+Auto-merging spring-web/src/test/java/org/springframework/web/util/UriTemplateTests.java
+Auto-merging spring-web/src/test/java/org/springframework/web/util/UriComponentsTests.java
+Auto-merging spring-web/src/test/java/org/springframework/web/util/UriComponentsBuilderTests.java
+Auto-merging spring-web/src/test/java/org/springframework/web/method/annotation/SessionAttributesHandlerTests.java
+Auto-merging spring-web/src/test/java/org/springframework/web/method/annotation/RequestParamMethodArgumentResolverTests.java
+Auto-merging spring-web/src/test/java/org/springframework/http/server/ServletServerHttpResponseTests.java
+Auto-merging spring-web/src/test/java/org/springframework/http/server/ServletServerHttpRequestTests.java
+Auto-merging spring-web/src/main/java/org/springframework/web/util/UriComponentsBuilder.java
+Auto-merging spring-web/src/main/java/org/springframework/web/util/UriComponents.java
+Auto-merging spring-web/src/main/java/org/springframework/web/method/annotation/SessionAttributesHandler.java
+Auto-merging spring-web/src/main/java/org/springframework/web/method/annotation/RequestParamMethodArgumentResolver.java
+Auto-merging spring-web/src/main/java/org/springframework/web/context/support/WebApplicationContextUtils.java
+Auto-merging spring-web/src/main/java/org/springframework/web/context/support/ServletContextResource.java
+Auto-merging spring-web/src/main/java/org/springframework/web/context/ContextLoader.java
+Auto-merging spring-web/src/main/java/org/springframework/web/bind/annotation/RequestMapping.java
+Auto-merging spring-web/src/main/java/org/springframework/http/server/ServletServerHttpResponse.java
+Auto-merging spring-web/src/main/java/org/springframework/http/server/ServletServerHttpRequest.java
+Auto-merging spring-web/src/main/java/org/springframework/http/MediaType.java
+Auto-merging spring-tx/src/main/java/org/springframework/transaction/annotation/ProxyTransactionManagementConfiguration.java
+Auto-merging spring-tx/src/main/java/org/springframework/transaction/annotation/AbstractTransactionManagementConfiguration.java
+Auto-merging spring-tx/src/main/java/org/springframework/dao/IncorrectResultSizeDataAccessException.java
+Auto-merging spring-tx/src/main/java/org/springframework/dao/EmptyResultDataAccessException.java
+Auto-merging spring-orm/src/test/java/org/springframework/orm/jpa/eclipselink/eclipselink-manager.xml
+Auto-merging spring-orm/src/main/java/org/springframework/orm/jpa/persistenceunit/PersistenceUnitReader.java
+Auto-merging spring-orm/src/main/java/org/springframework/orm/jpa/persistenceunit/DefaultPersistenceUnitManager.java
+Auto-merging spring-orm/src/main/java/org/springframework/orm/jpa/LocalContainerEntityManagerFactoryBean.java
+Auto-merging spring-orm/src/main/java/org/springframework/orm/jpa/EntityManagerFactoryUtils.java
+Auto-merging spring-orm/src/main/java/org/springframework/orm/hibernate4/package-info.java
+Auto-merging spring-orm/src/main/java/org/springframework/orm/hibernate3/package-info.java
+Auto-merging spring-jdbc/src/test/java/org/springframework/jdbc/datasource/init/DatabasePopulatorTests.java
+Auto-merging spring-jdbc/src/test/java/org/springframework/jdbc/core/namedparam/NamedParameterUtilsTests.java
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/support/SQLErrorCodesFactory.java
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/support/SQLErrorCodes.java
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/datasource/init/ResourceDatabasePopulator.java
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/core/namedparam/NamedParameterUtils.java
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/core/metadata/GenericTableMetaDataProvider.java
+CONFLICT (modify/delete): spring-framework.ipr deleted in HEAD and modified in new. Version new of spring-framework.ipr left in tree.
+Auto-merging spring-expression/src/test/java/org/springframework/expression/spel/SpringEL300Tests.java
+Auto-merging spring-expression/src/main/java/org/springframework/expression/spel/support/ReflectiveMethodResolver.java
+Auto-merging spring-core/src/test/java/org/springframework/core/type/AnnotationMetadataTests.java
+CONFLICT (content): Merge conflict in spring-core/src/test/java/org/springframework/core/type/AnnotationMetadataTests.java
+Auto-merging spring-core/src/main/java/org/springframework/util/ClassUtils.java
+Auto-merging spring-core/src/main/java/org/springframework/core/type/classreading/MethodMetadataReadingVisitor.java
+Auto-merging spring-core/src/main/java/org/springframework/core/type/classreading/AnnotationMetadataReadingVisitor.java
+Auto-merging spring-core/src/main/java/org/springframework/core/type/classreading/AnnotationAttributesReadingVisitor.java
+Auto-merging spring-core/src/main/java/org/springframework/core/type/StandardMethodMetadata.java
+Auto-merging spring-core/src/main/java/org/springframework/core/type/StandardAnnotationMetadata.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/support/PropertiesLoaderSupport.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/VfsResource.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/Resource.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/AbstractResource.java
+Auto-merging spring-core/src/main/java/org/springframework/core/convert/TypeDescriptor.java
+Auto-merging spring-core/src/main/java/org/springframework/core/convert/Property.java
+Auto-merging spring-core/src/main/java/org/springframework/core/annotation/AnnotationUtils.java
+Auto-merging spring-core/src/main/java/org/springframework/core/OrderComparator.java
+Auto-merging spring-core/src/main/java/org/springframework/core/MethodParameter.java
+Auto-merging spring-context/src/test/java/org/springframework/validation/beanvalidation/ValidatorFactoryTests.java
+Auto-merging spring-context/src/test/java/org/springframework/context/annotation/configuration/ImportTests.java
+Auto-merging spring-context/src/test/java/org/springframework/context/annotation/ImportAwareTests.java
+Auto-merging spring-context/src/test/java/org/springframework/context/annotation/AbstractCircularImportDetectionTests.java
+Auto-merging spring-context/src/main/java/org/springframework/validation/beanvalidation/SpringValidatorAdapter.java
+Auto-merging spring-context/src/main/java/org/springframework/validation/beanvalidation/LocalValidatorFactoryBean.java
+Auto-merging spring-context/src/main/java/org/springframework/validation/BindingResult.java
+Auto-merging spring-context/src/main/java/org/springframework/validation/BindException.java
+Auto-merging spring-context/src/main/java/org/springframework/validation/AbstractBindingResult.java
+Auto-merging spring-context/src/main/java/org/springframework/scheduling/concurrent/ForkJoinPoolFactoryBean.java
+Auto-merging spring-context/src/main/java/org/springframework/scheduling/annotation/ProxyAsyncConfiguration.java
+Auto-merging spring-context/src/main/java/org/springframework/scheduling/annotation/AbstractAsyncConfiguration.java
+Auto-merging spring-context/src/main/java/org/springframework/instrument/classloading/jboss/JBossLoadTimeWeaver.java
+Auto-merging spring-context/src/main/java/org/springframework/context/support/ResourceBundleMessageSource.java
+Auto-merging spring-context/src/main/java/org/springframework/context/support/ReloadableResourceBundleMessageSource.java
+CONFLICT (rename/delete): spring-context/src/main/java/org/springframework/context/annotation/ProfileHelper.java deleted in new and renamed in HEAD. Version HEAD of spring-context/src/main/java/org/springframework/context/annotation/ProfileHelper.java left in tree.
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/LoadTimeWeavingConfiguration.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassUtils.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassPostProcessor.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassParser.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassBeanDefinitionReader.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClass.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ComponentScanAnnotationParser.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ClassPathScanningCandidateComponentProvider.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AutoProxyRegistrar.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AspectJAutoProxyRegistrar.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AnnotationScopeMetadataResolver.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AnnotationConfigUtils.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AnnotationBeanNameGenerator.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AnnotatedBeanDefinitionReader.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AdviceModeImportSelector.java
+Auto-merging spring-context/src/main/java/org/springframework/cache/annotation/ProxyCachingConfiguration.java
+Auto-merging spring-context/src/main/java/org/springframework/cache/annotation/AbstractCachingConfiguration.java
+Auto-merging spring-context-support/src/main/java/org/springframework/scheduling/quartz/JobDetailFactoryBean.java
+Auto-merging spring-beans/src/test/java/test/beans/GenericBean.java
+Auto-merging spring-beans/src/test/java/org/springframework/beans/factory/annotation/InjectAnnotationBeanPostProcessorTests.java
+Auto-merging spring-beans/src/test/java/org/springframework/beans/ExtendedBeanInfoTests.java
+Auto-merging spring-beans/src/test/java/org/springframework/beans/BeanWrapperEnumTests.java
+Auto-merging spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultListableBeanFactory.java
+Auto-merging spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractBeanFactory.java
+Auto-merging spring-beans/src/main/java/org/springframework/beans/factory/config/DependencyDescriptor.java
+Auto-merging spring-beans/src/main/java/org/springframework/beans/factory/annotation/AnnotatedGenericBeanDefinition.java
+Auto-merging spring-beans/src/main/java/org/springframework/beans/ExtendedBeanInfo.java
+CONFLICT (modify/delete): org.springframework.orm/orm.iml deleted in HEAD and modified in new. Version new of org.springframework.orm/orm.iml left in tree.
+CONFLICT (modify/delete): org.springframework.orm/ivy.xml deleted in HEAD and modified in new. Version new of org.springframework.orm/ivy.xml left in tree.
+CONFLICT (modify/delete): org.springframework.orm/.classpath deleted in HEAD and modified in new. Version new of org.springframework.orm/.classpath left in tree.
+CONFLICT (modify/delete): org.springframework.aspects/pom.xml deleted in HEAD and modified in new. Version new of org.springframework.aspects/pom.xml left in tree.
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 1a3d9a2
+
+Clean local git folder
+
+ Starting Process for d9ff754ff5591e2eb697de27d776c985f315a1aa
+
+Checking out 'new' branch for ab5cdb5
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 1a3d9a2..ab5cdb5
+Fast-forward
+ README.md |   58 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 58 insertions(+), 0 deletions(-)
+ create mode 100644 README.md
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: aa415d7
+
+Clean local git folder
+
+ Starting Process for 7dcca4bcfbddf5e13d765afba28d22fbc149712c
+
+Checking out 'new' branch for 5959de5
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 7cd0b16
+
+Clean local git folder
+
+ Starting Process for 5959de5d9e6a25e78047d5008f74811a247a1beb
+
+Checking out 'new' branch for 277a115
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 13239a0
+
+Clean local git folder
+
+ Starting Process for f667db56b145a8d1b9e0d39df4fed44341b50ab6
+
+Checking out 'new' branch for e68b563
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: ef7e728
+
+Clean local git folder
+
+ Starting Process for dfd2b77b8a0789f2052f79802b2d7085fc5d186e
+
+Checking out 'new' branch for 6023b20
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 78c6d70
+
+Clean local git folder
+
+ Starting Process for f1a699cff51d0851b8c83ee9ac129723b865d33b
+
+Checking out 'new' branch for f1c062f
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 78c6d70..f1c062f
+Fast-forward
+ src/reference/docbook/aop.xml                      |    2 +-
+ src/reference/docbook/beans-classpath-scanning.xml |    2 +-
+ src/reference/docbook/beans.xml                    |    2 +-
+ src/reference/docbook/cache.xml                    |   12 ++++++------
+ src/reference/docbook/classic-aop-spring.xml       |    2 +-
+ src/reference/docbook/expressions.xml              |    2 +-
+ src/reference/docbook/jdbc.xml                     |   16 ++++++++--------
+ src/reference/docbook/mvc.xml                      |    8 ++++----
+ src/reference/docbook/new-in-3.1.xml               |    2 +-
+ src/reference/docbook/overview.xml                 |   10 +++++-----
+ src/reference/docbook/portlet.xml                  |    2 +-
+ src/reference/docbook/remoting.xml                 |    2 +-
+ src/reference/docbook/resources.xml                |    2 +-
+ src/reference/docbook/scheduling.xml               |    2 +-
+ src/reference/docbook/validation.xml               |   18 +++++++++---------
+ src/reference/docbook/web-integration.xml          |    2 +-
+ src/reference/docbook/xml-custom.xml               |    2 +-
+ src/reference/docbook/xsd-configuration.xml        |    4 ++--
+ 18 files changed, 46 insertions(+), 46 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: c471bdd
+
+Clean local git folder
+
+ Starting Process for 67d5a1238fea63f6f8f4eceebd25861b0dd7c50d
+
+Checking out 'new' branch for 49c9a2a
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating c471bdd..49c9a2a
+Fast-forward
+ .../datasource/init/DatabasePopulatorUtils.java    |   15 ++++-----
+ .../datasource/init/DatabasePopulatorTests.java    |   33 +++++++++++++++++++-
+ 2 files changed, 39 insertions(+), 9 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f55a4a1
+
+Clean local git folder
+
+ Starting Process for f75c01d191e0b08334d067d7eae58e1faa7afdc9
+
+Checking out 'new' branch for 4c7a1c0
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating f55a4a1..4c7a1c0
+Fast-forward
+ .../support/DefaultListableBeanFactory.java        |   71 ++++++++++++++------
+ .../factory/DefaultListableBeanFactoryTests.java   |   56 +++++++++++----
+ 2 files changed, 92 insertions(+), 35 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 5327a7a
+
+Clean local git folder
+
+ Starting Process for e72c49f4cf87c103113e86be55b17200d6321d26
+
+Checking out 'new' branch for 2a2b6ee
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 5327a7a..2a2b6ee
+Fast-forward
+ .../support/AbstractApplicationContext.java        |   15 +++--
+ .../core/env/AbstractEnvironment.java              |   14 ++++
+ .../core/env/ConfigurableEnvironment.java          |   42 ++++++++----
+ .../main/java/org/springframework/util/Assert.java |    4 +-
+ .../core/env/StandardEnvironmentTests.java         |   69 +++++++++++++++-----
+ .../context/ConfigurableWebApplicationContext.java |    7 ++-
+ .../web/context/ConfigurableWebEnvironment.java    |   46 +++++++++++++
+ .../springframework/web/context/ContextLoader.java |   11 +---
+ .../AbstractRefreshableWebApplicationContext.java  |   16 ++++-
+ .../support/GenericWebApplicationContext.java      |   16 ++++-
+ .../support/StandardServletEnvironment.java        |   17 ++++--
+ .../support/StaticWebApplicationContext.java       |   13 ++++-
+ .../context/AbstractApplicationContextTests.java   |   18 +++++
+ .../web/context/XmlWebApplicationContextTests.java |   19 ++++--
+ .../core/env/EnvironmentIntegrationTests.java      |   28 +++++----
+ 15 files changed, 257 insertions(+), 78 deletions(-)
+ create mode 100644 spring-web/src/main/java/org/springframework/web/context/ConfigurableWebEnvironment.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 2ffa472
+
+Clean local git folder
+
+ Starting Process for ff84419f4d09f000d8e1373be69283512fcf2471
+
+Checking out 'new' branch for 025b8ab
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f3c3bab
+
+Clean local git folder
+
+ Starting Process for 398cf997b3dfc415520d9c56e0bc1a49e4473bee
+
+Checking out 'new' branch for 5c0c37e
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/reference/docbook/xsd-configuration.xml
+Auto-merging src/reference/docbook/xml-custom.xml
+Auto-merging src/reference/docbook/web-integration.xml
+Auto-merging src/reference/docbook/view.xml
+Auto-merging src/reference/docbook/validation.xml
+Auto-merging src/reference/docbook/transaction.xml
+Auto-merging src/reference/docbook/testing.xml
+Auto-merging src/reference/docbook/swf-sidebar.xml
+Auto-merging src/reference/docbook/spring.tld.xml
+Auto-merging src/reference/docbook/spring-form.tld.xml
+Auto-merging src/reference/docbook/scheduling.xml
+Auto-merging src/reference/docbook/resources.xml
+Auto-merging src/reference/docbook/remoting.xml
+Auto-merging src/reference/docbook/preface.xml
+Auto-merging src/reference/docbook/portlet.xml
+Auto-merging src/reference/docbook/oxm.xml
+Auto-merging src/reference/docbook/overview.xml
+Auto-merging src/reference/docbook/orm.xml
+Auto-merging src/reference/docbook/new-in-3.1.xml
+Auto-merging src/reference/docbook/new-in-3.0.xml
+Auto-merging src/reference/docbook/mvc.xml
+Auto-merging src/reference/docbook/mail.xml
+Auto-merging src/reference/docbook/jmx.xml
+Auto-merging src/reference/docbook/jms.xml
+Auto-merging src/reference/docbook/jdbc.xml
+Auto-merging src/reference/docbook/index.xml
+Auto-merging src/reference/docbook/expressions.xml
+Auto-merging src/reference/docbook/ejb.xml
+Auto-merging src/reference/docbook/dynamic-languages.xml
+Auto-merging src/reference/docbook/dtd.xml
+Auto-merging src/reference/docbook/dao.xml
+Auto-merging src/reference/docbook/classic-spring.xml
+Auto-merging src/reference/docbook/classic-aop-spring.xml
+Auto-merging src/reference/docbook/cci.xml
+Auto-merging src/reference/docbook/cache.xml
+Auto-merging src/reference/docbook/beans.xml
+Auto-merging src/reference/docbook/beans-standard-annotations.xml
+Auto-merging src/reference/docbook/beans-scopes.xml
+Auto-merging src/reference/docbook/beans-java.xml
+Auto-merging src/reference/docbook/beans-extension-points.xml
+Auto-merging src/reference/docbook/beans-dependencies.xml
+Auto-merging src/reference/docbook/beans-customizing.xml
+Auto-merging src/reference/docbook/beans-context-additional.xml
+Auto-merging src/reference/docbook/beans-classpath-scanning.xml
+Auto-merging src/reference/docbook/beans-annotation-config.xml
+Auto-merging src/reference/docbook/aop.xml
+Auto-merging src/reference/docbook/aop-api.xml
+Auto-merging src/dist/license.txt
+Auto-merging spring-webmvc/src/main/java/overview.html
+Auto-merging spring-web/src/test/java/org/springframework/remoting/jaxws/JaxWsSupportTests.java
+Auto-merging spring-test/src/test/java/org/springframework/test/context/junit4/orm/HibernateSessionFlushingTests.java
+Auto-merging spring-test/src/test/java/org/springframework/test/context/junit4/TimedSpringRunnerTests.java
+Auto-merging spring-test/src/test/java/org/springframework/test/context/junit4/RepeatedSpringRunnerTests.java
+Auto-merging spring-test/src/test/java/org/springframework/test/context/junit4/FailingBeforeAndAfterMethodsTests.java
+Auto-merging spring-test/src/test/java/org/springframework/test/context/junit4/ExpectedExceptionSpringRunnerTests.java
+Auto-merging spring-test/src/test/java/org/springframework/test/context/junit38/RepeatedJUnit38SpringContextTests.java
+Auto-merging spring-test/src/test/java/org/springframework/test/context/junit38/FailingBeforeAndAfterMethodsTests.java
+Auto-merging spring-test/src/test/java/org/springframework/test/annotation/ProfileValueAnnotationAwareTransactionalTests.java
+Auto-merging spring-oxm/src/test/java/org/springframework/oxm/jibx/JibxUnmarshallerTests.java
+Auto-merging spring-oxm/src/test/java/org/springframework/oxm/jibx/JibxMarshallerTests.java
+Auto-merging spring-orm/src/test/java/org/springframework/orm/jpa/toplink/TopLinkMultiEntityManagerFactoryIntegrationTests.java
+Auto-merging spring-orm/src/test/java/org/springframework/orm/jpa/openjpa/OpenJpaEntityManagerFactoryWithAspectJWeavingIntegrationTests.java
+Auto-merging spring-orm/src/test/java/org/springframework/orm/jpa/hibernate/HibernateMultiEntityManagerFactoryIntegrationTests.java
+Removing spring-framework.psf
+Removing spring-framework.ipr
+Removing spring-framework-reference/styles/pdf/titlepage.xml
+Removing spring-framework-reference/styles/pdf/custom.xsl
+Removing spring-framework-reference/styles/html/titlepage.xml
+Removing spring-framework-reference/styles/html/custom.xsl
+Removing spring-framework-reference/src/images
+Removing spring-framework-reference/ivy.xml
+Removing spring-framework-reference/css/html/stylesheet.css
+Removing spring-framework-reference/css/html/highlight.css
+Removing spring-framework-reference/build.xml
+Removing spring-framework-reference/.project
+Auto-merging spring-core/src/test/java/org/springframework/core/type/AnnotationMetadataTests.java
+Removing spring-build/weaving/quality.xml
+Removing spring-build/weaving/publish.xml
+Removing spring-build/weaving/package.xml
+Removing spring-build/weaving/default.xml
+Removing spring-build/weaving/common.xml
+Removing spring-build/weaving/artifact.xml
+Removing spring-build/weaving-external/quality.xml
+Removing spring-build/weaving-external/publish.xml
+Removing spring-build/weaving-external/package.xml
+Removing spring-build/weaving-external/default.xml
+Removing spring-build/weaving-external/common.xml
+Removing spring-build/weaving-external/artifact.xml
+Removing spring-build/war/quality.xml
+Removing spring-build/war/publish.xml
+Removing spring-build/war/package.xml
+Removing spring-build/war/default.xml
+Removing spring-build/war/common.xml
+Removing spring-build/war/artifact.xml
+Removing spring-build/standard/quality.xml
+Removing spring-build/standard/publish.xml
+Removing spring-build/standard/package.xml
+Removing spring-build/standard/default.xml
+Removing spring-build/standard/common.xml
+Removing spring-build/standard/artifact.xml
+Removing spring-build/resource/quality.xml
+Removing spring-build/resource/publish.xml
+Removing spring-build/resource/package.xml
+Removing spring-build/resource/default.xml
+Removing spring-build/resource/common.xml
+Removing spring-build/resource/artifact.xml
+Removing spring-build/par/quality.xml
+Removing spring-build/par/publish.xml
+Removing spring-build/par/package.xml
+Removing spring-build/par/default.xml
+Removing spring-build/par/common.xml
+Removing spring-build/par/artifact.xml
+Removing spring-build/multi-bundle/quality.xml
+Removing spring-build/multi-bundle/publish.xml
+Removing spring-build/multi-bundle/package.xml
+Removing spring-build/multi-bundle/default.xml
+Removing spring-build/multi-bundle/common.xml
+Removing spring-build/multi-bundle/artifact.xml
+Removing spring-build/library/quality.xml
+Removing spring-build/library/publish.xml
+Removing spring-build/library/package.xml
+Removing spring-build/library/default.xml
+Removing spring-build/library/common.xml
+Removing spring-build/library/artifact.xml
+Removing spring-build/lib/ivy/org.springframework.build.aws.ivy.jar
+Removing spring-build/lib/ivy/jets3t.properties
+Removing spring-build/lib/ivy/jets3t.jar
+Removing spring-build/lib/ivy/ivy.jar
+Removing spring-build/lib/ivy/current.version
+Removing spring-build/lib/ivy/commons-logging.jar
+Removing spring-build/lib/ivy/commons-httpclient.jar
+Removing spring-build/lib/ivy/commons-codec.jar
+Removing spring-build/docbook/styles/pdf/titlepage.xml
+Removing spring-build/docbook/styles/pdf/custom.xsl
+Removing spring-build/docbook/styles/html/titlepage.xml
+Removing spring-build/docbook/styles/html/custom.xsl
+Removing spring-build/docbook/publish.xml
+Removing spring-build/docbook/package.xml
+Removing spring-build/docbook/documentation.xml
+Removing spring-build/docbook/default.xml
+Removing spring-build/docbook/css/html/stylesheet.css
+Removing spring-build/docbook/css/html/highlight.css
+Removing spring-build/docbook/common.xml
+Removing spring-build/common/spring-javadoc.css
+Removing spring-build/common/quality.xml
+Removing spring-build/common/publish.xml
+Removing spring-build/common/package.xml
+Removing spring-build/common/javadoc-resources/TableHeading-background.png
+Removing spring-build/common/ivysettings.xml
+Removing spring-build/common/findbugs-exclude.xml
+Removing spring-build/common/default-ivy-configurations.xml
+Removing spring-build/common/common.xml
+Removing spring-build/common/common.properties
+Removing spring-build/common/artifact.xml
+Removing spring-build/aspect/quality.xml
+Removing spring-build/aspect/publish.xml
+Removing spring-build/aspect/package.xml
+Removing spring-build/aspect/default.xml
+Removing spring-build/aspect/common.xml
+Removing spring-build/aspect/artifact.xml
+Auto-merging spring-beans/src/test/java/org/springframework/beans/factory/support/security/CallbacksSecurityTests.java
+Removing org.springframework.web/web.iml
+Removing org.springframework.web/template.mf
+Removing org.springframework.web/src/main/resources/META-INF/notice.txt
+Removing org.springframework.web/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.web/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.web/pom.xml left in tree.
+Removing org.springframework.web/ivy.xml
+Removing org.springframework.web/build.xml
+Removing org.springframework.web/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.web/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.web/.project
+Removing org.springframework.web/.classpath
+Removing org.springframework.web.struts/web-struts.iml
+Removing org.springframework.web.struts/template.mf
+Removing org.springframework.web.struts/src/main/resources/.gitignore
+CONFLICT (modify/delete): org.springframework.web.struts/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.web.struts/pom.xml left in tree.
+Removing org.springframework.web.struts/ivy.xml
+Removing org.springframework.web.struts/build.xml
+Removing org.springframework.web.struts/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.web.struts/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.web.struts/.project
+Removing org.springframework.web.struts/.classpath
+Removing org.springframework.web.servlet/web-servlet.iml
+Removing org.springframework.web.servlet/template.mf
+Removing org.springframework.web.servlet/src/main/resources/META-INF/notice.txt
+Removing org.springframework.web.servlet/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.web.servlet/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.web.servlet/pom.xml left in tree.
+Removing org.springframework.web.servlet/ivy.xml
+Removing org.springframework.web.servlet/build.xml
+Removing org.springframework.web.servlet/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.web.servlet/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.web.servlet/.project
+Removing org.springframework.web.servlet/.classpath
+Removing org.springframework.web.portlet/web-portlet.iml
+Removing org.springframework.web.portlet/template.mf
+Removing org.springframework.web.portlet/src/main/resources/META-INF/notice.txt
+Removing org.springframework.web.portlet/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.web.portlet/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.web.portlet/pom.xml left in tree.
+Removing org.springframework.web.portlet/ivy.xml
+Removing org.springframework.web.portlet/build.xml
+Removing org.springframework.web.portlet/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.web.portlet/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.web.portlet/.project
+Removing org.springframework.web.portlet/.classpath
+Removing org.springframework.transaction/transaction.iml
+Removing org.springframework.transaction/template.mf
+Removing org.springframework.transaction/src/main/resources/META-INF/notice.txt
+Removing org.springframework.transaction/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.transaction/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.transaction/pom.xml left in tree.
+Removing org.springframework.transaction/ivy.xml
+Removing org.springframework.transaction/build.xml
+Removing org.springframework.transaction/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.transaction/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.transaction/.project
+Removing org.springframework.transaction/.classpath
+Removing org.springframework.test/test.iml
+Removing org.springframework.test/template.mf
+Removing org.springframework.test/src/main/resources/META-INF/notice.txt
+Removing org.springframework.test/src/main/resources/META-INF/license.txt
+Removing org.springframework.test/src/main/java/overview.html
+CONFLICT (modify/delete): org.springframework.test/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.test/pom.xml left in tree.
+Removing org.springframework.test/ivy.xml
+Removing org.springframework.test/build.xml
+Removing org.springframework.test/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.test/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.test/.project
+Removing org.springframework.test/.classpath
+CONFLICT (modify/delete): org.springframework.spring-parent/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.spring-parent/pom.xml left in tree.
+Removing org.springframework.spring-parent/ivy.xml
+Removing org.springframework.spring-parent/build.xml
+Removing org.springframework.spring-parent/.project
+CONFLICT (modify/delete): org.springframework.spring-library/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.spring-library/pom.xml left in tree.
+Removing org.springframework.spring-library/org.springframework.spring-library.libd
+Removing org.springframework.spring-library/ivy.xml
+Removing org.springframework.spring-library/build.xml
+Removing org.springframework.spring-library/.project
+Removing org.springframework.oxm/template.mf
+Removing org.springframework.oxm/src/main/resources/META-INF/notice.txt
+Removing org.springframework.oxm/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.oxm/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.oxm/pom.xml left in tree.
+Removing org.springframework.oxm/oxm.iml
+Removing org.springframework.oxm/ivy.xml
+Removing org.springframework.oxm/build.xml
+Removing org.springframework.oxm/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.oxm/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.oxm/.project
+Removing org.springframework.oxm/.classpath
+Removing org.springframework.orm/template.mf
+Removing org.springframework.orm/src/main/resources/META-INF/notice.txt
+Removing org.springframework.orm/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.orm/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.orm/pom.xml left in tree.
+Removing org.springframework.orm/orm.iml
+Removing org.springframework.orm/ivy.xml
+Removing org.springframework.orm/build.xml
+Removing org.springframework.orm/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.orm/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.orm/.project
+Removing org.springframework.orm/.classpath
+Removing org.springframework.jms/template.mf
+Removing org.springframework.jms/src/main/resources/META-INF/notice.txt
+Removing org.springframework.jms/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.jms/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.jms/pom.xml left in tree.
+Removing org.springframework.jms/jms.iml
+Removing org.springframework.jms/ivy.xml
+Removing org.springframework.jms/build.xml
+Removing org.springframework.jms/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.jms/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.jms/.project
+Removing org.springframework.jms/.classpath
+Removing org.springframework.jdbc/template.mf
+Removing org.springframework.jdbc/src/main/resources/META-INF/notice.txt
+Removing org.springframework.jdbc/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.jdbc/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.jdbc/pom.xml left in tree.
+Removing org.springframework.jdbc/jdbc.iml
+Removing org.springframework.jdbc/ivy.xml
+Removing org.springframework.jdbc/build.xml
+Removing org.springframework.jdbc/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.jdbc/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.jdbc/.project
+Removing org.springframework.jdbc/.classpath
+Removing org.springframework.integration-tests/template.mf
+Removing org.springframework.integration-tests/src/main/resources/META-INF/notice.txt
+Removing org.springframework.integration-tests/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.integration-tests/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.integration-tests/pom.xml left in tree.
+Removing org.springframework.integration-tests/ivy.xml
+Removing org.springframework.integration-tests/integration-tests.iml
+Removing org.springframework.integration-tests/build.xml
+Removing org.springframework.integration-tests/.springBeans
+Removing org.springframework.integration-tests/.settings/org.springframework.ide.eclipse.core.prefs
+Removing org.springframework.integration-tests/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.integration-tests/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.integration-tests/.project
+Removing org.springframework.integration-tests/.classpath
+Removing org.springframework.instrument/template.mf
+Removing org.springframework.instrument/src/main/resources/META-INF/notice.txt
+Removing org.springframework.instrument/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.instrument/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.instrument/pom.xml left in tree.
+Removing org.springframework.instrument/ivy.xml
+Removing org.springframework.instrument/instrument.iml
+Removing org.springframework.instrument/build.xml
+Removing org.springframework.instrument/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.instrument/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.instrument/.project
+Removing org.springframework.instrument/.classpath
+Removing org.springframework.instrument.tomcat/template.mf
+Removing org.springframework.instrument.tomcat/src/main/resources/META-INF/notice.txt
+Removing org.springframework.instrument.tomcat/src/main/resources/META-INF/license.txt
+Removing org.springframework.instrument.tomcat/src/main/java/overview.html
+CONFLICT (modify/delete): org.springframework.instrument.tomcat/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.instrument.tomcat/pom.xml left in tree.
+Removing org.springframework.instrument.tomcat/ivy.xml
+Removing org.springframework.instrument.tomcat/build.xml
+Removing org.springframework.instrument.tomcat/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.instrument.tomcat/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.instrument.tomcat/.project
+Removing org.springframework.instrument.tomcat/.classpath
+Removing org.springframework.expression/template.mf
+Removing org.springframework.expression/src/main/resources/META-INF/notice.txt
+Removing org.springframework.expression/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.expression/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.expression/pom.xml left in tree.
+Removing org.springframework.expression/ivy.xml
+Removing org.springframework.expression/expression.iml
+Removing org.springframework.expression/build.xml
+Removing org.springframework.expression/.settings/org.eclipse.wst.validation.prefs
+Removing org.springframework.expression/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.expression/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.expression/.project
+Removing org.springframework.expression/.classpath
+Removing org.springframework.core/template.mf
+Removing org.springframework.core/src/main/resources/META-INF/notice.txt
+Removing org.springframework.core/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.core/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.core/pom.xml left in tree.
+Removing org.springframework.core/ivy.xml
+Removing org.springframework.core/core.iml
+Removing org.springframework.core/build.xml
+Removing org.springframework.core/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.core/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.core/.project
+Removing org.springframework.core/.classpath
+Removing org.springframework.context/template.mf
+Removing org.springframework.context/src/main/resources/META-INF/notice.txt
+Removing org.springframework.context/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.context/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.context/pom.xml left in tree.
+Removing org.springframework.context/ivy.xml
+Removing org.springframework.context/context.iml
+Removing org.springframework.context/build.xml
+Removing org.springframework.context/.settings/org.springframework.ide.eclipse.core.prefs
+Removing org.springframework.context/.settings/org.springframework.ide.eclipse.beans.core.prefs
+Removing org.springframework.context/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.context/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.context/.project
+Removing org.springframework.context/.classpath
+Removing org.springframework.context.support/template.mf
+CONFLICT (modify/delete): org.springframework.context.support/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.context.support/pom.xml left in tree.
+Removing org.springframework.context.support/ivy.xml
+Removing org.springframework.context.support/context-support.iml
+Removing org.springframework.context.support/build.xml
+Removing org.springframework.context.support/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.context.support/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.context.support/.project
+Removing org.springframework.context.support/.classpath
+Removing org.springframework.beans/template.mf
+Removing org.springframework.beans/src/main/resources/META-INF/notice.txt
+Removing org.springframework.beans/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.beans/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.beans/pom.xml left in tree.
+Removing org.springframework.beans/ivy.xml
+Removing org.springframework.beans/build.xml
+Removing org.springframework.beans/beans.iml
+Removing org.springframework.beans/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.beans/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.beans/.project
+Removing org.springframework.beans/.classpath
+Removing org.springframework.aspects/template.mf
+Removing org.springframework.aspects/src/main/resources/META-INF/notice.txt
+Removing org.springframework.aspects/src/main/resources/META-INF/license.txt
+Removing org.springframework.aspects/src/main/java/overview.html
+CONFLICT (modify/delete): org.springframework.aspects/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.aspects/pom.xml left in tree.
+Removing org.springframework.aspects/ivy.xml
+Removing org.springframework.aspects/build.xml
+Removing org.springframework.aspects/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.aspects/.project
+Removing org.springframework.aspects/.classpath
+Removing org.springframework.asm/template.mf
+CONFLICT (modify/delete): org.springframework.asm/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.asm/pom.xml left in tree.
+Removing org.springframework.asm/ivy.xml
+Removing org.springframework.asm/build.xml
+Removing org.springframework.asm/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.asm/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.asm/.project
+Removing org.springframework.asm/.classpath
+Removing org.springframework.aop/template.mf
+Removing org.springframework.aop/src/main/resources/META-INF/notice.txt
+Removing org.springframework.aop/src/main/resources/META-INF/license.txt
+CONFLICT (modify/delete): org.springframework.aop/pom.xml deleted in new and modified in HEAD. Version HEAD of org.springframework.aop/pom.xml left in tree.
+Removing org.springframework.aop/ivy.xml
+Removing org.springframework.aop/build.xml
+Removing org.springframework.aop/aop.iml
+Removing org.springframework.aop/.settings/org.eclipse.jdt.ui.prefs
+Removing org.springframework.aop/.settings/org.eclipse.jdt.core.prefs
+Removing org.springframework.aop/.project
+Removing org.springframework.aop/.classpath
+Removing eclipse-code-formatter.xml
+Removing ci-build.properties
+Removing build.versions
+Removing build.properties
+Removing build-spring-framework/resources/readme.txt
+Removing build-spring-framework/resources/notice.txt
+Removing build-spring-framework/readme.txt
+Removing build-spring-framework/publish-top-level.xml
+Removing build-spring-framework/publish-documentation.xml
+Removing build-spring-framework/package-top-level.xml
+Removing build-spring-framework/package-library.xml
+Removing build-spring-framework/package-bundle.xml
+Removing build-spring-framework/build.xml
+Removing build-spring-framework/build.iml
+Auto-merging .gitignore
+CONFLICT (content): Merge conflict in .gitignore
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 7636913
+
+Clean local git folder
+
+ Starting Process for 3798626a90aaf215ac4e3b1a26749cdf8a167dc1
+
+Checking out 'new' branch for 8980ce7
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ README.md                                          |    4 +-
+ build-spring-framework/resources/changelog.txt     |   10 ++-
+ .../jms/connection/CachingConnectionFactory.java   |   14 ++-
+ .../listener/AbstractJmsListeningContainer.java    |    3 +-
+ .../listener/AbstractMessageListenerContainer.java |    3 +-
+ .../AbstractPollingMessageListenerContainer.java   |    8 +-
+ .../listener/DefaultMessageListenerContainer.java  |   14 ++-
+ .../listener/SimpleMessageListenerContainer.java   |   36 +++++-
+ .../orm/hibernate3/LocalSessionFactoryBean.java    |    6 +-
+ .../orm/hibernate4/LocalSessionFactoryBean.java    |   53 +++++++--
+ .../oxm/jaxb/ClassPathJaxb2TypeScanner.java        |  120 +++++++++++++++++++
+ .../springframework/oxm/jaxb/Jaxb2Marshaller.java  |  120 ++++++++++++++-----
+ .../oxm/jaxb/Jaxb2MarshallerTests.java             |    9 ++-
+ org.springframework.oxm/template.mf                |    1 +
+ .../web/servlet/DispatcherServlet.java             |    4 +-
+ .../org/springframework/web/servlet/FlashMap.java  |    2 +
+ .../web/servlet/FlashMapManager.java               |    7 +-
+ .../AbstractHandlerMethodExceptionResolver.java    |   26 ++--
+ .../web/servlet/mvc/AbstractUrlViewController.java |    6 +-
+ .../servlet/mvc/ParameterizableViewController.java |    4 +-
+ .../mvc/condition/ProducesRequestCondition.java    |    6 +-
+ .../annotation/HttpEntityMethodProcessor.java      |   31 +++---
+ .../ModelAndViewMethodReturnValueHandler.java      |   29 +++--
+ ...delAndViewResolverMethodReturnValueHandler.java |   34 +++---
+ .../RedirectAttributesMethodArgumentResolver.java  |   15 ++-
+ .../annotation/ServletInvocableHandlerMethod.java  |   12 +-
+ .../ServletRequestMethodArgumentResolver.java      |   20 ++--
+ .../ServletResponseMethodArgumentResolver.java     |   18 ++--
+ ...UriComponentsBuilderMethodArgumentResolver.java |   14 +-
+ .../annotation/ViewMethodReturnValueHandler.java   |   23 ++--
+ .../ViewNameMethodReturnValueHandler.java          |   23 ++--
+ .../servlet/support/DefaultFlashMapManager.java    |   61 ++++++++--
+ .../mvc/ParameterizableViewControllerTests.java    |   71 +++++++++++
+ .../mvc/UrlFilenameViewControllerTests.java        |   13 ++
+ .../condition/ProducesRequestConditionTests.java   |   14 ++
+ .../ModelAndViewMethodReturnValueHandlerTests.java |   30 +++---
+ .../support/DefaultFlashMapManagerTests.java       |   54 +++++----
+ .../java/org/springframework/http/HttpStatus.java  |   57 ++++++++-
+ .../java/org/springframework/http/MediaType.java   |    6 +-
+ .../http/client/AbstractClientHttpResponse.java    |   35 ++++++
+ .../client/BufferingClientHttpResponseWrapper.java |    6 +-
+ .../http/client/ClientHttpResponse.java            |    9 ++-
+ .../http/client/CommonsClientHttpResponse.java     |    9 +-
+ .../client/HttpComponentsClientHttpResponse.java   |   11 +-
+ .../http/client/SimpleClientHttpResponse.java      |    9 +-
+ .../remoting/jaxws/JaxWsPortClientInterceptor.java |   11 ++-
+ .../AbstractNamedValueMethodArgumentResolver.java  |   35 +++---
+ .../AbstractWebArgumentResolverAdapter.java        |   37 +++---
+ .../annotation/ErrorsMethodArgumentResolver.java   |   19 ++--
+ .../web/method/annotation/MapMethodProcessor.java  |   32 +++---
+ .../annotation/ModelAttributeMethodProcessor.java  |   52 ++++----
+ .../method/annotation/ModelMethodProcessor.java    |   34 +++---
+ .../RequestHeaderMapMethodArgumentResolver.java    |   23 ++--
+ .../RequestParamMapMethodArgumentResolver.java     |   23 ++--
+ .../SessionStatusMethodArgumentResolver.java       |   13 +-
+ .../HandlerMethodArgumentResolverComposite.java    |   25 ++--
+ .../HandlerMethodReturnValueHandlerComposite.java  |   29 +++--
+ .../web/method/support/InvocableHandlerMethod.java |   49 ++++----
+ .../org/springframework/web/util/UriUtils.java     |  125 ++++++++++++++++++--
+ .../org/springframework/http/HttpStatusTests.java  |  122 +++++++++++++++----
+ .../org/springframework/http/MediaTypeTests.java   |    5 +-
+ .../InterceptingClientHttpRequestFactoryTests.java |    8 +-
+ .../springframework/web/util/UriUtilsTests.java    |    3 +
+ 63 files changed, 1211 insertions(+), 494 deletions(-)
+ create mode 100644 org.springframework.oxm/src/main/java/org/springframework/oxm/jaxb/ClassPathJaxb2TypeScanner.java
+ create mode 100644 org.springframework.web.servlet/src/test/java/org/springframework/web/servlet/mvc/ParameterizableViewControllerTests.java
+ create mode 100644 org.springframework.web/src/main/java/org/springframework/http/client/AbstractClientHttpResponse.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: b992c3d
+
+Clean local git folder
+
+ Starting Process for c471bdde850171041788b013b9ff21cd0f12403e
+
+Checking out 'new' branch for b8ff6c1
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 2624b90
+
+Clean local git folder
+
+ Starting Process for 46bdb2de077063663f0daae85431ebe5c430edc8
+
+Checking out 'new' branch for b50f6e1
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: ee36c80
+
+Clean local git folder
+
+ Starting Process for 81dfef90efabf4cd761e2d31d45c2ba2e498818c
+
+Checking out 'new' branch for 1d9d3e6
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging spring-core/src/test/java/org/springframework/core/io/ResourceTests.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AnnotationConfigUtils.java
+Merge made by the 'recursive' strategy.
+ .../context/annotation/AnnotationConfigUtils.java  |    4 ++--
+ .../org/springframework/core/io/ResourceTests.java |   10 +++-------
+ 2 files changed, 5 insertions(+), 9 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: e091e39
+
+Clean local git folder
+
+ Starting Process for 05d10a5daca68754eeaa6289a38fbe63243f3e95
+
+Checking out 'new' branch for c39a14a
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ build-spring-framework/build.iml                   |   24 +-
+ build-spring-framework/build.xml                   |  162 +-
+ org.springframework.aop/.classpath                 |   40 +-
+ org.springframework.aop/aop.iml                    |   64 +-
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.aspects/ivy.xml                |   88 +-
+ .../src/main/java/overview.html                    |   12 +-
+ .../src/main/resources/META-INF/aop.xml            |   38 +-
+ .../aop/aspectj/autoproxy/ajcAutoproxyTests.xml    |   34 +-
+ .../beans/factory/aspectj/beanConfigurerTests.xml  |   28 +-
+ .../beans/factory/aspectj/springConfigured.xml     |   28 +-
+ .../cache/aspectj/AspectJAnnotationTest.java       |    8 +
+ .../cache/config/SomeKeyGenerator.java             |   23 +
+ .../cache/config/annotation-cache-aspectj.xml      |   88 +-
+ .../aspectj/TransactionAspectTests-context.xml     |   36 +-
+ org.springframework.beans/beans.iml                |   60 +-
+ .../src/main/java/overview.html                    |   12 +-
+ .../beans/factory/support/security/callbacks.xml   |  184 +-
+ .../test/resources/com/foo/component-config.xml    |   32 +-
+ .../src/test/resources/com/foo/component.xsd       |   36 +-
+ org.springframework.context.support/.classpath     |   66 +-
+ org.springframework.context.support/.project       |   46 +-
+ .../context-support.iml                            |  218 +-
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.context/.project               |   58 +-
+ org.springframework.context/context.iml            |  374 +-
+ .../AnnotationDrivenCacheBeanDefinitionParser.java |    4 +-
+ .../cache/ehcache/package-info.java                |   22 +-
+ .../LazyParamAwareEvaluationContext.java           |    1 +
+ .../concurrent/ForkJoinPoolFactoryBean.java        |  216 +-
+ .../scheduling/support/CronSequenceGenerator.java  |  728 ++--
+ .../src/main/java/overview.html                    |   12 +-
+ .../config/AnnotatedClassCacheableService.java     |    4 +-
+ .../springframework/context/support/spr7283.xml    |   34 +-
+ ...pectIntegrationTests-groovy-dynamic-context.xml |   40 +-
+ ...ctIntegrationTests-groovy-interface-context.xml |   38 +-
+ ...tionTests-groovy-proxy-target-class-context.xml |   38 +-
+ .../GroovyAspectIntegrationTests-java-context.xml  |   38 +-
+ .../cache/config/annotationDrivenCacheConfig.xml   |   94 +-
+ .../config/annotationDrivenCacheNamespace.xml      |   68 +-
+ .../springframework/cache/config/cache-advice.xml  |  218 +-
+ org.springframework.core/.classpath                |   36 +-
+ org.springframework.core/core.iml                  |  426 ++--
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.expression/.project            |   50 +-
+ org.springframework.expression/expression.iml      |   36 +-
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.instrument/instrument.iml      |   42 +-
+ .../src/main/java/overview.html                    |   12 +-
+ .../integration-tests.iml                          |  920 +++---
+ org.springframework.jdbc/jdbc.iml                  |  190 +-
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.jms/jms.iml                    |  174 +-
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.orm/orm.iml                    |  562 ++--
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.spring-parent/build.xml        |   14 +-
+ .../src/main/java/overview.html                    |   12 +-
+ .../expression/ExpressionUsageTests-context.xml    |   86 +-
+ org.springframework.test/test.iml                  |  270 +-
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.transaction/transaction.iml    |  166 +-
+ .../src/main/java/overview.html                    |   12 +-
+ org.springframework.web.portlet/web-portlet.iml    |  124 +-
+ .../src/main/java/overview.html                    |   12 +-
+ .../mock/web/MockHttpServletResponse.java          | 1140 +++---
+ .../web/servlet/view/tiles2/tiles-definitions.xml  |   20 +-
+ org.springframework.web.servlet/web-servlet.iml    |  730 ++--
+ org.springframework.web.struts/ivy.xml             |  106 +-
+ .../src/main/java/overview.html                    |   12 +-
+ .../mock/web/MockHttpServletResponse.java          | 1138 +++---
+ spring-framework-reference/src/cache.xml           | 1168 +++---
+ .../src/classic-aop-spring.xml                     | 3900 ++++++++++----------
+ spring-framework-reference/src/expressions.xml     | 2536 +++++++-------
+ 74 files changed, 8670 insertions(+), 8634 deletions(-)
+ create mode 100644 org.springframework.aspects/src/test/java/org/springframework/cache/config/SomeKeyGenerator.java
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: c461455
+
+Clean local git folder
+
+ Starting Process for 64d6605974de1f3df8ddb508eab047116d980c35
+
+Checking out 'new' branch for 9fc05a8
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 0e8f5d8
+
+Clean local git folder
+
+ Starting Process for e68b563626147120e84e164704969b83df7ad35d
+
+Checking out 'new' branch for de2d808
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 0e8f5d8..de2d808
+Fast-forward
+ .../expression/spel/ast/TypeReference.java         |   36 ++++-
+ .../standard/InternalSpelExpressionParser.java     |  156 ++++++++++----------
+ .../expression/spel/SpringEL300Tests.java          |   31 ++++-
+ 3 files changed, 142 insertions(+), 81 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 1f28bdf
+
+Clean local git folder
+
+ Starting Process for 0ca11d2296d289c0b42dc8c371723632d8a3e5ef
+
+Checking out 'new' branch for 2503b7e
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: e3f5449
+
+Clean local git folder
+
+ Starting Process for bb5c81e0c50efc4f0669b7e5a9567b732fd84c58
+
+Checking out 'new' branch for e25183e
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating e3f5449..e25183e
+Fast-forward
+ .../springframework/oxm/jibx/JibxMarshaller.java   |    4 +-
+ .../org/springframework/oxm/jibx/FlightType.java   |   26 ++++++++++++-----
+ .../oxm/jibx/JibxUnmarshallerTests.java            |   29 +++++++++++++++++---
+ .../org/springframework/oxm/jibx/binding.xml       |    1 +
+ 4 files changed, 46 insertions(+), 14 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 35bf5dc
+
+Clean local git folder
+
+ Starting Process for 6295f2b591a1293d94078e1d20f016cd82745fe1
+
+Checking out 'new' branch for 7b703b7
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 81dfef9
+
+Clean local git folder
+
+ Starting Process for 3e81482760f742d078e71b166cc0f7c3c2eb6abb
+
+Checking out 'new' branch for 1c2b1d2
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging src/dist/changelog.txt
+Auto-merging spring-webmvc/src/test/java/org/springframework/web/servlet/mvc/method/annotation/ServletResponseMethodArgumentResolverTests.java
+Auto-merging spring-webmvc/src/main/java/org/springframework/web/servlet/mvc/method/annotation/ServletResponseMethodArgumentResolver.java
+Auto-merging spring-web/src/test/java/org/springframework/web/context/support/AnnotationConfigWebApplicationContextTests.java
+Auto-merging spring-web/src/main/java/org/springframework/web/context/support/AnnotationConfigWebApplicationContext.java
+Auto-merging spring-jms/src/main/java/org/springframework/jms/connection/JmsTransactionManager.java
+Auto-merging spring-jdbc/src/test/resources/org/springframework/jdbc/support/test-custom-translators-context.xml
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/support/SQLErrorCodesFactory.java
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/support/SQLErrorCodes.java
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/support/CustomSQLExceptionTranslatorRegistry.java
+Auto-merging spring-jdbc/src/main/java/org/springframework/jdbc/support/CustomSQLExceptionTranslatorRegistrar.java
+Auto-merging spring-core/src/main/java/org/springframework/util/ResourceUtils.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/support/PropertiesLoaderUtils.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/support/PathMatchingResourcePatternResolver.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/VfsUtils.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/VfsResource.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/UrlResource.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/FileSystemResource.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/AbstractResource.java
+Auto-merging spring-core/src/main/java/org/springframework/core/io/AbstractFileResolvingResource.java
+Auto-merging spring-context/src/test/java/org/springframework/context/annotation/ImportAwareTests.java
+Auto-merging spring-context/src/test/java/org/springframework/context/annotation/AsmCircularImportDetectionTests.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ScannedGenericBeanDefinition.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/LoadTimeWeavingConfiguration.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassPostProcessor.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassParser.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassBeanDefinitionReader.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ComponentScanAnnotationParser.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ComponentScan.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/ClassPathScanningCandidateComponentProvider.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AspectJAutoProxyRegistrar.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AnnotationScopeMetadataResolver.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AnnotationConfigUtils.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AnnotationConfigApplicationContext.java
+Auto-merging spring-context/src/main/java/org/springframework/context/annotation/AdviceModeImportSelector.java
+Auto-merging spring-context-support/src/main/java/org/springframework/scheduling/quartz/MethodInvokingJobDetailFactoryBean.java
+Auto-merging spring-beans/src/main/java/org/springframework/beans/factory/annotation/AnnotatedGenericBeanDefinition.java
+CONFLICT (modify/delete): build-spring-framework/resources/readme.txt deleted in HEAD and modified in new. Version new of build-spring-framework/resources/readme.txt left in tree.
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 66012b9
+
+Clean local git folder
+
+ Starting Process for 6e00456e6747e1015e577ffe0465a7942fbcf30c
+
+Checking out 'new' branch for a46facc
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ build-spring-framework/resources/changelog.txt     |    4 +-
+ .../ConfigurationClassBeanDefinitionReader.java    |   23 +++++---
+ .../ConfigurationClassPostProcessor.java           |    6 +-
+ .../ReloadableResourceBundleMessageSource.java     |    6 +-
+ .../support/ResourceBundleMessageSource.java       |    6 +-
+ .../core/convert/TypeDescriptor.java               |    9 +--
+ .../springframework/core/io/AbstractResource.java  |    8 +-
+ .../java/org/springframework/core/io/Resource.java |    6 +-
+ .../org/springframework/core/io/VfsResource.java   |   28 ++++++---
+ .../core/io/support/PropertiesLoaderSupport.java   |    8 +--
+ .../java/org/springframework/util/ClassUtils.java  |   11 +++-
+ .../jdbc/core/namedparam/NamedParameterUtils.java  |    3 +
+ .../orm/hibernate3/package-info.java               |    8 +-
+ .../orm/hibernate4/package-info.java               |   10 ++--
+ .../DefaultProfileAnnotationConfigTests.java       |   57 +++++++++++++++++++
+ .../importresource/DefaultProfileConfig.java       |   37 ++++++++++++
+ .../DevProfileAnnotationConfigTests.java           |   39 +++++++++++++
+ .../junit4/profile/importresource/import.xml       |   13 ++++
+ .../jasperreports/AbstractJasperReportsView.java   |   60 ++++++++++----------
+ .../http/server/ServletServerHttpRequest.java      |    6 +-
+ 20 files changed, 261 insertions(+), 87 deletions(-)
+ create mode 100644 org.springframework.test/src/test/java/org/springframework/test/context/junit4/profile/importresource/DefaultProfileAnnotationConfigTests.java
+ create mode 100644 org.springframework.test/src/test/java/org/springframework/test/context/junit4/profile/importresource/DefaultProfileConfig.java
+ create mode 100644 org.springframework.test/src/test/java/org/springframework/test/context/junit4/profile/importresource/DevProfileAnnotationConfigTests.java
+ create mode 100644 org.springframework.test/src/test/java/org/springframework/test/context/junit4/profile/importresource/import.xml
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f3f73f0
+
+Clean local git folder
+
+ Starting Process for 5b18fc44ce91049e78022924fcbe656806f1aff6
+
+Checking out 'new' branch for 4f4a2e7
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Removing org.springframework.context/src/main/java/org/springframework/context/annotation/ProfileHelper.java
+Merge made by the 'recursive' strategy.
+ build-spring-framework/resources/changelog.txt     |   25 +-
+ org.springframework.aspects/pom.xml                |    2 +-
+ .../springframework/beans/ExtendedBeanInfo.java    |    4 +-
+ .../annotation/AnnotatedGenericBeanDefinition.java |    2 +-
+ .../scheduling/quartz/JobDetailFactoryBean.java    |   25 ++-
+ .../annotation/AbstractCachingConfiguration.java   |   11 +-
+ .../annotation/ProxyCachingConfiguration.java      |    4 +-
+ .../annotation/AdviceModeImportSelector.java       |   25 +--
+ .../annotation/AnnotatedBeanDefinitionReader.java  |    8 +-
+ .../annotation/AnnotationBeanNameGenerator.java    |    5 +-
+ .../context/annotation/AnnotationConfigUtils.java  |   22 +-
+ .../AnnotationScopeMetadataResolver.java           |   14 +-
+ .../annotation/AspectJAutoProxyRegistrar.java      |   12 +-
+ .../context/annotation/AutoProxyRegistrar.java     |    5 +-
+ ...lassPathScanningCandidateComponentProvider.java |    8 +-
+ .../annotation/ComponentScanAnnotationParser.java  |   54 ++--
+ .../context/annotation/ConfigurationClass.java     |   71 +++++-
+ .../ConfigurationClassBeanDefinitionReader.java    |   88 ++++---
+ .../annotation/ConfigurationClassParser.java       |   69 +++---
+ .../annotation/ConfigurationClassUtils.java        |    5 +-
+ .../annotation/LoadTimeWeavingConfiguration.java   |    7 +-
+ .../context/annotation/MetadataUtils.java          |   49 ++++
+ .../context/annotation/ProfileHelper.java          |   36 ---
+ .../annotation/AbstractAsyncConfiguration.java     |   11 +-
+ .../annotation/ProxyAsyncConfiguration.java        |   12 +-
+ .../concurrent/ForkJoinPoolFactoryBean.java        |    4 +-
+ .../AbstractCircularImportDetectionTests.java      |    4 +-
+ .../context/annotation/ImportAwareTests.java       |   14 +-
+ .../annotation/configuration/ImportTests.java      |   40 +++-
+ .../configuration/spr9031/Spr9031Tests.java        |   79 ++++++
+ .../spr9031/scanpackage/Spr9031Component.java      |   24 ++
+ .../core/annotation/AnnotationAttributes.java      |  130 ++++++++++
+ .../core/annotation/AnnotationUtils.java           |   65 ++++-
+ .../core/type/StandardAnnotationMetadata.java      |   41 +++-
+ .../core/type/StandardMethodMetadata.java          |   21 ++-
+ .../AnnotationAttributesReadingVisitor.java        |  273 ++++++++++++++------
+ .../AnnotationMetadataReadingVisitor.java          |   44 +++-
+ .../classreading/MethodMetadataReadingVisitor.java |    8 +-
+ .../core/annotation/AnnotationAttributesTests.java |  110 ++++++++
+ .../core/type/AnnotationMetadataTests.java         |  192 +++++++++++----
+ .../jdbc/core/namedparam/NamedParameterUtils.java  |   16 +-
+ .../datasource/init/ResourceDatabasePopulator.java |    5 +-
+ .../core/namedparam/NamedParameterUtilsTests.java  |   28 ++-
+ .../datasource/init/DatabasePopulatorTests.java    |   21 ++-
+ .../jdbc/datasource/init/db-test-data-select.sql   |    3 +
+ .../LocalContainerEntityManagerFactoryBean.java    |   13 +-
+ .../DefaultPersistenceUnitManager.java             |   11 +-
+ .../jpa/persistenceunit/PersistenceUnitReader.java |    6 +-
+ .../orm/jpa/eclipselink/eclipselink-manager.xml    |    4 +
+ ...AbstractTransactionManagementConfiguration.java |    9 +-
+ .../ProxyTransactionManagementConfiguration.java   |    4 +-
+ .../portlet/context/PortletContextResource.java    |   24 ++-
+ .../web/servlet/DispatcherServlet.java             |   10 +-
+ .../org/springframework/web/servlet/FlashMap.java  |   42 +---
+ .../web/servlet/FlashMapManager.java               |   31 +--
+ .../servlet/support/AbstractFlashMapManager.java   |  138 +++++-----
+ .../servlet/support/SessionFlashMapManager.java    |   11 +-
+ .../web/servlet/view/RedirectView.java             |    2 +-
+ .../web/context/ContextLoaderTests.java            |   29 ++-
+ .../support/AbstractFlashMapManagerTests.java      |   87 +++----
+ .../web/bind/annotation/RequestMapping.java        |  127 +++++-----
+ .../springframework/web/context/ContextLoader.java |   23 ++-
+ .../context/support/ServletContextResource.java    |   24 ++-
+ .../support/WebApplicationContextUtils.java        |   18 +-
+ .../annotation/SessionAttributesHandler.java       |   90 ++++----
+ .../springframework/web/util/UriComponents.java    |    6 +-
+ .../annotation/SessionAttributesHandlerTests.java  |   52 ++--
+ .../springframework/web/util/UriTemplateTests.java |   11 +-
+ spring-framework-reference/src/mvc.xml             |   74 ++++++
+ spring-framework-reference/src/new-in-3.1.xml      |   24 +-
+ spring-framework-reference/src/remoting.xml        |    2 +-
+ spring-framework.ipr                               |   31 ++-
+ 72 files changed, 1837 insertions(+), 762 deletions(-)
+ create mode 100644 org.springframework.context/src/main/java/org/springframework/context/annotation/MetadataUtils.java
+ delete mode 100644 org.springframework.context/src/main/java/org/springframework/context/annotation/ProfileHelper.java
+ create mode 100644 org.springframework.context/src/test/java/org/springframework/context/annotation/configuration/spr9031/Spr9031Tests.java
+ create mode 100644 org.springframework.context/src/test/java/org/springframework/context/annotation/configuration/spr9031/scanpackage/Spr9031Component.java
+ create mode 100644 org.springframework.core/src/main/java/org/springframework/core/annotation/AnnotationAttributes.java
+ create mode 100644 org.springframework.core/src/test/java/org/springframework/core/annotation/AnnotationAttributesTests.java
+ create mode 100644 org.springframework.jdbc/src/test/resources/org/springframework/jdbc/datasource/init/db-test-data-select.sql
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 9fb6e23
+
+Clean local git folder
+
+ Starting Process for 598b125bb2c48d7834adc1ba8128a986c2372c95
+
+Checking out 'new' branch for ff84419
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 22de6b7
+
+Clean local git folder
+
+ Starting Process for 18b67eed294891a555a11df694140ba9bc6d6f22
+
+Checking out 'new' branch for af38448
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Merge made by the 'recursive' strategy.
+ .gitignore                                         |    1 +
+ .../beans/TypeConverterDelegate.java               |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 6d674f7
+
+Clean local git folder
+
+ Starting Process for e091e399dcf0323fbe509b267bfc5ce176571eb8
+
+Checking out 'new' branch for f1168ea
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Auto-merging org.springframework.web/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.web/pom.xml
+Auto-merging org.springframework.web.struts/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.web.struts/pom.xml
+Auto-merging org.springframework.web.servlet/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.web.servlet/pom.xml
+Auto-merging org.springframework.web.portlet/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.web.portlet/pom.xml
+Auto-merging org.springframework.transaction/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.transaction/pom.xml
+Auto-merging org.springframework.test/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.test/pom.xml
+Auto-merging org.springframework.spring-parent/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.spring-parent/pom.xml
+Auto-merging org.springframework.spring-library/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.spring-library/pom.xml
+Auto-merging org.springframework.oxm/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.oxm/pom.xml
+Auto-merging org.springframework.orm/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.orm/pom.xml
+Auto-merging org.springframework.jms/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.jms/pom.xml
+Auto-merging org.springframework.jdbc/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.jdbc/pom.xml
+Auto-merging org.springframework.integration-tests/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.integration-tests/pom.xml
+Auto-merging org.springframework.instrument/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.instrument/pom.xml
+Auto-merging org.springframework.instrument.tomcat/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.instrument.tomcat/pom.xml
+Auto-merging org.springframework.expression/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.expression/pom.xml
+Auto-merging org.springframework.core/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.core/pom.xml
+Auto-merging org.springframework.context/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.context/pom.xml
+Auto-merging org.springframework.context.support/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.context.support/pom.xml
+Auto-merging org.springframework.beans/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.beans/pom.xml
+Auto-merging org.springframework.aspects/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.aspects/pom.xml
+Auto-merging org.springframework.asm/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.asm/pom.xml
+Auto-merging org.springframework.aop/pom.xml
+CONFLICT (content): Merge conflict in org.springframework.aop/pom.xml
+Auto-merging build.properties
+CONFLICT (content): Merge conflict in build.properties
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: ab4952a
+
+Clean local git folder
+
+ Starting Process for 2abcdaab1e4fbf28a0f915372b62194aaae8e9da
+
+Checking out 'new' branch for 7cdc534
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating ab4952a..7cdc534
+Fast-forward
+ .../java/org/springframework/http/MediaType.java   |    7 ++++++-
+ .../org/springframework/http/MediaTypeTests.java   |    8 ++++++++
+ 2 files changed, 14 insertions(+), 1 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 53673d6
+
+Clean local git folder
+
+ Starting Process for 5330c52ebfca1ab2fffca4bcc844d2d9f56a296b
+
+Checking out 'new' branch for e2fbaa8
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 183ac0c
+
+Clean local git folder
+
+ Starting Process for 6a01ca6d353ef29b46deac89f9c248d978406f2d
+
+Checking out 'new' branch for f3bcb6e
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: e7506b5
+
+Clean local git folder
+
+ Starting Process for 158b3c6af8e727d6304d64aa573695a51430211d
+
+Checking out 'new' branch for 1eaaa9a
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: f779c19
+
+Clean local git folder
+
+ Starting Process for ae9549ae1388c8b18872b84eadc9e3068b4e1d25
+
+Checking out 'new' branch for e85e614
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: effb762
+
+Clean local git folder
+
+ Starting Process for 3514cc5d65ca5b7dc603411c6175062380deec31
+
+Checking out 'new' branch for e830511
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 991b8e9
+
+Clean local git folder
+
+ Starting Process for e830511e8a323945c32157a1b522d3315ce81e1d
+
+Checking out 'new' branch for 7ee821d
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 6d5a630
+
+Clean local git folder
+
+ Starting Process for b09be842f38c860c82a08580694403348f932dfe
+
+Checking out 'new' branch for 57b89e0
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Already up-to-date.
+
+
+
+Deleting the new branch
+
+=============================================================================
+
+
+Hard reset Git repository to rev: 6295f2b
+
+Clean local git folder
+
+ Starting Process for 9c8332a6c4e9fef73d7bf0e01480f75b0b83af6f
+
+Checking out 'new' branch for 104f13e
+
+Checking out Git Master repository
+
+
+ Merge new into master
+Updating 6295f2b..104f13e
+Fast-forward
+ .../web/multipart/MultipartResolver.java           |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+
+
+Deleting the new branch
+
+=============================================================================
+
