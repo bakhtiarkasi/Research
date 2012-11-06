@@ -1,0 +1,243 @@
+CREATE DATABASE  IF NOT EXISTS `arsonae` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `arsonae`;
+-- MySQL dump 10.13  Distrib 5.1.40, for Win32 (ia32)
+--
+-- Host: localhost    Database: arsonae
+-- ------------------------------------------------------
+-- Server version	5.5.9
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `changeset`
+--
+
+DROP TABLE IF EXISTS `changeset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `changeset` (
+  `fkEventId` int(11) NOT NULL,
+  `fkFileId` int(11) NOT NULL,
+  `fkWorkspaceId` int(11) NOT NULL,
+  `fkTaskId` int(11) NOT NULL,
+  `fkMethodId` int(11) DEFAULT NULL,
+  `DOI` int(11) NOT NULL,
+  PRIMARY KEY (`fkEventId`,`fkFileId`,`fkWorkspaceId`,`fkTaskId`),
+  KEY `fk_ChangeSet_Method1` (`fkMethodId`),
+  KEY `fk_ChangeSet_Event1` (`fkEventId`),
+  KEY `fk_ChangeSet_Workspace1` (`fkWorkspaceId`),
+  KEY `fk_ChangeSet_Task1` (`fkTaskId`),
+  KEY `fk_ChangeSet_File1` (`fkFileId`),
+  CONSTRAINT `fk_ChangeSet_Event1` FOREIGN KEY (`fkEventId`) REFERENCES `event` (`pkEventId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ChangeSet_File1` FOREIGN KEY (`fkFileId`) REFERENCES `file` (`pkFileId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ChangeSet_Method1` FOREIGN KEY (`fkMethodId`) REFERENCES `method` (`pkMethodId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ChangeSet_Task1` FOREIGN KEY (`fkTaskId`) REFERENCES `task` (`pkTaskId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ChangeSet_Workspace1` FOREIGN KEY (`fkWorkspaceId`) REFERENCES `workspace` (`pkWorkspaceId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `changeset`
+--
+
+LOCK TABLES `changeset` WRITE;
+/*!40000 ALTER TABLE `changeset` DISABLE KEYS */;
+/*!40000 ALTER TABLE `changeset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `task`
+--
+
+DROP TABLE IF EXISTS `task`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `task` (
+  `pkTaskId` int(11) NOT NULL AUTO_INCREMENT,
+  `fkWorkspaceId` int(11) NOT NULL,
+  `Name` varchar(45) NOT NULL,
+  `Type` int(11) NOT NULL,
+  `Status` int(11) NOT NULL,
+  `ScheduledDate` date NOT NULL,
+  `DueDate` date DEFAULT NULL,
+  `EstimatedTime` time DEFAULT NULL,
+  PRIMARY KEY (`pkTaskId`,`fkWorkspaceId`),
+  KEY `fk_Task_Workspace` (`fkWorkspaceId`),
+  CONSTRAINT `fk_Task_Workspace` FOREIGN KEY (`fkWorkspaceId`) REFERENCES `workspace` (`pkWorkspaceId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `task`
+--
+
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `file`
+--
+
+DROP TABLE IF EXISTS `file`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `file` (
+  `pkFileId` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(45) NOT NULL,
+  `Type` int(11) NOT NULL,
+  PRIMARY KEY (`pkFileId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `file`
+--
+
+LOCK TABLES `file` WRITE;
+/*!40000 ALTER TABLE `file` DISABLE KEYS */;
+/*!40000 ALTER TABLE `file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `workspace`
+--
+
+DROP TABLE IF EXISTS `workspace`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `workspace` (
+  `pkWorkspaceId` int(11) NOT NULL AUTO_INCREMENT,
+  `UserId` varchar(45) NOT NULL,
+  PRIMARY KEY (`pkWorkspaceId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `workspace`
+--
+
+LOCK TABLES `workspace` WRITE;
+/*!40000 ALTER TABLE `workspace` DISABLE KEYS */;
+/*!40000 ALTER TABLE `workspace` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `method`
+--
+
+DROP TABLE IF EXISTS `method`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `method` (
+  `pkMethodId` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(45) NOT NULL,
+  PRIMARY KEY (`pkMethodId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `method`
+--
+
+LOCK TABLES `method` WRITE;
+/*!40000 ALTER TABLE `method` DISABLE KEYS */;
+/*!40000 ALTER TABLE `method` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `enmeventtype`
+--
+
+DROP TABLE IF EXISTS `enmeventtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `enmeventtype` (
+  `pkEventTypeId` int(11) NOT NULL AUTO_INCREMENT,
+  `Description` varchar(45) NOT NULL,
+  PRIMARY KEY (`pkEventTypeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `enmeventtype`
+--
+
+LOCK TABLES `enmeventtype` WRITE;
+/*!40000 ALTER TABLE `enmeventtype` DISABLE KEYS */;
+INSERT INTO `enmeventtype` VALUES (1,'Workspace Open'),(2,'Workspace Closed'),(3,'Task Created'),(4,'Task Activated'),(5,'Task Deactivated'),(6,'Task Deleted'),(7,'Task Status Changed'),(8,'Resource Added'),(9,'Resource Removed'),(10,'ChangesInProgress'),(11,'Changes Committed'),(12,'Synchronized'),(13,'Metric Change Impact');
+/*!40000 ALTER TABLE `enmeventtype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `event`
+--
+
+DROP TABLE IF EXISTS `event`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event` (
+  `pkEventId` int(11) NOT NULL AUTO_INCREMENT,
+  `fkEventTypeId` int(11) NOT NULL,
+  `Type` int(11) NOT NULL,
+  `Version` varchar(10) DEFAULT NULL,
+  `LOC` int(11) NOT NULL,
+  `Time` datetime NOT NULL,
+  PRIMARY KEY (`pkEventId`,`fkEventTypeId`),
+  KEY `fk_Event_enmEventType1` (`fkEventTypeId`),
+  CONSTRAINT `fk_Event_enmEventType1` FOREIGN KEY (`fkEventTypeId`) REFERENCES `enmeventtype` (`pkEventTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event`
+--
+
+LOCK TABLES `event` WRITE;
+/*!40000 ALTER TABLE `event` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'arsonae'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `getAllEvents` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,STRICT_ALL_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,TRADITIONAL,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `getAllEvents`()
+BEGIN
+Select * from enmeventtype;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2012-07-24 14:36:26

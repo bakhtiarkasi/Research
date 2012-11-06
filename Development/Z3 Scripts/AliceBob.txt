@@ -1,0 +1,225 @@
+from z3 import *
+
+#begin methods
+def distance(D,m):
+	dis = Int('dis')
+	dis = 0
+	for i in range(0,len(D)):
+		if is_true(simplify(m.evaluate(D[i]) != (i+1))):
+                    dis += 1
+	return dis
+
+
+def getResultforDev(D,m):
+    result = ''
+    for i in range(0,len(D)):
+	result += "%s" % m.evaluate(D[i])
+	result += ' '
+    return result.rstrip()
+	
+def abs(a):
+	return If(a >= 0, a, -a) 
+
+def getGoalFor(D):
+	return simplify(sum(If(D[i] == (i+1), 0, 1) for i in range(0,len(D))))
+
+
+#delete DC's from unsat core see if sat?
+#if unsat delete the IC's and check if sat
+def relaxConstraints(s,DC,IC):
+	indxDC = []
+	indxIC = []
+	print 'uncore list'
+	print s.unsat_core()
+	
+	for i in range(0,len(DC)):
+		if is_true(simplify(If(DC[i] in s.unsat_core(), True,False))):
+			indxDC.append(i)
+	
+	for i in range(0,len(IC)):
+		if is_true(simplify(If(IC[i] in s.unsat_core(), True,False))):
+			indxIC.append(i)
+		
+	if len(indxDC) > 0:
+		deleteIndices(DC, indxDC)
+		while s.check(DC+IC) == unsat:
+			relaxConstraints(s, DC,IC)
+	
+	elif len(indxIC) > 0:
+		deleteIndices(IC, indxIC)
+		while s.check(DC+IC) == unsat:
+			relaxConstraints(s,DC,IC)
+				
+
+#Approach 2:
+# delete contraints based on their weights
+def relaxConstraints2(s,DC,IC):
+	indxDC = []
+	indxIC = []
+	print 'uncore list'
+	print s.unsat_core()
+	
+	for i in range(0,len(DC)):
+		if is_true(simplify(If(DC[i] in s.unsat_core(), True,False))):
+			indxDC.append(i)
+	
+	for i in range(0,len(IC)):
+		if is_true(simplify(If(IC[i] in s.unsat_core(), True,False))):
+			indxIC.append(i)
+		
+	if len(indxDC) > 0:
+		deleteIndices2(DC, indxDC)
+		while s.check(DC+IC) == unsat:
+			relaxConstraints2(s, DC,IC)
+	
+	elif len(indxIC) > 0:
+		deleteIndices2(IC, indxIC)
+		while s.check(DC+IC) == unsat:
+			relaxConstraints2(s,DC,IC)
+
+
+#make sure to delete indices in descending order
+def deleteIndices(lst, indices):
+	indices.sort()
+	indices.reverse()
+	
+	for i in indices:
+		del lst[i]
+	
+	del indices
+	
+#for approach 2
+def deleteIndices2(lst, indices):
+	indices.sort()
+	indices.reverse()
+	x = len(indices) / 2;
+	
+	if x == 0:
+		x = 1
+	
+	for i in indices[0:x]:
+		del lst[i]
+	
+	del indices
+
+def getSolver():
+	return Then(With('simplify', blast_distinct=True, arith_lhs=True), 
+  	'normalize-bounds',
+         'lia2pb',
+         'pb2bv',
+         'bit-blast',
+         'smt').solver()
+
+def getSolverforOpt():
+	return Then(With('simplify', blast_distinct=True, arith_lhs=True), 
+  	'normalize-bounds',
+  	'solve-eqs',
+    'lia2pb',
+    'bit-blast',
+    'smt').solver()  		
+
+def binarySrch(imin, imax):
+	if imin == imax:
+		fb = FreshBool()
+		wt = Implies(fb,getGoal() == imin)
+		s.add(wt)
+		s.check(DC+IC+[fb])
+		m = s.model()
+		print imin
+		print printResult(m)
+		return;
+	else:
+		imid = (imin + imax) / 2
+		print imid
+		
+		fb = FreshBool()
+		wt = Implies(fb,getGoal() <= imid)
+		s.add(wt)
+		
+	if s.check(DC+IC+[fb]) == sat:
+		return binarySrch(imin, imid)
+	else:
+		return binarySrch(imid+1, imax)
+	
+#returns an optimized solution
+def getOptimizedSolution(s, total):
+	m = s.model()
+	
+	if is_true(total == 0):
+		print printResult(m)
+	else:
+		print 'total = %s' % total
+		
+		fb = FreshBool()
+		wt = Implies(fb,(getGoal() > 3))
+		s.add(wt)
+		
+		if s.check(DC+IC+[fb]) == sat:
+			print 'here'
+			print s
+			print printResult(m)
+			binarySrch(0,total);
+		else:
+			print 'cannot'
+			print printResult(m)
+def printResult(m):
+	result = 'Results:\n'
+	result += 'A -> ['
+	result += getResultforDev(A,m)
+	result +=  ']\n'
+	result += 'B -> ['
+	result += getResultforDev(B,m)
+	result +=  ']\n'
+	return result
+
+def getGoal():
+	return simplify( getGoalFor(A) + getGoalFor(B) )
+
+def getDistance(m):
+	total = 0;
+	total = distance(A, m)
+	total = total + distance(B, m)
+	return total
+
+###end method sections
+
+
+#s = Solver() # initialize Z3 solver
+
+s = Then(With('simplify', blast_distinct=True, arith_lhs=True), 
+ 'normalize-bounds',  'lia2pb', 'bit-blast', 'smt').solver()
+
+A = IntVector('A', 3) # Alice Task's
+B = IntVector('B', 3) # Bob Task's
+
+# Task's must be assigned within range (1:3)
+s.add([1 <= A[0], A[0] <= 3,1 <= A[1], A[1] <= 3,1 <= A[2], A[2] <= 3,\
+		1 <= B[0], B[0] <= 3,1 <= B[1], B[1] <= 3,1 <= B[2], B[2] <= 3])
+
+s.add([Distinct(A), Distinct(B)]) # Assignment must be unique for each task
+
+DC = BoolVector('DC', 1) # Direct Conflicts
+IC = BoolVector('IC', 3) # Indirect Conflicts
+
+##Adding soft constraints as assertions
+s.add(Implies(DC[0], A[0] != B[0])) # TA1:Rectangle.java <-> TB1:Rectangle.java 
+
+s.add(Implies(IC[0], A[0] != B[0])) # TA1:Shape.java <-> TB1:Square.java
+s.add(Implies(IC[1], A[0] != B[1])) # TA1:Shape.java <-> TB2:Traiangle.java
+s.add(Implies(IC[2], A[1] < A[2]))  # TA2:Canvas.java <-> TA3:Panel.java
+
+isSat = s.check(DC+IC) # Check if all constraints are Satisfiable
+if isSat == sat:
+	print 'Solution is SAT'
+	m = s.model()
+	print printResult(m)
+	total = getDistance(m)
+	print 'Optimizing Solution'
+	getOptimizedSolution(s,total)
+elif isSat == unsat:
+	print 'UnSAT Scenario: relaxing constraints'
+	relaxConstraints(s,DC,IC)
+	m = s.model()
+	print printResult(m)
+else:
+	print 'unknown'		
