@@ -1,7 +1,7 @@
 import org.neo4j.api.core.*
 
-def beginDate = Date.parse("MMM-dd-yyyy", "Dec-21-2008");
-def endDate = Date.parse("MMM-dd-yyyy", "Feb-13-2010");
+def beginDate = Date.parse("MMM-dd-yyyy", "Nov-21-2009");
+def endDate = Date.parse("MMM-dd-yyyy", "Jan-27-2010");
 
 f=new Neo4jGraph('/Users/bkasi/Documents/Research/gremlin-2.0/data/db/Voldemort');
 
@@ -19,14 +19,25 @@ m = n.clone();
 
 for(i in m)
 {
-    def d = new Date(0);
-    d = new Date(i.getKey().outE('COMMITTER').when.next());
+    //def d = new Date(0);
+    d = new Date(i.getKey().outE('COMMITTER').when.next() * 1000);
 
-    //if(d.minus(endDate) > 0)
-       //n.remove(i.getKey());
+    if(d.minus(endDate) > 0)
+       n.remove(i.getKey());
+
+    if(d.minus(beginDate) < 0)
+      n.remove(i.getKey());
 }
 
-j = 0;  
+j = 0;
+
+for(i in n[0..n.size()])
+{
+    println i.getKey().hash + ":" + i.getKey().outE('COMMITTER').inV.string.next();
+}
+
+println "--------------------------------------------------------------\r";
+
 for(i in n[0..n.size()])
 {
   def d = new Date(0);
@@ -35,9 +46,10 @@ for(i in n[0..n.size()])
   if(d.minus(beginDate) < 0)
        j++;
 
-println i.getKey().hash;
-}
+println i.getKey().hash + ":" + i.getKey().outE('CHANGED').inV.token.toList(); 
 
-println j;
+}
+println "--------------------------------------------------------------\r";
+println n.size();
 
 f.shutdown()

@@ -3,7 +3,7 @@ require 'date'
 
 $commitsMap = Hash.new
 $dateTemp = DateTime.now();
-$workDir = "../Perl5/";
+$workDir = "/Users/bkasi/Documents/Research/DataAnalysis/Perl5/";
 $sortedList = Hash.new;
 
 #defining the class object for git summary
@@ -409,12 +409,12 @@ $continue = false;
 
 $sortedList = $sortedList.sort{ |x, y| y[1] <=> x[1] }
 $sortedList.each do |x|
-		print "Processing for "
-		print x[0]
-                print " Date: "
-                puts x[1] 
-		$commitsMap[x[0]].starBuildTest();
-		puts"\n=============================================================================\n\n"
+		#print "Processing for "
+		puts x[0]
+        #        print " Date: "
+         #       puts x[1] 
+		#$commitsMap[x[0]].starBuildTest();
+		#puts"\n=============================================================================\n\n"
 end
 
 $commitsMap.keys.each do |hashCode|

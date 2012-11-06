@@ -7,6 +7,7 @@ $dateTemp = DateTime.now();
 $workDir = "/Users/bkasi/Documents/Research/DataAnalysis/Jenkins/";
 $masterRepo = "master"
 $filePath = "/Users/bkasi/Documents/Research/DAScripts/jenkins.ids";
+$textOut = "";
 
 #defining the class object for git summary
 class Commit
@@ -113,9 +114,9 @@ class Commit
 	    parentHash = parents.at(0)[0]
 	    puts "\nHard reset Git repository to rev: " + parentHash;
             %x[git reset --hard #{parentHash}]
-
-	   puts "\nClean local git folder";
-	   %x[git clean -f -x -d]
+        
+        puts "\nClean local git folder";
+	   	%x[git clean -f -x -d]
 
 	    parents.each do |x|
            
@@ -141,6 +142,63 @@ class Commit
 	    
        end
   end
+  
+  def getCommitDate11(remoteCode)
+		gitSummary = %x[git show --name-only #{remoteCode}]
+          
+		# split results on a newline char
+		gitSummary = gitSummary.split("\n");
+		
+		parData = '';
+		
+		#saving git summary into objects
+		gitSummary.each do |dateInfo|
+                    dateInfo.strip!
+                    if dateInfo.start_with?("Author: ")
+                    	parData += (dateInfo.sub("Author: ", "").split("<")[0].strip + "\t\t\t")
+	   			    elsif dateInfo.start_with?("Date: ")
+	   			    	dateInfo = dateInfo.sub("Date: ", "").strip
+		            	parData += DateTime.parse(dateInfo).to_s.sub("T"," ").sub("+00:00","");
+	                end
+              end
+              return parData;
+        end
+  
+  $textOut = ' ';
+  def printInfo()
+  	Dir.chdir($workDir) do
+	    
+	    parentHash = parents.at(0)[0]
+	    $textOut += hashCode.sub("\n","").strip
+	    $textOut += "\t"
+		$textOut.concat(getCommitDate11(parentHash))
+		$textOut  += "\t";
+		$textOut  += parentHash;
+		$textOut  += "\t";
+	    
+	    puts "\nMerge Id: " + hashCode;
+	    puts "First " + parentHash;
+	    print "First Date: "
+	    		puts getCommitDate11(parentHash);
+        
+	    parents.each do |x|
+	    	remoteCode = x[0]
+            if parentHash != remoteCode
+				#puts "\n Starting Process for " + hashCode;
+	   			puts "Second: " + remoteCode;
+	   			print "Second Date: "
+	   				puts getCommitDate11(remoteCode);
+	   			$textOut += remoteCode
+	   			$textOut += "\t"
+	   			$textOut.concat(getCommitDate11(remoteCode))
+	   			$textOut += "\t"
+	   		end
+	   	end
+	 end
+	 $textOut += "\n"
+  end
+  
+  
 end 
 
 class ProcessSummary
@@ -311,6 +369,8 @@ class ProcessSummary
 
 
 	def processMergeLogs(logFile)
+
+		puts logFile
 		#Create a read only object of the file
 		mergeConfs = File.new(logFile, "r")
 		
@@ -407,16 +467,17 @@ mergeConfs.each do |hashCode|
 
 
 $commitsMap.keys.each do |hashCode|
-                #$commitsMap[hashCode].printParentChildFiles();              
+                $commitsMap[hashCode].printInfo();              
 end
+puts $textOut;
 
 $commitsMap.keys.each do |hashCode|
                     #$commitsMap[hashCode].startMergeProcess();
-		    puts"\n=============================================================================\n\n"
+		  #  puts"\n=============================================================================\n\n"
                 end
 
 
-gitSummary.processMergeLogs("/Users/bkasi/Documents/Research/DAScripts/jenkinsMC.log");
+#gitSummary.processMergeLogs("/Users/bkasi/Documents/Research/DAScripts/jenkinsMC.log");
 
 
 

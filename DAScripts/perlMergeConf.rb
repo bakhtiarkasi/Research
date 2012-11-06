@@ -135,6 +135,62 @@ class Commit
 	    
        end
   end
+  def getCommitDate11(remoteCode)
+		gitSummary = %x[git show --name-only #{remoteCode}]
+          
+		# split results on a newline char
+		gitSummary = gitSummary.split("\n");
+		
+		parData = '';
+		
+		#saving git summary into objects
+		gitSummary.each do |dateInfo|
+                    dateInfo.strip!
+                    if dateInfo.start_with?("Author: ")
+                    	parData += (dateInfo.sub("Author: ", "").split("<")[0].strip + "\t\t\t")
+	   			    elsif dateInfo.start_with?("Date: ")
+	   			    	dateInfo = dateInfo.sub("Date: ", "").strip
+		            	parData += DateTime.parse(dateInfo).to_s.sub("T"," ").sub("+00:00","");
+	                end
+              end
+              return parData;
+        end
+  
+  	$textOut = ' ';
+	  def printInfo()
+	  	Dir.chdir($workDir) do
+		    
+		    parentHash = parents.at(0)[0]
+		    $textOut += hashCode.sub("\n","").strip
+		    $textOut += "\t"
+			$textOut.concat(getCommitDate11(parentHash))
+			$textOut  += "\t";
+			$textOut  += parentHash;
+			$textOut  += "\t";
+		    
+		    puts "\nMerge Id: " + hashCode;
+		    puts "First " + parentHash;
+		    print "First Date: "
+		    		puts getCommitDate11(parentHash);
+	        
+		    parents.each do |x|
+		    	remoteCode = x[0]
+	            if parentHash != remoteCode
+					#puts "\n Starting Process for " + hashCode;
+		   			puts "Second: " + remoteCode;
+		   			print "Second Date: "
+		   				puts getCommitDate11(remoteCode);
+		   			$textOut += remoteCode
+		   			$textOut += "\t"
+		   			$textOut.concat(getCommitDate11(remoteCode))
+		   			$textOut += "\t"
+		   		end
+		   	end
+		 end
+		 $textOut += "\n"
+	  end
+  
+  
 end 
 
 class ProcessSummary
@@ -396,8 +452,9 @@ mergeConfs.each do |hashCode|
 
 
 $commitsMap.keys.each do |hashCode|
-                #$commitsMap[hashCode].printParentChildFiles();              
+                $commitsMap[hashCode].printInfo();              
 end
+puts $textOut
 
 $commitsMap.keys.each do |hashCode|
                    # $commitsMap[hashCode].startMergeProcess();
@@ -405,7 +462,7 @@ $commitsMap.keys.each do |hashCode|
                 end
 
 
-gitSummary.processMergeLogs("/Users/bkasi/Documents/Research/MergeConf-185.log");
+#gitSummary.processMergeLogs("/Users/bkasi/Documents/Research/MergeConf-185.log");
 
 
 
