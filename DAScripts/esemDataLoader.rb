@@ -72,6 +72,8 @@ def initialize()
 	myargs.gsub!("]", "");
         myargs.gsub!(", ", ",");
         @files = myargs.split(",")
+	@files = @files.find_all{|item| item =~ /\.(sh|java|py|xml|groovy|h|cpp|rb|scala)$/ }
+	
   end
 
   def countPackages()
