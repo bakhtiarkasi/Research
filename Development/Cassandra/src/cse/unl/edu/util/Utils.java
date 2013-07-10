@@ -124,14 +124,14 @@ public class Utils {
 		return (int) pickedNumber;
 	}
 
-	public static void writePyhtonFile(String fileName, String script,
+	public static String writePyhtonFile(String fileName, String script,
 			String filePath) throws IOException {
 
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 
 		String templateFile = filePath + "cassTemplate.py";
-		String ouputFile = filePath + "/Z3Input/outputFile" + fileName + ".py";
+		String ouputFile = filePath + "Z3Input/outputFile" + fileName + ".py";
 		boolean sectionStart = false;
 
 		try {
@@ -163,6 +163,7 @@ public class Utils {
 
 			reader.close();
 			writer.close();
+			return ouputFile;
 		}
 	}
 

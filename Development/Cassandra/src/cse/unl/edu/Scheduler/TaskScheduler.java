@@ -64,7 +64,7 @@ public class TaskScheduler {
 
 		else if (ws_id != -1)
 			for (Task task : tasks) {
-				if (task.getWsId() == ws_id)
+				if (task.preferedSequence == ws_id)
 					return task;
 			}
 
@@ -80,7 +80,7 @@ public class TaskScheduler {
 
 		else if (wsId != -1)
 			for (Developer dev : developers) {
-				if (dev.getWsId() == wsId)
+				if (dev.getDBId() == wsId)
 					return dev;
 			}
 		else if (autoId != -1)
@@ -102,7 +102,7 @@ public class TaskScheduler {
 		Set<Conflict> mergeConflictSet = new HashSet();
 
 		for (Conflict conf : conflictsSet) {
-			if (conf.getConflictType() == Conflict.Type.MC)
+			if (conf.getConflictType() == Conflict.Type.D)
 				mergeConflictSet.add(conf);
 		}
 		return mergeConflictSet;
@@ -112,7 +112,7 @@ public class TaskScheduler {
 		Set<Conflict> btConflictSet = new HashSet();
 
 		for (Conflict conf : conflictsSet) {
-			if (conf.getConflictType() != Conflict.Type.MC)
+			if (conf.getConflictType() == Conflict.Type.I)
 				btConflictSet.add(conf);
 		}
 		return btConflictSet;
@@ -128,6 +128,16 @@ public class TaskScheduler {
 		return -1;
 	}
 
+	private boolean isTaskProcess(int dbId) {
+		Developer dev = this.getDeveloper(dbId, -1, -1, null);
+
+		for (Integer task : dev.getAssignedTasks()) {
+			return this.getTask(task, -1).processed;
+		}
+
+		return false;
+	}
+
 	/**
 	 * @param args
 	 */
@@ -135,29 +145,30 @@ public class TaskScheduler {
 		// TODO Auto-generated method stub
 		try {
 
-			boolean optimise = false;
-			String fileName= "";
-			
-			int sessionId = 258;
-			//for (int sessionId = 226; sessionId <= 265; sessionId++) {
-				TaskScheduler obj = new TaskScheduler(sessionId);
-				fileName= "";
+			boolean optimise = Boolean.parseBoolean(args[1]);
+			String fileName = "";
 
-				DatabaseManager.populateConflictsforSession(sessionId, obj);
+			int sessionId = Integer.parseInt(args[0]);
+			// for (int sessionId = 226; sessionId <= 265; sessionId++) {
+			TaskScheduler obj = new TaskScheduler(sessionId);
+			fileName = "";
 
-				String script;
-				String filePath = "/Users/bkasi/Documents/Research/Development/Z3 Scripts/";
+			DatabaseManager.populateConflictsforSession(sessionId, obj);
 
-				script = obj.getPythonScript(optimise);
-				
-				if(optimise)
-					fileName = "Opt" + sessionId;
-				else
-					fileName += sessionId;
-					
-				Utils.writePyhtonFile(fileName, script, filePath);
-				System.out.println("Finished sucessful");
-			//}
+			String script;
+			String filePath = "/Users/bkasi/Documents/Research/Development/Z3Scripts/";
+
+			script = obj.getPythonScript(optimise);
+
+			if (optimise)
+				fileName = "Opt" + sessionId;
+			else
+				fileName += sessionId;
+
+			System.out.println(Utils
+					.writePyhtonFile(fileName, script, filePath));
+			// System.out.println("Finished sucessful");
+			// }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -177,8 +188,11 @@ public class TaskScheduler {
 
 		// def printResult(m):
 		scrpt.append("def printResult(m):\n\tresult = 'Results:\\n'\n");
+		Developer dev = null;
 		for (int i = 1; i <= noOfDevs; i++) {
-			scrpt.append("\tresult += \'D" + i + " -> [\'\n");
+			dev = this.getDeveloper(-1, -1, i, null);
+			scrpt.append("\tresult += \'D" + i + " ->" + dev.getDBId()
+					+ "[\'\n");
 			scrpt.append("\tresult += getResultforDev(D" + i + ",m)\n");
 			scrpt.append("\tresult +=  \']\\n\'\n");
 		}
@@ -209,20 +223,16 @@ public class TaskScheduler {
 
 		// Global variables section
 		scrpt.append("#initialize the solver\n");
-		
-		
-		if(optimise)
+
+		if (optimise)
 			scrpt.append("s = getSolverforOpt()\n\n");
 		else
 			scrpt.append("s = getSolver()\n\n");
-			
-		
-		//scrpt.append("s = Then(With(\'simplify\', blast_distinct=True, arith_lhs=True), \n \'normalize-bounds\',  \'lia2pb\',  \'bit-blast\', \'smt\').solver()\n\n");
-		
+
+		// scrpt.append("s = Then(With(\'simplify\', blast_distinct=True, arith_lhs=True), \n \'normalize-bounds\',  \'lia2pb\',  \'bit-blast\', \'smt\').solver()\n\n");
 
 		// Developer vectors
 		scrpt.append("##Developers Vectors\n");
-		Developer dev = null;
 		// Developer are identified on auto id.
 		for (int i = 1; i <= noOfDevs; i++) {
 			dev = this.getDeveloper(-1, -1, i, null);
@@ -238,11 +248,26 @@ public class TaskScheduler {
 		int noOftask;
 		for (int i = 1; i <= noOfDevs; i++) {
 			dev = this.getDeveloper(-1, -1, i, null);
-			noOftask = dev.getNoOfTasks();
-			for (int j = 0; j < noOftask; j++) {
-				scrpt.append("1 <= D" + i + "[" + j + "], D" + i + "[" + j
-						+ "] <= " + noOftask + ",");
 
+			boolean processed = isTaskProcess(dev.getDBId());
+			noOftask = dev.getNoOfTasks();
+			if (!processed) {
+				for (int j = 0; j < noOftask; j++) {
+					scrpt.append("1 <= D" + i + "[" + j + "], D" + i + "[" + j
+							+ "] <= " + noOftask + ",");
+
+				}
+			}
+			else
+			{
+				for(Integer id : dev.getAssignedTasks())
+				{
+					Task task = this.getTask(id, -1);
+					int prefTaskId = task.preferedSequence -1;
+					int recOrderTaskId = task.recomendedOrder;
+					scrpt.append(recOrderTaskId + " <= D" + i + "[" + prefTaskId + "], D" + i + "[" + prefTaskId
+							+ "] <= " + recOrderTaskId + ",");
+				}
 			}
 			if (i == noOfDevs)
 				scrpt.deleteCharAt(scrpt.lastIndexOf(","));
@@ -283,8 +308,8 @@ public class TaskScheduler {
 			dev1 = this.getDevIdforTask(dc.getTask1Id());
 			dev2 = this.getDevIdforTask(dc.getTask2Id());
 
-			dev1PrefId = this.getTask(-1, dc.getTask1Id()).preferedSequence - 1;
-			dev2PrefId = this.getTask(-1, dc.getTask2Id()).preferedSequence - 1;
+			dev1PrefId = this.getTask(dc.getTask1Id(), -1).preferedSequence - 1;
+			dev2PrefId = this.getTask(dc.getTask2Id(), -1).preferedSequence - 1;
 
 			scrpt.append("s.add(Implies(DC[" + (index++) + "], D" + dev1 + "["
 					+ dev1PrefId + "] != D" + dev2 + "[" + dev2PrefId + "]))\n");
@@ -295,46 +320,57 @@ public class TaskScheduler {
 		dev2 = 0;
 		dev1PrefId = 0;
 		dev2PrefId = 0;
-		String confDirection = ">";
-		scrpt.append("\n##Adding InDirect Conflicts\n");
-		
-		Set<Conflict> treeSet = new TreeSet<Conflict>(new conflictTypeComparator());
-		treeSet.addAll(inDirectConfs);
-		
-		for (Conflict idc : treeSet) {
-			dev1 = this.getDevIdforTask(idc.getTask1Id());
-			dev2 = this.getDevIdforTask(idc.getTask2Id());
+		scrpt.append("##Adding INDirect Conflicts\n");
+		for (Conflict ic : inDirectConfs) {
+			dev1 = this.getDevIdforTask(ic.getTask1Id());
+			dev2 = this.getDevIdforTask(ic.getTask2Id());
 
-			dev1PrefId = this.getTask(-1, idc.getTask1Id()).preferedSequence - 1;
-			dev2PrefId = this.getTask(-1, idc.getTask2Id()).preferedSequence - 1;
-
-			//if(idc.getConflictDirection() == Direction.Left)
-			//	confDirection = "<";
-			
-			//else if(idc.getConflictDirection() == Direction.Right)
-				//confDirection = ">";
-			
-			confDirection = ">";
+			dev1PrefId = this.getTask(ic.getTask1Id(), -1).preferedSequence - 1;
+			dev2PrefId = this.getTask(ic.getTask2Id(), -1).preferedSequence - 1;
 
 			scrpt.append("s.add(Implies(IC[" + (index++) + "], D" + dev1 + "["
-					+ dev1PrefId + "] " + confDirection + " D" + dev2 + "["
-					+ dev2PrefId + "]))\n");
+					+ dev1PrefId + "] != D" + dev2 + "[" + dev2PrefId + "]))\n");
 		}
+
+		/*
+		 * index = 0; dev1 = 0; dev2 = 0; dev1PrefId = 0; dev2PrefId = 0; String
+		 * confDirection = ">"; scrpt.append("\n##Adding InDirect Conflicts\n");
+		 * 
+		 * Set<Conflict> treeSet = new TreeSet<Conflict>(new
+		 * conflictTypeComparator()); treeSet.addAll(inDirectConfs);
+		 * 
+		 * for (Conflict idc : treeSet) { dev1 =
+		 * this.getDevIdforTask(idc.getTask1Id()); dev2 =
+		 * this.getDevIdforTask(idc.getTask2Id());
+		 * 
+		 * dev1PrefId = this.getTask(-1, idc.getTask1Id()).preferedSequence - 1;
+		 * dev2PrefId = this.getTask(-1, idc.getTask2Id()).preferedSequence - 1;
+		 * 
+		 * //if(idc.getConflictDirection() == Direction.Left) // confDirection =
+		 * "<";
+		 * 
+		 * //else if(idc.getConflictDirection() == Direction.Right)
+		 * //confDirection = ">";
+		 * 
+		 * confDirection = ">";
+		 * 
+		 * scrpt.append("s.add(Implies(IC[" + (index++) + "], D" + dev1 + "[" +
+		 * dev1PrefId + "] " + confDirection + " D" + dev2 + "[" + dev2PrefId +
+		 * "]))\n"); }
+		 */
 		scrpt.append("\n##End Java insert\n");
 
 		return scrpt.toString();
 
 	}
-	
-	
-	class conflictTypeComparator implements Comparator<Conflict>
-	{
+
+	class conflictTypeComparator implements Comparator<Conflict> {
 
 		@Override
 		public int compare(Conflict arg0, Conflict arg1) {
-			
-			//return TC first and then BC
-			if(arg0.getConflictType() == Type.TC)
+
+			// return TC first and then BC
+			if (arg0.getConflictType() == Type.I)
 				return -1;
 			else
 				return 1;

@@ -3,6 +3,7 @@ package cse.unl.edu.mylyn;
 //import org.eclipse.core.resources.IResource;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.mylyn.context.core.AbstractContextListener;
 import org.eclipse.mylyn.context.core.ContextChangeEvent;
@@ -30,6 +31,14 @@ public class MylynContextListenener extends AbstractContextListener {
 		 String fileIdentifier = interactionElement.getHandleIdentifier();
 		 
 		 IResource res = ResourcesUiBridgePlugin.getDefault().getResourceForElement(interactionElement, true);
+		
+		 if(res instanceof IFile)
+		 {
+			 IFile file = (IFile)res;
+			 
+			 System.out.println(file.getFullPath().toOSString());
+		 }
+		
 		 
 		 List<IResource> rest = ResourcesUiBridgePlugin.getDefault().getInterestingResources(ContextCore.getContextManager().getActiveContext());
 

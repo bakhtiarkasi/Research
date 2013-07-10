@@ -7,16 +7,18 @@ import java.util.Set;
 public class Developer {
 	
 	final int pkDeveloperId;
-	final int wsId;
+	//final int wsId;
 	final String name;
 	final int autoId;
 
 	Set<Integer> assignedTasks;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Developer(int pkDeveloperId,int wsId,int autoId, String name) {
+	public Developer(int pkDeveloperId,int autoId, String name) {
+		
+	//public Developer(int pkDeveloperId,int wsId,int autoId, String name) {
 		this.pkDeveloperId = pkDeveloperId;
-		this.wsId = wsId;
+		//this.wsId = wsId;
 		this.name = name;
 		this.autoId = autoId;
 
@@ -33,7 +35,7 @@ public class Developer {
 	public String toString() {
 		String returnStatement = "Developer: " + getName() 
 				+ "\nDB Id: " + pkDeveloperId
-				+ "\nWS Id: " + wsId
+				//+ "\nWS Id: " + wsId
 				+ "\nAuto Id: " + autoId
 				+ "\nAssigned Tasks: ";
 
@@ -57,9 +59,9 @@ public class Developer {
 		return this.pkDeveloperId;
 	}
 
-	public int getWsId() {
+	/*public int getWsId() {
 		return wsId;
-	}
+	}*/
 
 	public Set<Integer> getAssignedTasks() {
 		return assignedTasks;

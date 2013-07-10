@@ -10,7 +10,7 @@ public class Conflict {
 	private float conflictWeight;
 
 	public enum Type {
-		MC, BC, TC
+		D, I
 	};
 
 	public enum Direction {
@@ -18,17 +18,17 @@ public class Conflict {
 	};
 
 	public Conflict(int sessionId, int task1Id, int task2Id,
-			String conflictType, String conflictDir) {
+			String conflictType){ //, String conflictDir) {
 		super();
 		this.sessionId = sessionId;
 		this.task1Id = task1Id;
 		this.task2Id = task2Id;
 		this.conflictType = Type.valueOf(conflictType);
-		if (conflictDir.equals(">"))
+		/*if (conflictDir.equals(">"))
 			this.conflictDirection = Direction.Right;
 		else if (conflictDir.equals("<"))
 			this.conflictDirection = Direction.Left;
-		else
+		else*/
 			this.conflictDirection = Direction.None;
 	}
 

@@ -18,9 +18,9 @@ import cse.unl.edu.Scheduler.TaskScheduler;
 public class DatabaseManager {
 
 	private static final String dbHost = "localhost";
-	private static final String dbName = "arsonae";
+	private static final String dbName = "CassandraConflict";
 	private static final String dbUsername = "root";
-	private static final String dbPassword = "";
+	private static final String dbPassword = "arsonae";
 
 	private static Connection conn = null;
 	private Statement stmt = null;
@@ -69,7 +69,7 @@ public class DatabaseManager {
 		Connection conn = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String sourceURL = "jdbc:mysql://localhost:3306/mytask";
+			String sourceURL = "jdbc:mysql://localhost:3306/CassandraConflict";
 			conn = DriverManager.getConnection(sourceURL,
 					DatabaseManager.dbUsername, DatabaseManager.dbPassword);
 
@@ -353,7 +353,7 @@ public class DatabaseManager {
 				conn = DatabaseManager.getSimulatorDBConnection();
 
 			CallableStatement cs = conn
-					.prepareCall("{ call cass.SP_GetDataforScheduler(?)}");
+					.prepareCall("{ call CassandraConflict.SP_GetDataforScheduler(?)}");
 
 			cs.setInt("pfkSessionId", sessionId);
 
@@ -362,6 +362,10 @@ public class DatabaseManager {
 
 			// getting the first result set
 			rs = cs.getResultSet();
+			
+			cs.getMoreResults();
+			rs = cs.getResultSet();
+			
 			int pkUserId = 0;
 			int pktaskid = 0;
 			Task task = null;
@@ -370,21 +374,23 @@ public class DatabaseManager {
 
 			while (rs.next()) {
 
-				task = new Task(rs.getInt("pktaskid"), rs.getInt("ws_Id"),
-						rs.getString("Description"), rs.getInt("Preference"),
-						rs.getBoolean("isclean"));
+				task = new Task(rs.getInt("pktaskid"), 
+						rs.getString("Description"), rs.getInt("Preference"),rs.getInt("RecOrder"), rs.getBoolean("Processed"));
 
-				pkUserId = rs.getInt("pkUserId");
+				pkUserId = rs.getInt("UID");
 				dev = obj.getDeveloper(pkUserId, -1,-1, null);
+				
+				
 
 				if (dev == null) {
-					dev = new Developer(pkUserId, rs.getInt("UID"),devAutoId,
-							rs.getString("Name"));
+//					dev = new Developer(pkUserId, rs.getInt("UID"),devAutoId,
+	//				rs.getString("Name"));
+					dev = new Developer(pkUserId, devAutoId, rs.getString("UserName"));
 					devAutoId++;
 					obj.addNewDeveloper(dev);
 				}
 
-				dev.addTaskForUser(task.getWsId());
+				dev.addTaskForUser(task.getTaskId());
 				obj.addNewTask(task);
 
 			}
@@ -396,7 +402,7 @@ public class DatabaseManager {
 			while (rs.next()) {
 				pktaskid = rs.getInt("pktaskid");
 				task = obj.getTask(pktaskid, -1);
-				task.addFiletoTask(rs.getString("Name"));
+				task.addFiletoTask(rs.getString("Path"));
 			}
 
 			// close the second result set and point rs to the third
@@ -406,8 +412,8 @@ public class DatabaseManager {
 			while (rs.next()) {
 
 				conf = new Conflict(sessionId, rs.getInt("task1"),
-						rs.getInt("task2"), rs.getString("Type"),
-						rs.getString("Direction"));
+						rs.getInt("task2"), rs.getString("Type"));//,
+						//rs.getString("Direction"));
 				obj.addNewConflict(conf);
 
 			}
