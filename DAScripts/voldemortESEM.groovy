@@ -155,6 +155,7 @@ for(i in allCommits)
 }
 println "";
 
+/*
 for(i in f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches('d.*')}.branch.unique())
 {
   nnn = '';
@@ -162,12 +163,12 @@ for(i in f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches('d.*')}.bra
 
   def children = [];
   f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(nnn)}.fill(children);
-  children = children.sort({ a, b -> a.outE('COMMITTER').when.next() <=> b.outE('COMMITTER').when.next()} as Comparator);
+  children = children.sort({ a, b -> a.outE('').when.next() <=> b.outE('COMMITTER').when.next()} as Comparator);
 
   brnhStart = children[0];
   brnhEnd = children[children.size()-1];
   //in hours
-  lenghtTime = (brnhEnd.outE('COMMITTER').when.next()-brnhStart.outE('COMMITTER').when.next()) /3600; 
+  lenghtTime = (brnhEnd.outE('AUTHOR').when.next()-brnhStart.outE('AUTHOR').when.next()) /3600; 
   lengthCommits = children.size();
   noAuthors = f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(nnn)}.out('AUTHOR').string.unique().count();
   noFiles = f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(nnn)}.out('CHANGED').token.unique().count();
@@ -175,6 +176,7 @@ for(i in f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches('d.*')}.bra
   println brnhStart.hash + " " + nnn + " " + lengthCommits + " " + noFiles  + " " + noAuthors + " " + lenghtTime;
   
 }
+*/
 
  //nnn = 'b51';
  //println f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(nnn)}.map.next();
@@ -207,6 +209,75 @@ for(i in branches[0..branches.size()])
 println "--------------------------------------------------------------\r";
 //println branches.size();
 
+
+
+revMerges = merges.sort({ a, b -> b.outE('COMMITTER').when.next() <=> a.outE('COMMITTER').when.next()} as Comparator)
+
+//for 32 merges only
+
+for(i in revMerges[0..60])
+{
+  def parentBranch = [];
+  i.getKey().out('COMMIT_PARENT').branch.fill(parentBranch);
+  
+  def minDate = getMinDateforBranch(parentBranch[0]);
+  def maxDate = i.getKey().outE('COMMITTER').when.next();
+  
+  //min date is the very first commit on either of the branches
+  if(getMinDateforBranch(parentBranch[1]) < minDate)
+      minDate = getMinDateforBranch(parentBranch[1]);
+
+  def d1 = new Date(minDate*1000);
+  def d2 = new Date(maxDate*1000);
+
+
+  println "Merge: " + i.getKey().branch + " hash: " + i.getKey().hash; //+ " authors: " +  f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(parentBranch[0]+'|'+parentBranch[1])}.out('AUTHOR').string.unique().count() + " committs " + f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(parentBranch[0]+'|'+parentBranch[1])}.count() + " files " + f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(parentBranch[0]+'|'+parentBranch[1])}.out('CHANGED').token.unique().count() + " days " + d2.minus(d1);
+  
+  def otherBranches = [];
+  otherBranches = f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches('[b|c].*') && !(it.branch.matches(parentBranch[0]+'|'+parentBranch[1]))  && ( maxDate >= it.outE('COMMITTER').when.next()) && (it.outE('COMMITTER').when.next() >= minDate )}.branch.unique().toList();
+  //println otherBranches.size();
+
+  tempBranches = otherBranches.clone();
+  for(j in otherBranches)
+  {
+    def maxActiveBranch = getMaxDateforBranch(j);
+    
+    //println maxActiveBranch +" : "+ maxDate;
+    if(maxActiveBranch > maxDate)
+      tempBranches.remove(j);   
+  }
+  
+  otherBranches = tempBranches.clone();
+  for(j in tempBranches)
+  {
+    firstHash = getFirstHashforBranch(j);
+    def dateRef = f.idx('vertices')[[hash:firstHash]].outE('COMMITTER').when.next();
+    
+    noOfPaths = f.idx('vertices')[[hash:i.getKey().hash]].out('COMMIT_PARENT').loop(1){it.object.outE('AUTHOR').when.next() > dateRef }.filter{it.outE('AUTHOR').when.next()==dateRef}.path.count();
+    //println f.idx('vertices')[[hash:'32aa7d58d3fd7c2132034b9cbd3d80ebf4b7d3e2']].out('COMMIT_PARENT').loop(1){it.object.outE('AUTHOR').when.next() > 1339464159 }.filter{it.outE('AUTHOR').when.next()==1339464159}.path{it.outE('AUTHOR').when.next()>1339464159}.size();
+    if(noOfPaths == 0)
+      otherBranches.remove(j); 
+  }
+
+  def k = '';
+  for(j in otherBranches)
+  {
+    k = k + j;
+    if(j != otherBranches[otherBranches.size()-1])
+      k = k + '|';
+  }
+
+  if(otherBranches.size() > 0)
+  {
+    //println k;
+  println "branches: " + otherBranches.size() ;//+ " authors: " +  f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(k)}.out('AUTHOR').string.unique().count() + " committs " + f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(k)}.count() + " files " + f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(k)}.out('CHANGED').token.unique().count();
+
+  }
+ 
+}
+
+
+
 f.stopTransaction(TransactionalGraph.Conclusion.FAILURE)
 
 }
@@ -236,4 +307,32 @@ def labelUntilMergeorBranch (v, branchName)
   }
 
   return bLaballed;
+}
+
+
+def getMinDateforBranch (branchName) 
+{
+
+  def branchDate = [];
+  f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(branchName)}.outE('COMMITTER').when.fill(branchDate);
+  branchDate = branchDate.sort({ a, b -> a <=> b} as Comparator)
+  return branchDate[0];
+}
+
+
+def getMaxDateforBranch (branchName) 
+{
+
+  def branchDate = [];
+  f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(branchName)}.outE('COMMITTER').when.fill(branchDate);
+  branchDate = branchDate.sort({ a, b -> b <=> a} as Comparator)
+  return branchDate[0];
+}
+
+def getFirstHashforBranch(branchName)
+{
+  def children = [];
+  f.idx('vertices')[[type:'COMMIT']].filter{it.branch.matches(branchName)}.fill(children);
+  children = children.sort({ a, b -> a.outE('COMMITTER').when.next() <=> b.outE('COMMITTER').when.next()} as Comparator);
+  return children[0].hash;
 }
