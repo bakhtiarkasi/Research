@@ -19,13 +19,16 @@ def files =[:];
 for(j in authors)
   {
     files=[:]
-    f.idx('vertices')[[type:'NAME']].filter{it.getProperty('name').matches(j)}.in('NAME').in('AUTHOR').filter{it.isMerge.equals(false)}.out('CHANGED').filter{it.token.matches('.*java$')}.token.groupCount(files).iterate();
+    f.idx('vertices')[[type:'NAME']].filter{it.getProperty('name').matches(j)}.in('NAME').in('AUTHOR').filter{it.isMerge.equals(false)}.out('CHANGED').filter{it.token.matches('.*[java|clj]$')}.token.groupCount(files).iterate();
+    files = files.sort{a,b -> b.value <=> a.value};
+
     println j;
+    println "-----------------------------------------";
     
     for(i in files)
       println i.getKey() + " : " + i.getValue();
 
-    println "****************************************\n\n";
+    print "=========================================\n";
   }
 
 }
