@@ -94,8 +94,11 @@ public class Utils {
 		}
 	}
 
-	public static int getRandomNumber(int start, int end, List<Integer> exclude) {
+	//return an inclusive value from start to end
+	public static int getRandomNumber(int start, int end, List<Integer> exclude, boolean enforced) {
 		int pickedNumber = -1;
+		//System.out.println("in random");
+		
 		try {
 
 			Random rand = new Random();
@@ -104,13 +107,15 @@ public class Utils {
 				pickedNumber = rand.nextInt(end - start + 1) + start;
 
 				if (exclude != null) {
-					if (exclude.size() == (end - start + 1))
+					if (enforced && exclude.size() == (end - start + 1))
 						throw new Exception("Exclude List already full");
 
 					else if (exclude.contains(pickedNumber))
 						pickedNumber = -1;
 
 				}
+				
+				//System.out.println("in random loop" + start + " " + end + " " + exclude.toString() + " " +enforced );
 
 			} while (pickedNumber == -1);
 
@@ -218,7 +223,9 @@ public class Utils {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(new InputSource(new StringReader(inputFile)));
+			//Document doc = builder.parse(new InputSource(new StringReader(inputFile)));
+			
+			Document doc = builder.parse(new FileInputStream(inputFile));
 
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();

@@ -2,9 +2,6 @@ import org.neo4j.api.core.*
 
 try {
 
-def beginDate = Date.parse("MMM-dd-yyyy", "Dec-21-2008");
-def endDate = Date.parse("MMM-dd-yyyy", "Feb-13-2010");
-
 f=new Neo4jGraph('/Users/bkasi/Documents/Research/gremlin-2.0/data/db/Storm');
 
 def authors =[];
@@ -19,7 +16,11 @@ def files =[:];
 for(j in authors)
   {
     files=[:]
+
+    //match files that ends in .java or .clj
     f.idx('vertices')[[type:'NAME']].filter{it.getProperty('name').matches(j)}.in('NAME').in('AUTHOR').filter{it.isMerge.equals(false)}.out('CHANGED').filter{it.token.matches('.*[java|clj]$')}.token.groupCount(files).iterate();
+    
+    //sort file in descending order of count
     files = files.sort{a,b -> b.value <=> a.value};
 
     println j;

@@ -80,6 +80,8 @@ public class Author {
 	private Collection getRandomFiles(List list, int requiredFiles,
 			List<File> remoteFiles) {
 
+
+		//System.out.println(list + " :  " + requiredFiles + " " + remoteFiles);
 		List files = new ArrayList();
 
 		if (requiredFiles >= list.size()) {
@@ -104,8 +106,9 @@ public class Author {
 		List<Integer> exclude = new ArrayList();
 
 		for (int i = 0; i < requiredFiles; i++) {
-			int pickedNumer = Utils.getRandomNumber(0, requiredFiles, exclude);
+			int pickedNumer = Utils.getRandomNumber(0, list.size()-1, exclude, false);
 			exclude.add(pickedNumer);
+			//System.out.println(pickedNumer +" : "+ requiredFiles);
 
 			String fileName = (String) list.get(pickedNumer);
 			// fileName = fileName.replaceAll("storm--src/jvm",
@@ -126,6 +129,9 @@ public class Author {
 
 			if (bAdd)
 				files.add(fileName);
+			
+			if(exclude.size() == list.size())
+				return files;
 		}
 
 		return files;
@@ -156,6 +162,17 @@ public class Author {
 		 * 
 		 * fileName = fileName.split("\\.")[0]; System.out.println(fileName);
 		 */
+		
+		List<Integer> exclude = new ArrayList();
+		exclude.add(2);
+		exclude.add(3);
+		for(int i=0;i<3;i++)
+		{
+			Integer pickedNum = Utils.getRandomNumber(0,4,exclude, false);
+			exclude.add(pickedNum);
+			
+		}
+		
 	}
 
 }
