@@ -1,0 +1,507 @@
+Alexey S. Kachayev
+-----------------------------------------
+=========================================
+Ben Hughes
+-----------------------------------------
+storm--src/clj/backtype/storm/clojure.clj : 7
+storm--src/jvm/backtype/storm/tuple/Tuple.java : 5
+storm--test/clj/backtype/storm/integration_test.clj : 3
+storm--src/jvm/backtype/storm/task/OutputCollectorImpl.java : 3
+storm--src/jvm/backtype/storm/task/IOutputCollector.java : 3
+storm--src/jvm/backtype/storm/tuple/IndifferentAccessMap.java : 2
+storm--src/jvm/backtype/storm/drpc/CoordinatedBolt.java : 2
+storm--src/clj/backtype/storm/testing.clj : 1
+storm--test/clj/backtype/storm/tuple_test.clj : 1
+storm--src/jvm/backtype/storm/clojure/ClojureSpout.java : 1
+storm--src/jvm/backtype/storm/clojure/ClojureBolt.java : 1
+=========================================
+Dan Dillinger
+-----------------------------------------
+storm--conf/defaults.yaml : 1
+=========================================
+Dan Harvey
+-----------------------------------------
+storm--src/jvm/backtype/storm/drpc/DRPCSpout.java : 1
+storm--project.clj : 1
+=========================================
+Fabian Neumann
+-----------------------------------------
+=========================================
+Gabriel Grant
+-----------------------------------------
+=========================================
+Haitao Yao
+-----------------------------------------
+=========================================
+James Xu
+-----------------------------------------
+storm--src/clj/backtype/storm/daemon/nimbus.clj : 14
+storm--src/jvm/backtype/storm/scheduler/Cluster.java : 8
+storm--src/jvm/backtype/storm/scheduler/SchedulerAssignment.java : 6
+storm--src/clj/backtype/storm/testing.clj : 5
+storm--src/clj/backtype/storm/scheduler/EvenScheduler.clj : 5
+storm--src/clj/backtype/storm/daemon/supervisor.clj : 4
+storm--src/clj/backtype/storm/daemon/worker.clj : 4
+storm--src/clj/backtype/storm/daemon/task.clj : 4
+storm--src/clj/backtype/storm/daemon/common.clj : 4
+storm--src/jvm/backtype/storm/scheduler/SupervisorDetails.java : 4
+storm--src/clj/backtype/storm/DefaultScheduler.clj : 4
+storm--src/jvm/backtype/storm/Config.java : 3
+storm--test/clj/backtype/storm/integration_test.clj : 3
+storm--src/jvm/backtype/storm/scheduler/TopologyDetails.java : 3
+storm--src/clj/backtype/storm/scheduler/DefaultScheduler.clj : 3
+storm--src/clj/backtype/storm/ui/core.clj : 2
+storm--test/clj/backtype/storm/nimbus_test.clj : 2
+storm--src/clj/zilch/virtual_port.clj : 2
+storm--src/clj/backtype/storm/messaging/zmq.clj : 2
+storm--src/clj/backtype/storm/messaging/local.clj : 2
+storm--src/clj/backtype/storm/messaging/loader.clj : 2
+storm--src/jvm/backtype/storm/scheduler/Topologies.java : 2
+storm--src/jvm/backtype/storm/scheduler/ExecutorDetails.java : 2
+storm--test/clj/backtype/storm/scheduler_test.clj : 2
+storm--src/jvm/backtype/storm/scheduler/SchedulerAssignmentImpl.java : 2
+storm--src/jvm/backtype/storm/coordination/CoordinatedBolt.java : 1
+storm--src/clj/backtype/storm/command/list.clj : 1
+storm--test/clj/backtype/storm/transactional_test.clj : 1
+storm--test/clj/backtype/storm/cluster_test.clj : 1
+storm--src/clj/backtype/storm/zookeeper.clj : 1
+storm--src/clj/backtype/storm/messaging/protocol.clj : 1
+storm--src/clj/backtype/storm/cluster.clj : 1
+storm--src/jvm/backtype/storm/scheduler/IScheduler.java : 1
+storm--src/jvm/backtype/storm/transactional/TransactionalTopologyBuilder.java : 1
+storm--src/jvm/backtype/storm/scheduler/INimbus.java : 1
+=========================================
+Jason Trost
+-----------------------------------------
+storm--src/jvm/backtype/storm/task/ShellBolt.java : 1
+=========================================
+Kang Xiao
+-----------------------------------------
+storm--src/clj/backtype/storm/ui/helpers.clj : 1
+storm--src/clj/backtype/storm/ui/core.clj : 1
+=========================================
+Kasper Madsen
+-----------------------------------------
+storm--src/jvm/backtype/storm/testing/SpoutTracker.java : 1
+storm--src/jvm/backtype/storm/spout/SpoutOutputCollector.java : 1
+storm--src/jvm/backtype/storm/spout/ISpoutOutputCollector.java : 1
+storm--src/clj/backtype/storm/daemon/task.clj : 1
+storm--src/jvm/backtype/storm/ILocalCluster.java : 1
+storm--src/clj/backtype/storm/LocalCluster.clj : 1
+=========================================
+Michael Cetrulo
+-----------------------------------------
+storm--test/clj/backtype/storm/fields_test.clj : 1
+storm--src/jvm/backtype/storm/tuple/Fields.java : 1
+=========================================
+Nathan Marz
+-----------------------------------------
+storm--src/clj/backtype/storm/daemon/nimbus.clj : 73
+storm--src/clj/backtype/storm/daemon/worker.clj : 66
+storm--src/clj/backtype/storm/daemon/task.clj : 65
+storm--src/clj/backtype/storm/testing.clj : 52
+storm--src/clj/backtype/storm/util.clj : 44
+storm--src/clj/backtype/storm/daemon/common.clj : 43
+storm--src/jvm/backtype/storm/transactional/TransactionalSpoutCoordinator.java : 42
+storm--src/jvm/backtype/storm/Config.java : 41
+storm--src/clj/backtype/storm/daemon/supervisor.clj : 39
+storm--conf/defaults.yaml : 39
+storm--src/clj/backtype/storm/daemon/executor.clj : 39
+storm--test/clj/backtype/storm/transactional_test.clj : 36
+storm--test/clj/backtype/storm/integration_test.clj : 35
+storm--project.clj : 34
+storm--src/clj/backtype/storm/bootstrap.clj : 32
+storm--src/jvm/backtype/storm/utils/Utils.java : 30
+storm--test/clj/backtype/storm/nimbus_test.clj : 29
+storm--src/jvm/backtype/storm/task/TopologyContext.java : 29
+storm--src/jvm/backtype/storm/transactional/TransactionalTopologyBuilder.java : 29
+storm--src/jvm/backtype/storm/coordination/CoordinatedBolt.java : 24
+storm--src/jvm/backtype/storm/transactional/ITransactionalSpout.java : 23
+storm--src/jvm/backtype/storm/tuple/Tuple.java : 21
+storm--src/clj/backtype/storm/thrift.clj : 21
+storm--src/jvm/backtype/storm/serialization/SerializationFactory.java : 19
+storm--src/clj/backtype/storm/cluster.clj : 18
+storm--src/jvm/backtype/storm/transactional/TransactionalBoltExecutor.java : 18
+storm--src/clj/backtype/storm/clojure.clj : 17
+storm--src/jvm/backtype/storm/transactional/TransactionalSpoutBatchExecutor.java : 17
+storm--src/clj/backtype/storm/messaging/loader.clj : 16
+storm--src/jvm/backtype/storm/drpc/LinearDRPCTopologyBuilder.java : 16
+storm--src/jvm/backtype/storm/topology/TopologyBuilder.java : 15
+storm--src/clj/backtype/storm/daemon/acker.clj : 15
+storm--src/clj/backtype/storm/zookeeper.clj : 14
+storm--src/jvm/backtype/storm/task/ShellBolt.java : 13
+storm--src/jvm/backtype/storm/drpc/ReturnResults.java : 13
+storm--src/clj/backtype/storm/daemon/drpc.clj : 13
+storm--src/jvm/backtype/storm/transactional/partitioned/PartitionedTransactionalSpoutExecutor.java : 13
+storm--src/jvm/backtype/storm/task/OutputCollectorImpl.java : 12
+storm--src/clj/backtype/storm/messaging/zmq.clj : 12
+storm--src/jvm/backtype/storm/drpc/DRPCSpout.java : 12
+storm--src/clj/backtype/storm/timer.clj : 12
+storm--src/jvm/backtype/storm/testing/MemoryTransactionalSpout.java : 12
+storm--src/clj/backtype/storm/ui/core.clj : 11
+storm--src/clj/backtype/storm/config.clj : 11
+storm--src/jvm/backtype/storm/task/OutputCollector.java : 10
+storm--src/jvm/backtype/storm/generated/TopologyInfo.java : 10
+storm--test/clj/backtype/storm/drpc_test.clj : 10
+storm--src/jvm/backtype/storm/drpc/CoordinatedBolt.java : 10
+storm--src/jvm/backtype/storm/task/IOutputCollector.java : 9
+storm--src/jvm/backtype/storm/generated/TaskSummary.java : 9
+storm--src/jvm/backtype/storm/clojure/ClojureBolt.java : 9
+storm--src/jvm/backtype/storm/transactional/state/TransactionalState.java : 9
+storm--src/jvm/backtype/storm/utils/DRPCClient.java : 8
+storm--src/jvm/backtype/storm/generated/TaskStats.java : 8
+storm--src/jvm/backtype/storm/generated/Nimbus.java : 8
+storm--src/jvm/backtype/storm/StormSubmitter.java : 8
+storm--src/jvm/backtype/storm/serialization/KryoTupleDeserializer.java : 8
+storm--src/jvm/backtype/storm/transactional/TransactionAttempt.java : 8
+storm--src/jvm/backtype/storm/transactional/state/RotatingTransactionalState.java : 8
+storm--src/jvm/backtype/storm/scheduler/INimbus.java : 8
+storm--src/jvm/backtype/storm/utils/DisruptorQueue.java : 8
+storm--src/jvm/backtype/storm/generated/StormTopology.java : 7
+storm--src/jvm/backtype/storm/generated/SpoutStats.java : 7
+storm--src/jvm/backtype/storm/generated/ComponentCommon.java : 7
+storm--src/jvm/backtype/storm/Constants.java : 7
+storm--test/clj/backtype/storm/serialization_test.clj : 7
+storm--src/jvm/backtype/storm/drpc/JoinResult.java : 7
+storm--src/jvm/backtype/storm/serialization/KryoTupleSerializer.java : 7
+storm--src/jvm/backtype/storm/transactional/partitioned/IPartitionedTransactionalSpout.java : 7
+storm--src/jvm/backtype/storm/hooks/BaseTaskHook.java : 7
+storm--src/jvm/backtype/storm/tuple/MessageId.java : 6
+storm--src/jvm/backtype/storm/topology/InputDeclarer.java : 6
+storm--src/jvm/backtype/storm/testing/FeederSpout.java : 6
+storm--src/jvm/backtype/storm/testing/BoltTracker.java : 6
+storm--src/jvm/backtype/storm/generated/ClusterSummary.java : 6
+storm--src/jvm/backtype/storm/generated/BoltStats.java : 6
+storm--src/clj/backtype/storm/messaging/local.clj : 6
+storm--src/jvm/backtype/storm/transactional/ITransactionalBolt.java : 6
+storm--test/clj/backtype/storm/supervisor_test.clj : 5
+storm--test/clj/backtype/storm/cluster_test.clj : 5
+storm--src/jvm/backtype/storm/utils/TimeCacheMap.java : 5
+storm--src/jvm/backtype/storm/utils/Time.java : 5
+storm--src/jvm/backtype/storm/testing/TupleCaptureBolt.java : 5
+storm--src/jvm/backtype/storm/generated/TopologySummary.java : 5
+storm--src/jvm/backtype/storm/generated/Grouping.java : 5
+storm--src/jvm/backtype/storm/generated/DistributedRPC.java : 5
+storm--src/jvm/backtype/storm/generated/Bolt.java : 5
+storm--src/clj/backtype/storm/log.clj : 5
+storm--src/clj/backtype/storm/event.clj : 5
+storm--src/clj/backtype/storm/command/kill_topology.clj : 5
+storm--src/clj/backtype/storm/messaging/protocol.clj : 5
+storm--src/jvm/backtype/storm/clojure/ClojureSpout.java : 5
+storm--src/jvm/backtype/storm/drpc/PrepareRequest.java : 5
+storm--src/jvm/backtype/storm/drpc/LinearDRPCInputDeclarer.java : 5
+storm--src/jvm/backtype/storm/drpc/KeyedFairBolt.java : 5
+storm--src/jvm/backtype/storm/grouping/CustomStreamGrouping.java : 5
+storm--src/jvm/backtype/storm/serialization/KryoValuesSerializer.java : 5
+storm--src/jvm/backtype/storm/serialization/KryoValuesDeserializer.java : 5
+storm--src/jvm/backtype/storm/topology/base/BaseTransactionalSpout.java : 5
+storm--src/jvm/backtype/storm/testing/CountingBatchBolt.java : 5
+storm--src/jvm/backtype/storm/coordination/BatchBoltExecutor.java : 5
+storm--src/jvm/backtype/storm/transactional/partitioned/OpaquePartitionedTransactionalSpoutExecutor.java : 5
+storm--src/jvm/backtype/storm/hooks/ITaskHook.java : 5
+storm--src/jvm/backtype/storm/task/GeneralTopologyContext.java : 5
+storm--src/jvm/backtype/storm/scheduler/WorkerSlot.java : 5
+storm--src/jvm/backtype/storm/task/WorkerTopologyContext.java : 5
+storm--src/clj/backtype/storm/disruptor.clj : 5
+storm--src/jvm/backtype/storm/utils/NimbusClient.java : 4
+storm--src/jvm/backtype/storm/topology/BasicOutputCollector.java : 4
+storm--src/jvm/backtype/storm/testing/TestWordSpout.java : 4
+storm--src/jvm/backtype/storm/testing/TestPlannerSpout.java : 4
+storm--src/jvm/backtype/storm/testing/SpoutTracker.java : 4
+storm--src/jvm/backtype/storm/task/KeyedFairBolt.java : 4
+storm--src/jvm/backtype/storm/task/CoordinatedBolt.java : 4
+storm--src/jvm/backtype/storm/generated/TaskSpecificStats.java : 4
+storm--src/jvm/backtype/storm/generated/StreamInfo.java : 4
+storm--src/jvm/backtype/storm/generated/SpoutSpec.java : 4
+storm--src/jvm/backtype/storm/generated/GlobalStreamId.java : 4
+storm--src/jvm/backtype/storm/generated/ComponentObject.java : 4
+storm--src/clj/zilch/mq.clj : 4
+storm--src/jvm/backtype/storm/testing/TestSerObject.java : 4
+storm--src/jvm/backtype/storm/testing/NGrouping.java : 4
+storm--src/jvm/backtype/storm/tuple/IAnchorable.java : 4
+storm--src/jvm/backtype/storm/transactional/TransactionalOutputCollectorImpl.java : 4
+storm--src/jvm/backtype/storm/topology/ComponentConfigurationDeclarer.java : 4
+storm--src/jvm/backtype/storm/topology/base/BasePartitionedTransactionalSpout.java : 4
+storm--src/jvm/backtype/storm/transactional/ICommitterBolt.java : 4
+storm--src/jvm/backtype/storm/transactional/CommitterBoltExecutor.java : 4
+storm--src/jvm/backtype/storm/topology/base/BaseBatchBolt.java : 4
+storm--src/jvm/backtype/storm/topology/IBasicOutputCollector.java : 3
+storm--src/jvm/backtype/storm/topology/BasicBoltExecutor.java : 3
+storm--src/jvm/backtype/storm/testing/TrackerAggregator.java : 3
+storm--src/jvm/backtype/storm/testing/TestGlobalCount.java : 3
+storm--src/jvm/backtype/storm/testing/FixedTupleSpout.java : 3
+storm--src/jvm/backtype/storm/testing/FixedTuple.java : 3
+storm--src/jvm/backtype/storm/spout/SpoutOutputCollector.java : 3
+storm--src/jvm/backtype/storm/spout/ShellSpout.java : 3
+storm--src/jvm/backtype/storm/spout/ISpoutOutputCollector.java : 3
+storm--src/jvm/backtype/storm/spout/ISpout.java : 3
+storm--src/jvm/backtype/storm/serialization/ISerialization.java : 3
+storm--src/jvm/backtype/storm/serialization/FieldSerialization.java : 3
+storm--src/jvm/backtype/storm/generated/SupervisorSummary.java : 3
+storm--src/jvm/backtype/storm/generated/StateSpoutSpec.java : 3
+storm--src/jvm/backtype/storm/generated/ShellComponent.java : 3
+storm--src/jvm/backtype/storm/generated/NullStruct.java : 3
+storm--src/jvm/backtype/storm/generated/NotAliveException.java : 3
+storm--src/jvm/backtype/storm/generated/InvalidTopologyException.java : 3
+storm--src/jvm/backtype/storm/generated/ErrorInfo.java : 3
+storm--src/jvm/backtype/storm/generated/AlreadyAliveException.java : 3
+storm--src/jvm/backtype/storm/drpc/DRPCScheme.java : 3
+storm--src/clj/zilch/virtual_port.clj : 3
+storm--src/clj/backtype/storm/ui/helpers.clj : 3
+storm--src/clj/backtype/storm/stats.clj : 3
+storm--src/jvm/backtype/storm/utils/InprocMessaging.java : 3
+storm--src/clj/backtype/storm/LocalDRPC.clj : 3
+storm--test/clj/backtype/storm/grouping_test.clj : 3
+storm--src/jvm/backtype/storm/serialization/KryoFactory.java : 3
+storm--src/jvm/backtype/storm/serialization/ITupleSerializer.java : 3
+storm--src/clj/backtype/storm/acker.clj : 3
+storm--src/jvm/backtype/storm/generated/RebalanceOptions.java : 3
+storm--src/clj/backtype/storm/command/rebalance.clj : 3
+storm--src/jvm/backtype/storm/transactional/TransactionalSpoutOutputCollector.java : 3
+storm--src/jvm/backtype/storm/transactional/TransactionTuple.java : 3
+storm--src/jvm/backtype/storm/transactional/ITransactionState.java : 3
+storm--src/jvm/backtype/storm/topology/BaseConfigurationDeclarer.java : 3
+storm--src/jvm/backtype/storm/testing/DelegateOutputCollector.java : 3
+storm--src/jvm/backtype/storm/topology/base/BaseTransactionalBolt.java : 3
+storm--src/jvm/backtype/storm/testing/MemoryTransactionalSpoutMeta.java : 3
+storm--src/jvm/backtype/storm/transactional/IBatchBolt.java : 3
+storm--src/jvm/backtype/storm/transactional/BatchBoltExecutor.java : 3
+storm--src/jvm/backtype/storm/transactional/partitioned/IOpaquePartitionedTransactionalSpout.java : 3
+storm--src/jvm/backtype/storm/hooks/info/BoltAckInfo.java : 3
+storm--src/jvm/backtype/storm/hooks/TaskHook.java : 3
+storm--src/jvm/backtype/storm/utils/ShellProcess.java : 3
+storm--src/jvm/backtype/storm/scheduler/ISupervisor.java : 3
+storm--src/jvm/backtype/storm/scheduler/TopologyDetails.java : 3
+storm--src/jvm/backtype/storm/tuple/TupleImpl.java : 3
+storm--test/clj/zilch/test/mq.clj : 2
+storm--src/jvm/backtype/storm/utils/VersionedStore.java : 2
+storm--src/jvm/backtype/storm/utils/LocalState.java : 2
+storm--src/jvm/backtype/storm/tuple/Values.java : 2
+storm--src/jvm/backtype/storm/tuple/Fields.java : 2
+storm--src/jvm/backtype/storm/topology/OutputFieldsGetter.java : 2
+storm--src/jvm/backtype/storm/topology/OutputFieldsDeclarer.java : 2
+storm--src/jvm/backtype/storm/topology/IRichSpout.java : 2
+storm--src/jvm/backtype/storm/topology/IComponent.java : 2
+storm--src/jvm/backtype/storm/topology/IBasicBolt.java : 2
+storm--src/jvm/backtype/storm/testing/TestWordCounter.java : 2
+storm--src/jvm/backtype/storm/testing/TestPlannerBolt.java : 2
+storm--src/jvm/backtype/storm/testing/TestAggregatesCounter.java : 2
+storm--src/jvm/backtype/storm/task/IInternalOutputCollector.java : 2
+storm--src/jvm/backtype/storm/task/IBolt.java : 2
+storm--src/jvm/backtype/storm/serialization/ValuesSerializer.java : 2
+storm--src/jvm/backtype/storm/serialization/ValuesDeserializer.java : 2
+storm--src/jvm/backtype/storm/serialization/TupleSerializer.java : 2
+storm--src/jvm/backtype/storm/serialization/TupleDeserializer.java : 2
+storm--src/jvm/backtype/storm/drpc/SpoutAdder.java : 2
+storm--src/jvm/backtype/storm/ILocalCluster.java : 2
+storm--src/clj/backtype/storm/tuple.clj : 2
+storm--src/clj/backtype/storm/LocalCluster.clj : 2
+storm--src/clj/backtype/storm/messaging.clj : 2
+storm--src/jvm/backtype/storm/testing/TestSerObjectSerialization.java : 2
+storm--src/jvm/backtype/storm/serialization/JavaSerialization.java : 2
+storm--src/jvm/backtype/storm/testing/FeederSpoutAdder.java : 2
+storm--src/jvm/backtype/storm/utils/ServiceRegistry.java : 2
+storm--src/jvm/backtype/storm/ILocalDRPC.java : 2
+storm--src/jvm/backtype/storm/drpc/StintBoltExecutor.java : 2
+storm--src/jvm/backtype/storm/drpc/IStintBolt.java : 2
+storm--src/jvm/backtype/storm/serialization/ITupleDeserializer.java : 2
+storm--src/clj/backtype/storm/kryo.clj : 2
+storm--src/jvm/backtype/storm/transactional/ITransactionalSpoutOutputCollector.java : 2
+storm--src/jvm/backtype/storm/transactional/ITransactional.java : 2
+storm--src/jvm/backtype/storm/generated/TransactionalSpoutSpec.java : 2
+storm--src/jvm/backtype/storm/generated/TransactionalBolt.java : 2
+storm--src/jvm/backtype/storm/task/IBoltEmitter.java : 2
+storm--src/jvm/backtype/storm/task/BoltEmitter.java : 2
+storm--src/jvm/backtype/storm/transactional/TransactionalOutputCollector.java : 2
+storm--src/jvm/backtype/storm/transactional/ICommittable.java : 2
+storm--src/jvm/backtype/storm/tuple/IAnchorableImpl.java : 2
+storm--src/jvm/backtype/storm/coordination/FinishedTupleImpl.java : 2
+storm--src/jvm/backtype/storm/coordination/FinishedTuple.java : 2
+storm--src/jvm/backtype/storm/transactional/ICoordinatorState.java : 2
+storm--src/jvm/backtype/storm/transactional/ITransactionalState.java : 2
+storm--src/jvm/backtype/storm/drpc/DRPCInvocationsClient.java : 2
+storm--src/jvm/backtype/storm/topology/base/BaseRichSpout.java : 2
+storm--src/jvm/backtype/storm/topology/base/BaseComponent.java : 2
+storm--src/jvm/backtype/storm/topology/BoltDeclarer.java : 2
+storm--src/jvm/backtype/storm/testing/CountingTransactionalBolt.java : 2
+storm--src/jvm/backtype/storm/transactional/FailedTransactionException.java : 2
+storm--src/jvm/backtype/storm/topology/base/BaseCommitterBolt.java : 2
+storm--src/jvm/backtype/storm/transactional/FailedBatchException.java : 2
+storm--src/jvm/backtype/storm/transactional/BatchOutputCollectorImpl.java : 2
+storm--src/jvm/backtype/storm/transactional/BatchOutputCollector.java : 2
+storm--src/jvm/backtype/storm/coordination/IBatchBolt.java : 2
+storm--src/jvm/backtype/storm/coordination/FailedBatchException.java : 2
+storm--src/jvm/backtype/storm/coordination/BatchOutputCollectorImpl.java : 2
+storm--src/jvm/backtype/storm/coordination/BatchOutputCollector.java : 2
+storm--src/jvm/backtype/storm/testing/KeyedSummingBatchBolt.java : 2
+storm--src/jvm/backtype/storm/testing/KeyedCountingCommitterBolt.java : 2
+storm--src/jvm/backtype/storm/testing/CountingCommitBolt.java : 2
+storm--src/jvm/backtype/storm/utils/ThreadResourceManager.java : 2
+storm--src/jvm/backtype/storm/transactional/ICommitterTransactionalSpout.java : 2
+storm--src/jvm/backtype/storm/hooks/info/SpoutFailInfo.java : 2
+storm--src/jvm/backtype/storm/hooks/info/SpoutEmitInfo.java : 2
+storm--src/jvm/backtype/storm/hooks/info/SpoutAckInfo.java : 2
+storm--src/jvm/backtype/storm/hooks/info/BoltFailInfo.java : 2
+storm--src/jvm/backtype/storm/hooks/info/BoltEmitInfo.java : 2
+storm--src/jvm/backtype/storm/scheduler/ISupervisorScheduler.java : 2
+storm--src/jvm/backtype/storm/scheduler/INimbusScheduler.java : 2
+storm--src/jvm/backtype/storm/scheduler/TopologyInfo.java : 2
+storm--src/jvm/backtype/storm/scheduler/SupervisorInfo.java : 2
+storm--src/jvm/backtype/storm/scheduler/SupervisorDetails.java : 2
+storm--src/jvm/backtype/storm/utils/NonBlockingPairDisruptorQueue.java : 2
+storm--test/clj/backtype/storm/clojure_test.clj : 2
+storm--test/clj/backtype/storm/scheduler_test.clj : 2
+storm--src/jvm/backtype/storm/testing/BatchNumberList.java : 2
+storm--src/jvm/backtype/storm/coordination/BatchSubtopologyBuilder.java : 2
+storm--test/clj/backtype/storm/versioned_store_test.clj : 1
+storm--test/clj/backtype/storm/local_state_test.clj : 1
+storm--src/jvm/backtype/storm/utils/WritableUtils.java : 1
+storm--src/jvm/backtype/storm/utils/KeyedRoundRobinQueue.java : 1
+storm--src/jvm/backtype/storm/utils/CRC32OutputStream.java : 1
+storm--src/jvm/backtype/storm/utils/BufferFileInputStream.java : 1
+storm--src/jvm/backtype/storm/topology/IRichStateSpout.java : 1
+storm--src/jvm/backtype/storm/topology/IRichBolt.java : 1
+storm--src/jvm/backtype/storm/testing/AckTracker.java : 1
+storm--src/jvm/backtype/storm/testing/AckFailDelegate.java : 1
+storm--src/jvm/backtype/storm/state/SynchronizeOutputCollector.java : 1
+storm--src/jvm/backtype/storm/state/StateSpoutOutputCollector.java : 1
+storm--src/jvm/backtype/storm/state/ISynchronizeOutputCollector.java : 1
+storm--src/jvm/backtype/storm/state/ISubscribedState.java : 1
+storm--src/jvm/backtype/storm/state/IStateSpoutOutputCollector.java : 1
+storm--src/jvm/backtype/storm/state/IStateSpout.java : 1
+storm--src/jvm/backtype/storm/spout/Scheme.java : 1
+storm--src/jvm/backtype/storm/spout/RawScheme.java : 1
+storm--src/jvm/backtype/storm/planner/TaskBundle.java : 1
+storm--src/jvm/backtype/storm/planner/CompoundTask.java : 1
+storm--src/jvm/backtype/storm/planner/CompoundSpout.java : 1
+storm--src/jvm/backtype/storm/daemon/Shutdownable.java : 1
+storm--src/clj/backtype/storm/process_simulator.clj : 1
+storm--src/clj/backtype/storm/command/shell_submission.clj : 1
+storm--src/clj/backtype/storm/command/config_value.clj : 1
+storm--LICENSE.html : 1
+storm--src/jvm/backtype/storm/generated/KillOptions.java : 1
+storm--src/jvm/backtype/storm/generated/DRPCRequest.java : 1
+storm--src/jvm/backtype/storm/generated/DRPCExecutionException.java : 1
+storm--src/jvm/backtype/storm/generated/JavaObjectArg.java : 1
+storm--src/jvm/backtype/storm/generated/JavaObject.java : 1
+storm--src/jvm/backtype/storm/utils/ListDelegate.java : 1
+storm--src/jvm/backtype/storm/utils/Container.java : 1
+storm--src/jvm/backtype/storm/utils/RegisteredGlobalState.java : 1
+storm--src/clj/backtype/storm/command/deactivate.clj : 1
+storm--src/clj/backtype/storm/command/activate.clj : 1
+storm--src/jvm/backtype/storm/utils/ClojureTimerTask.java : 1
+storm--src/jvm/backtype/storm/testing/NonRichBoltTracker.java : 1
+storm--src/jvm/backtype/storm/generated/DistributedRPCInvocations.java : 1
+storm--src/jvm/backtype/storm/topology/base/BaseRichBolt.java : 1
+storm--src/jvm/backtype/storm/topology/base/BaseBasicBolt.java : 1
+storm--src/jvm/backtype/storm/topology/SpoutDeclarer.java : 1
+storm--src/jvm/backtype/storm/utils/ThriftTopologyUtils.java : 1
+storm--src/jvm/backtype/storm/testing/TestConfBolt.java : 1
+storm--src/jvm/backtype/storm/clojure/RichShellBolt.java : 1
+storm--src/jvm/backtype/storm/testing/KeyedCountingBatchBolt.java : 1
+storm--src/jvm/backtype/storm/testing/IdentityBolt.java : 1
+storm--src/jvm/backtype/storm/transactional/ICommitter.java : 1
+storm--src/jvm/backtype/storm/topology/FailedException.java : 1
+storm--src/jvm/backtype/storm/tuple/IndifferentAccessMap.java : 1
+storm--src/jvm/backtype/storm/utils/IndifferentAccessMap.java : 1
+storm--src/jvm/backtype/storm/topology/base/BaseOpaquePartitionedTransactionalSpout.java : 1
+storm--test/clj/backtype/storm/config_test.clj : 1
+storm--src/jvm/backtype/storm/hooks/info/EmitInfo.java : 1
+storm--src/clj/backtype/storm/command/list.clj : 1
+storm--src/jvm/backtype/storm/testing/OpaqueMemoryTransactionalSpout.java : 1
+storm--src/clj/backtype/storm/command/dev_zookeeper.clj : 1
+storm--src/jvm/backtype/storm/generated/ExecutorSummary.java : 1
+storm--src/jvm/backtype/storm/generated/ExecutorStats.java : 1
+storm--src/jvm/backtype/storm/generated/ExecutorSpecificStats.java : 1
+storm--src/jvm/backtype/storm/generated/ExecutorInfo.java : 1
+storm--src/jvm/backtype/storm/utils/MutableObject.java : 1
+storm--src/jvm/backtype/storm/utils/MutableInt.java : 1
+storm--src/jvm/backtype/storm/serialization/types/HashSetSerializer.java : 1
+storm--src/jvm/backtype/storm/serialization/types/HashMapSerializer.java : 1
+storm--src/jvm/backtype/storm/serialization/types/ArrayListSerializer.java : 1
+storm--src/jvm/backtype/storm/utils/RotatingMap.java : 1
+storm--src/jvm/backtype/storm/spout/NoOpSpout.java : 1
+storm--test/clj/backtype/storm/multilang_test.clj : 1
+storm--src/jvm/backtype/storm/testing/AckFailMapTracker.java : 1
+storm--src/jvm/backtype/storm/scheduler/ExecutorDetails.java : 1
+storm--src/jvm/backtype/storm/scheduler/SchedulerAssignment.java : 1
+storm--src/jvm/backtype/storm/scheduler/Cluster.java : 1
+storm--src/clj/backtype/storm/scheduler/EvenScheduler.clj : 1
+storm--src/clj/backtype/storm/scheduler/DefaultScheduler.clj : 1
+storm--test/clj/backtype/storm/subtopology_test.clj : 1
+storm--src/jvm/backtype/storm/testing/PrepareBatchBolt.java : 1
+storm--src/jvm/backtype/storm/testing/BatchRepeatA.java : 1
+storm--src/jvm/backtype/storm/testing/BatchProcessWord.java : 1
+=========================================
+Patrick Houk
+-----------------------------------------
+storm--src/clj/backtype/storm/util.clj : 1
+storm--src/clj/backtype/storm/testing.clj : 1
+=========================================
+Sam Ritchie
+-----------------------------------------
+storm--src/clj/backtype/storm/util.clj : 2
+=========================================
+Sam Stokes
+-----------------------------------------
+storm--src/jvm/backtype/storm/Config.java : 1
+=========================================
+Soren Macbeth
+-----------------------------------------
+storm--project.clj : 2
+storm--src/clj/backtype/storm/thrift.clj : 1
+storm--src/clj/backtype/storm/testing.clj : 1
+=========================================
+Thomas Jack
+-----------------------------------------
+storm--src/jvm/backtype/storm/task/ShellBolt.java : 5
+storm--src/jvm/backtype/storm/utils/ShellProcess.java : 4
+storm--test/clj/backtype/storm/integration_test.clj : 3
+storm--src/jvm/backtype/storm/spout/ShellSpout.java : 3
+storm--src/clj/backtype/storm/thrift.clj : 2
+storm--src/jvm/backtype/storm/task/TopologyContext.java : 1
+storm--src/jvm/backtype/storm/clojure/RichShellBolt.java : 1
+storm--src/jvm/backtype/storm/clojure/RichShellSpout.java : 1
+storm--src/clj/backtype/storm/clojure.clj : 1
+=========================================
+Tom Payne
+-----------------------------------------
+=========================================
+Travis Wellman
+-----------------------------------------
+storm--src/jvm/backtype/storm/tuple/Tuple.java : 1
+=========================================
+Trevor Summers Smith
+-----------------------------------------
+storm--test/clj/backtype/storm/nimbus_test.clj : 1
+storm--src/jvm/backtype/storm/Config.java : 1
+storm--src/clj/backtype/storm/daemon/nimbus.clj : 1
+storm--conf/defaults.yaml : 1
+=========================================
+ashley
+-----------------------------------------
+storm--src/clj/backtype/storm/zookeeper.clj : 1
+storm--project.clj : 1
+=========================================
+dennis zhuang
+-----------------------------------------
+storm--src/clj/backtype/storm/zookeeper.clj : 3
+storm--src/clj/backtype/storm/cluster.clj : 2
+storm--project.clj : 1
+storm--src/jvm/backtype/storm/Config.java : 1
+storm--conf/defaults.yaml : 1
+=========================================
+haitao.yao
+-----------------------------------------
+storm--src/jvm/backtype/storm/utils/Utils.java : 3
+storm--src/jvm/backtype/storm/utils/DRPCClient.java : 1
+=========================================
+xumingming
+-----------------------------------------
+storm--test/clj/backtype/storm/integration_test.clj : 1
+storm--src/jvm/backtype/storm/Config.java : 1
+storm--src/clj/backtype/storm/testing.clj : 1
+storm--src/clj/backtype/storm/messaging/zmq.clj : 1
+storm--src/clj/backtype/storm/messaging/local.clj : 1
+storm--src/clj/backtype/storm/daemon/worker.clj : 1
+storm--src/clj/backtype/storm/daemon/task.clj : 1

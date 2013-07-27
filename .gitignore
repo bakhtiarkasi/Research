@@ -1,0 +1,41 @@
+.*
+Constraints/
+Data Snapshot.docx
+DataAnalysis/
+Development/Arsonae/bin/
+Development/CassSimulationICSE2014/bin/
+Development/Cassandra/bin/
+Development/External Plug-in Libraries/
+Development/Mylyn/
+Development/cse-unl-Tesseract-2402cd8/
+Dissertation_final.pdf
+ESEM2013/
+Github - FSE 2012 Submission.pdf
+GraphDB/
+ICSE2013/
+ICSE2014/
+LatexIEEE/
+MergeData.xlsx
+Mylyn/
+Paper Writting/
+Rafael/
+STP/
+ScalePresentation copy.pptx
+ScalePresentation.pptx
+StormTemp/
+Task-Conflict Avoidance.docx
+Z3 SMT.docx
+Z3Results.xls
+bkPresentation.pptx
+gremlin-1.3/
+gremlin-2.0/
+icse12/
+icse13/
+lein
+runtime-EclipseApplication/
+temp/
+z3 3 dev.rtf
+z3 python.rtf
+z3 python.txt
+z3/
+!.gitignore
