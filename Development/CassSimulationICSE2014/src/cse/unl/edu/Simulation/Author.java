@@ -1,10 +1,14 @@
 package cse.unl.edu.Simulation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import cse.unl.edu.Simulation.Merge.File;
 import cse.unl.edu.util.Utils;
@@ -15,6 +19,7 @@ public class Author {
 	public int allFilesCount = 0;
 
 	Map<Integer, List> filesMap;
+	private float median;
 
 	public Author() {
 		filesMap = new HashMap();
@@ -25,12 +30,31 @@ public class Author {
 		this();
 		this.authorName = authorName;
 		this.populateFiles(files);
-		int i = 10;
-		i = 20;
-
 		// System.out.println(filesMap);
 
 	}
+
+	/*
+	 * private void populateFiles(String files) {
+	 * 
+	 * String[] fileNames = files.split("\n"); this.allFilesCount =
+	 * fileNames.length;
+	 * 
+	 * String[] fileInfo = new String[2]; int lastCount = -1; int keys = -1;
+	 * 
+	 * for (int i = 0; i < fileNames.length; i++) { fileInfo =
+	 * fileNames[i].split(" : ");
+	 * 
+	 * if(i==0 && fileInfo[0].equals("Median")) { this.median =
+	 * Float.parseFloat(fileInfo[1]); continue; }
+	 * 
+	 * if (lastCount != -1 && lastCount == Integer.parseInt(fileInfo[1])) {
+	 * filesMap.get(keys).add(fileInfo[0]); } else { lastCount =
+	 * Integer.parseInt(fileInfo[1]); keys++;
+	 * 
+	 * filesMap.put(keys, new ArrayList()); filesMap.get(keys).add(fileInfo[0]);
+	 * } } }
+	 */
 
 	private void populateFiles(String files) {
 
@@ -39,23 +63,30 @@ public class Author {
 
 		String[] fileInfo = new String[2];
 		int lastCount = -1;
-		int keys = -1;
+		int keys = 0;
 
 		for (int i = 0; i < fileNames.length; i++) {
 			fileInfo = fileNames[i].split(" : ");
 
-			if (lastCount != -1 && lastCount == Integer.parseInt(fileInfo[1])) {
-				filesMap.get(keys).add(fileInfo[0]);
-			} else {
-				lastCount = Integer.parseInt(fileInfo[1]);
-				keys++;
-
-				filesMap.put(keys, new ArrayList());
-				filesMap.get(keys).add(fileInfo[0]);
+			if (i == 0 && fileInfo[0].equals("Median")) {
+				this.median = Float.parseFloat(fileInfo[1]);
+				continue;
 			}
+
+			if (Integer.parseInt(fileInfo[1]) >= median)
+				keys = 0;
+			else
+				keys = 1;
+
+			if (!filesMap.containsKey(keys))
+				filesMap.put(keys, new ArrayList());
+
+			filesMap.get(keys).add(fileInfo[0]);
 		}
 	}
 
+	// returns the required # of files from teh set of all files changed by this
+	// developer in the past.
 	public List getFiles(int count, List<File> remoteFiles) {
 
 		if (count > allFilesCount)
@@ -80,8 +111,8 @@ public class Author {
 	private Collection getRandomFiles(List list, int requiredFiles,
 			List<File> remoteFiles) {
 
-
-		//System.out.println(list + " :  " + requiredFiles + " " + remoteFiles);
+		// System.out.println(list + " :  " + requiredFiles + " " +
+		// remoteFiles);
 		List files = new ArrayList();
 
 		if (requiredFiles >= list.size()) {
@@ -106,9 +137,10 @@ public class Author {
 		List<Integer> exclude = new ArrayList();
 
 		for (int i = 0; i < requiredFiles; i++) {
-			int pickedNumer = Utils.getRandomNumber(0, list.size()-1, exclude, false);
+			int pickedNumer = Utils.getRandomNumber(0, list.size() - 1,
+					exclude, false);
 			exclude.add(pickedNumer);
-			//System.out.println(pickedNumer +" : "+ requiredFiles);
+			// System.out.println(pickedNumer +" : "+ requiredFiles);
 
 			String fileName = (String) list.get(pickedNumer);
 			// fileName = fileName.replaceAll("storm--src/jvm",
@@ -129,25 +161,84 @@ public class Author {
 
 			if (bAdd)
 				files.add(fileName);
-			
-			if(exclude.size() == list.size())
+
+			if (exclude.size() == list.size())
 				return files;
 		}
 
 		return files;
 	}
 
+	/*
+	 * static void processSubsets(int[] set, int k) { int[] subset = new int[k];
+	 * processLargerSubsets(set, subset, 0, 0); }
+	 * 
+	 * static void processLargerSubsets(int[] set, int[] subset, int subsetSize,
+	 * int nextIndex) { if (subsetSize == subset.length) { process(subset); }
+	 * else { for (int j = nextIndex; j < set.length; j++) { subset[subsetSize]
+	 * = set[j]; processLargerSubsets(set, subset, subsetSize + 1, j + 1); } } }
+	 * 
+	 * static void process(int[] subset) {
+	 * System.out.println(Arrays.toString(subset)); }
+	 */
+
 	public static void main(String[] args) {
 
-		String fileContents = "storm--test/clj/backtype/storm/integration_test.clj : 3\n"
+		String fileContents = "Median : 2.5\nstorm--test/clj/backtype/storm/integration_test.clj : 3\n"
 				+ "storm--src/jvm/backtype/storm/Config.java : 3\n"
 				+ "storm--src/clj/backtype/storm/testing.clj : 3\n"
-				+ "storm--src/clj/backtype/storm/messaging/zmq.clj : 1\n"
+				+ "storm--src/clj/backtype/storm/messaging/zmq.clj : 2\n"
 				+ "storm--src/clj/backtype/storm/messaging/local.clj : 1\n"
 				+ "storm--src/clj/backtype/storm/daemon/worker.clj : 1\n"
 				+ "storm--src/clj/backtype/storm/daemon/task.clj : 1";
 
 		Author auth = new Author("Nathan", fileContents);
+		int n = 5;
+		Integer[] set = new Integer[n];
+		for (int i = 0; i < n; i++)
+			set[i] = i;
+
+		
+		System.out.println(Utils.choose(5, 3));
+		System.out.println(Utils.choose(6, 3));
+		System.out.println(Utils.choose(20, 3));
+		System.out.println(Utils.choose(12, 4));
+		System.out.println(Utils.choose(5, 5));
+		System.out.println(Utils.choose(6, 2));
+		System.out.println(Utils.choose(15, 3));
+
+		
+		/*
+		 * for(int i=0;i<5;i++) { int num = Utils.getRandomNumber(1, 10, null,
+		 * true); //System.out.println(num); vals.add(num);
+		 * 
+		 * System.out.println("ST " + (prevStd -
+		 * Utils.standardDeviation(vals))); prevStd =
+		 * Utils.standardDeviation(vals); }
+		 */
+
+		/*
+		ArrayList<Integer[]> combinations = new ArrayList();
+		List<Integer> hashCodes = new ArrayList();
+
+		for (int i = 0; i < 75; i++) {
+			
+			Integer[] a = Utils.pickKRandomArray(8, 2);
+			
+			List<Integer> vals = new ArrayList();
+			System.out.println(Utils.standardDeviation(vals));
+			
+			if (hashCodes.contains(Arrays.hashCode(a))) {
+				System.out.println("Contains " + Arrays.toString(a));
+
+			} else {
+				combinations.add(a);
+				hashCodes.add(Arrays.hashCode(a));
+				System.out.println("Added " + Arrays.toString(a) + " : "+ Arrays.hashCode(a));
+				//System.out.println(hashCodes);
+			}
+		}
+		*/
 
 		/*
 		 * 
@@ -162,17 +253,15 @@ public class Author {
 		 * 
 		 * fileName = fileName.split("\\.")[0]; System.out.println(fileName);
 		 */
-		
-		List<Integer> exclude = new ArrayList();
-		exclude.add(2);
-		exclude.add(3);
-		for(int i=0;i<3;i++)
-		{
-			Integer pickedNum = Utils.getRandomNumber(0,4,exclude, false);
-			exclude.add(pickedNum);
-			
-		}
-		
+
+		/*
+		 * List<Integer> exclude = new ArrayList(); exclude.add(2);
+		 * exclude.add(3); for (int i = 0; i < 3; i++) { Integer pickedNum =
+		 * Utils.getRandomNumber(0, 4, exclude, false); exclude.add(pickedNum);
+		 * 
+		 * }
+		 */
+
 	}
 
 }

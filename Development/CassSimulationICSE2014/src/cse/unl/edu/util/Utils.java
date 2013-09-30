@@ -17,6 +17,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
@@ -242,5 +244,80 @@ public class Utils {
 			e.printStackTrace();
 		} 
 		return null;
+	}
+	
+	public static double standardDeviation (List<Integer> a){
+        int sum = 0;
+        double mean = mean(a);
+ 
+        for (Integer i : a)
+            sum += Math.pow((i - mean), 2);
+        return Math.sqrt( sum / ( a.size() - 1 ) ); // sample
+    }
+
+	private static double mean(List<Integer> a) {
+		int sum = sum(a);
+        double mean = 0;
+        mean = sum / (a.size() * 1.0);
+        return mean;
+	}
+	
+	public static int sum (List<Integer> a){
+        if (a.size() > 0) {
+            int sum = 0;
+ 
+            for (Integer i : a) {
+                sum += i;
+            }
+            return sum;
+        }
+        return 0;
+    }
+	
+	public static Integer[] pickKRandomArray(int n, int k) {
+
+		List<Integer> list = new ArrayList<Integer>(n);
+	    
+		for(int i =0; i< n; i++)
+			 list.add(i);
+		
+	    Collections.shuffle(list);
+
+	    Integer[] answer = new Integer[k];
+	    
+	    for (int i = 0; i < k; i++)
+	        answer[i] = list.get(i);
+	    Arrays.sort(answer);
+
+	    return answer;
+
+	}
+	
+	public static int choose(int n, int k) {
+	  /*  if (k == 0 || n == k) {
+	        return 1;
+	    }
+	    else {
+	        return choose(n-1, k-1) + choose(n-1, k);
+	    }*/
+		
+		if (n < 2) {
+	        return 1;
+	    }
+	    else {
+	        int bin[][] = new int[n+1][n+1];        // CONSTRUCT A TABLE TO STORE
+
+	        for (int r = 0; r <= n; r++) {          // COMPUTED VALUES
+	            for (int c = 0; c <= r && c <= k; c++) {
+	                if (c == 0 || c == r) {
+	                    bin[r][c] = 1;              // ENTER 1 IF BASE CASE
+	                }
+	                else {                          // OTHERWISE, USE FORMULA
+	                    bin[r][c] = bin[r-1][c-1] + bin[r-1][c];
+	                }
+	            }
+	        }
+	        return bin[n][k];                       // ANSWER IS AT bin[n][k]
+	    }
 	}
 }
