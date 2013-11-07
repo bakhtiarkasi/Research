@@ -23,7 +23,7 @@ import cse.unl.edu.util.Utils;
 public class Simulator {
 
 	HashMap<String, Author> authorsMap;
-	private String project;
+	private static String project;
 
 	private String DC;
 	private String IC;
@@ -34,9 +34,9 @@ public class Simulator {
 	float[] results;
 	int lastDCCount;
 
-	 private final String path = "/Users/bkasi/Documents/Research/DAScripts/";
-	 //private final String path = "/work/esquared/bkasi/DataAnalysis/Storm/";
-	//private final String path = "/work/esquared/bkasi/DataAnalysis/Voldemort/";
+	 //private final String path = "/Users/bkasi/Documents/Research/DAScripts/";
+	 private final String path = "/work/esquared/bkasi/DataAnalysis/Storm/";
+	 // private final String path = "/work/esquared/bkasi/DataAnalysis/Voldemort/";
 
 	public Simulator() {
 		authorsMap = new HashMap();
@@ -137,6 +137,7 @@ public class Simulator {
 
 			requiredFile = requiredFile == 0 ? 1 : requiredFile;
 
+			System.out.println(i+1);
 			if ((count - requiredFile - merge.remoteFiles.size()) <= 0) {
 				System.out.println("Skipped");
 				continue;
@@ -205,8 +206,8 @@ public class Simulator {
 
 			}
 
-			DC += "Reps\t" + combinations.size() + "\t\t";
-			IC += "Reps\t" + combinations.size() + "\t\t";
+			DC += "\t\tReps\t" + combinations.size() + "\t\t";
+			IC += "\t\tReps\t" + combinations.size() + "\t\t";
 			for (int j = 0; j < results.length; j++) {
 				results[j] = results[j] / combinations.size();
 
@@ -216,6 +217,7 @@ public class Simulator {
 					IC += results[j] + "\t";
 			}
 
+			
 			System.out.println(DC);
 			System.out.println(IC);
 
@@ -260,8 +262,11 @@ public class Simulator {
 
 				if (project.toLowerCase().equals("s")) {
 					filename = filename.replaceAll("storm--src/jvm", "classes")
-							.replaceAll("storm--src/clj", "classes")
-							.split("\\.")[0];
+							.replaceAll("storm--src/clj", "classes");
+
+					if (filename.endsWith(".java") || filename.endsWith(".clj"))
+						filename = filename.split("\\.")[0];
+
 				} else if (project.toLowerCase().equals("v")) {
 					filename = filename.replaceAll("voldemort--", "");
 				}
@@ -302,7 +307,9 @@ public class Simulator {
 			String[] dataArray = output.split(",");
 			for (String item : dataArray) {
 				if (project.toLowerCase().equals("s")) {
-					item = item.split("\\.")[0];
+
+					if (item.endsWith(".java") || item.endsWith(".clj"))
+						item = item.split("\\.")[0];
 				}
 				merge25.remoteFiles.get(comb[comb.length - 1]).dependencies
 						.add(item);
@@ -566,7 +573,20 @@ public class Simulator {
 		for (int i = 0; i < allFiles.getLength(); i++) {
 			Element file = (Element) allFiles.item(i);
 			File fileElem = merge.new File();
-			fileElem.fileName = file.getAttribute("FileName").split("\\.")[0];
+			String fileName = file.getAttribute("FileName");
+			boolean trun = true;
+			
+			if (project.toLowerCase().equals("s")) {
+				if (fileName.endsWith(".java") || fileName.endsWith(".clj"))
+					trun = true;
+				else
+					trun = false;
+			}
+
+			if (trun)
+				fileElem.fileName = fileName.split("\\.")[0];
+			else
+				fileElem.fileName = fileName;
 
 			if (file.hasChildNodes()) {
 				NodeList depList = file.getElementsByTagName("Dependency");
