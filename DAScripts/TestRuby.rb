@@ -1,18 +1,27 @@
 #!/usr/bin/ruby
 
-@i=0;
+mergeConfs = File.new("reps", "r")
 
+$repsArray = [];
+i = 0;
 
+mergeConfs.each do |hashCode|
+	$repsArray[i] = hashCode;
+	i += 1;
+end
 
-def istrue()
-	Thread.new
-		@i = @i + 1;
-		puts @i;
-		if @i >= 5
-			return false;
-		end
-	return true;
+i=0;
+mergeConfs = "";
+mergeConfs = File.new("outs", "r")
+mergeConfs.each do |hashCode|
+	for ss in 0...$repsArray[i].to_i
+		puts hashCode
 	end
-thread = istrue();
-thread.join;
-puts  thread
+	i += 1;
+	for ss in 0...$repsArray[i].to_i
+		puts hashCode
+	end
+	puts "";
+	puts "";
+	i += 1;
+end

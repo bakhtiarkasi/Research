@@ -2,44 +2,40 @@ import org.neo4j.api.core.*
 
 try {
 
-def beginDate = Date.parse("MMM-dd-yyyy", "Dec-21-2008");
-def endDate = Date.parse("MMM-dd-yyyy", "Feb-13-2010");
+stormDb = "/Users/bkasi/Documents/Research/gremlin-2.0/data/db/Storm";
+//stormDb = "/work/esquared/bkasi/Tools/Gremlin/data/Storm";
 
 def mergeHashCode = a1;
 
-f=new Neo4jGraph('/Users/bkasi/Documents/Research/gremlin-2.0/data/db/Storm');
+f=new Neo4jGraph(stormDb);
 
 def commits =[];
 def files=[];
 
 f.idx('vertices')[[hash:mergeHashCode]].out('COMMIT_PARENT').fill(commits);
-
 commits = commits.sort({ a, b -> a.outE('AUTHOR').when.next() <=> b.outE('AUTHOR').when.next() } as Comparator)
 
-//for each author get files count
-//pritnln "Server"
 println commits[0].out('AUTHOR').out('NAME').name.next();
-commits[0].out('CHANGED').token.fill(files);
+files=[];
+
+filesName = getFilesForBranch(commits[0]);
+
+files = f.idx('vertices')[[type:'COMMIT']].filter{it.hash.matches(filesName)}.out('CHANGED').token.unique();
 
 for(f in files)
 	println f;
-
-//date = new Date(commits[0].outE('AUTHOR').when.next()*1000);
-//println date;
 
 println "-------------------------------------------";
 
 println commits[1].out('AUTHOR').out('NAME').name.next();
 
 files=[];
-commits[1].out('CHANGED').token.fill(files);
+filesName = getFilesForBranch(commits[1]);
+
+files = f.idx('vertices')[[type:'COMMIT']].filter{it.hash.matches(filesName)}.out('CHANGED').token.unique();
 
 for(f in files)
 	println f;
-
-//date = new Date(commits[1].outE('AUTHOR').when.next()*1000);
-//println date;
-
 }
 catch(Exception e) {
   println e;
@@ -47,4 +43,25 @@ catch(Exception e) {
 finally
 {
 f.shutdown()
+}
+
+
+def getFilesForBranch (v) 
+{
+ files=v.hash;
+  
+  if(v.isMerge == true)
+  	return files;
+
+  v = v.out('COMMIT_PARENT').next();
+  while(v.isMerge == false && v.out('COMMIT_PARENT').count() <= 1)
+  {
+  	files += '|' + v.hash;
+
+    if(v.out('COMMIT_PARENT').count() == 0)
+      return files;  
+
+    v = v.out('COMMIT_PARENT').next();
+  }
+  return files;
 }

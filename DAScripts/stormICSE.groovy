@@ -13,6 +13,7 @@ authors = authors.sort({ a, b -> a <=> b } as Comparator)
 def files =[:]; 
 
 //for each author get files count
+//println "Developer,DevNum,CommitCount"
 for(j in authors)
   {
     files=[:]
@@ -23,10 +24,20 @@ for(j in authors)
     //sort file in descending order of count
     files = files.sort{a,b -> b.value <=> a.value};
 
+    def median = 0.0;
+    if(files.size() > 0)
+    {
+      allValues = files.values().toList();
+      midNumber = (int)(files.size()/2)  
+      median = files.size() % 2 != 0 ? allValues[midNumber] : (allValues[midNumber] + allValues[midNumber-1])/2;  
+    }
+    
     println j;
     println "-----------------------------------------";
-    
+    println "Median : " + median;
+   
     for(i in files)
+      //println j+ ",D"  + k.toString()  + "," + i.getValue() + " : " + median
       println i.getKey() + " : " + i.getValue();
 
     print "=========================================\n";

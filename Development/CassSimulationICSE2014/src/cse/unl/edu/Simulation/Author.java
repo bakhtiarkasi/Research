@@ -169,18 +169,35 @@ public class Author {
 		return files;
 	}
 
-	/*
-	 * static void processSubsets(int[] set, int k) { int[] subset = new int[k];
-	 * processLargerSubsets(set, subset, 0, 0); }
-	 * 
-	 * static void processLargerSubsets(int[] set, int[] subset, int subsetSize,
-	 * int nextIndex) { if (subsetSize == subset.length) { process(subset); }
-	 * else { for (int j = nextIndex; j < set.length; j++) { subset[subsetSize]
-	 * = set[j]; processLargerSubsets(set, subset, subsetSize + 1, j + 1); } } }
-	 * 
-	 * static void process(int[] subset) {
-	 * System.out.println(Arrays.toString(subset)); }
-	 */
+	ArrayList<Integer[]> combinations;
+	int[] allCombinations;
+	
+	private void processSubsets(int n, int k) {
+		allCombinations = new int[n];
+		for (int i = 0; i < n; i++)
+			allCombinations[i] = i;
+
+		int[] subset = new int[k];
+		combinations = new ArrayList();
+		processLargerSubsets(allCombinations, subset, 0, 0);
+	}
+	
+	private void processLargerSubsets(int[] set, int[] subset, int subsetSize,
+			int nextIndex) {
+		if (subsetSize == subset.length) {
+			Integer[] newArray = new Integer[subset.length];
+			int i = 0;
+			for (int value : subset) {
+				newArray[i++] = Integer.valueOf(value);
+			}
+			combinations.add(newArray);
+		} else {
+			for (int j = nextIndex; j < set.length; j++) {
+				subset[subsetSize] = set[j];
+				processLargerSubsets(set, subset, subsetSize + 1, j + 1);
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 
@@ -198,15 +215,34 @@ public class Author {
 		for (int i = 0; i < n; i++)
 			set[i] = i;
 
+		System.out.println(Utils.choose(1, 6));
+		auth.processSubsets(1,6);
+		System.out.println(auth.combinations.size() + " =20");
 		
-		System.out.println(Utils.choose(5, 3));
-		System.out.println(Utils.choose(6, 3));
+		System.out.println(Utils.choose(8, 3));
+		auth.processSubsets(8,3);
+		System.out.println(auth.combinations.size()+ " =3");
+		
 		System.out.println(Utils.choose(20, 3));
+		auth.processSubsets(20,3);
+		System.out.println(auth.combinations.size());
+		
 		System.out.println(Utils.choose(12, 4));
+		auth.processSubsets(12,4);
+		System.out.println(auth.combinations.size());
+		
 		System.out.println(Utils.choose(5, 5));
+		auth.processSubsets(5,5);
+		System.out.println(auth.combinations.size());
+		
 		System.out.println(Utils.choose(6, 2));
+		auth.processSubsets(6,2);
+		System.out.println(auth.combinations.size());
+		
 		System.out.println(Utils.choose(15, 3));
-
+		auth.processSubsets(15,3);
+		System.out.println(auth.combinations.size());
+		
 		
 		/*
 		 * for(int i=0;i<5;i++) { int num = Utils.getRandomNumber(1, 10, null,

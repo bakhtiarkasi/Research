@@ -1,11 +1,20 @@
 #!/usr/bin/ruby
 require 'date'
-require 'rubygems'
 
 #mergeid:[list of all files]
 $mergeFilesMap = Hash.new
 
 $workDir = "/Users/bkasi/Documents/Research/DAScripts";
+$gremlinPath = "../gremlin-2.0/gremlin-groovy.sh";
+$stormReleasePath = "/Users/bkasi/Documents/Research/DataAnalysis/StormRelease/";
+$depFinderPath = "/Users/bkasi/Library/Cassandra/Server/DependencyFinder-1.2.1-beta4/bin/";
+$javaEnvironment = "/Library/Java/Home";
+
+#$workDir = "/work/esquared/bkasi/DataAnalysis/Storm";
+#$gremlinPath = "../../Tools/Gremlin/bin/gremlin.sh";
+#$stormReleasePath = "/work/esquared/bkasi/GitRepos/StormRelease/";
+#$depFinderPath = "/work/esquared/bkasi/Tools/DependencyFinder/bin/"
+#$javaEnvironment = "/usr/lib/jvm/jre-1.7.0-openjdk.x86_64";
 
 $xmlstring = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><Merges>"
 
@@ -13,13 +22,13 @@ class ProcessSummary
 
 	def processHash(hashCode)
 		Dir.chdir($workDir) do
-			filesInfo = %x[../gremlin-2.0/gremlin-groovy.sh -e stormGetFiles.groovy #{hashCode}];
+			filesInfo = %x[#{$gremlinPath} -e stormGetFiles.groovy #{hashCode}];
 
 			filesInfo = filesInfo.split("-------------------------------------------\n");
 			master = filesInfo[0];
 			remote = filesInfo[1];
-
 			filesInfo = master.split("\n");
+			
 			$xmlstring += "<Commit MergeId=\"#{hashCode}\"><Master DevName=\"#{filesInfo[0]}\">";
 
 			for ss in 1...filesInfo.count()
@@ -41,6 +50,9 @@ class ProcessSummary
 
 			filesInfo = remote.split("\n")
 			$xmlstring +="</Master><Remote DevName=\"#{filesInfo[0]}\">";
+
+			#count here
+			#puts filesInfo.count()-1;
 
 			for ss in 1...filesInfo.count()
 				$xmlstring += "<File FileName=\"#{filesInfo[ss].gsub("storm--src/jvm", "classes").gsub("storm--src/clj", "classes")}\">";
@@ -78,23 +90,22 @@ class ProcessSummary
 			end
 		end
 
-		absFilePath = "/Users/bkasi/Documents/Research/DataAnalysis/StormRelease/"+$hashCode+"/";
-
+		absFilePath = $stormReleasePath +$hashCode+"/";
 		filesids = filesids.gsub("storm--src/jvm", "classes").gsub("storm--src/clj", "classes").gsub(".java", ".class").gsub(".clj", ".class");
 
 		filePath = absFilePath + filesids;
 
 		if ! File.exist?(filePath)
+			#puts "not exist here";
 			return;
 		end;
 
-		ENV['JAVA_HOME']="/Library/Java/Home"; 
-		%x[/Users/bkasi/Library/Cassandra/Server/DependencyFinder-1.2.1-beta4/bin/DependencyExtractor -xml -minimize -out test.xml  #{filePath}]
+		ENV['JAVA_HOME'] = $javaEnvironment; 
+		%x[#{$depFinderPath}/DependencyExtractor -xml -minimize -out test.xml  #{filePath}]
 
 		#-scope-includes /^backtype/
-		taskList =  %x[/Users/bkasi/Library/Cassandra/Server/DependencyFinder-1.2.1-beta4/bin/DependencyReporter -c2c -show-inbounds -minimize -class-scope -scope-includes /^backtype/  -indent-text + test.xml]
+		taskList =  %x[#{$depFinderPath}/DependencyReporter -c2c -show-inbounds -minimize -class-scope -scope-includes /^backtype/  -indent-text + test.xml]
 		
-
 		taskList = taskList.split("\n");
 		@ss = 0;
 		@allFileNames = "";
@@ -175,7 +186,7 @@ if allFiles.nil?
 	mergeConfs = File.new("storm.ids", "r")
 
 	mergeConfs.each do |hashCode|
-			$hashCode = hashCode;
+			$hashCode = hashCode.chomp;
 			gitSummary.processHash(hashCode);
 		end
 
@@ -204,6 +215,3 @@ end
 
 #puts "done here";
 #puts $hashCode;
- 
-
-

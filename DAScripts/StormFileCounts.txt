@@ -1,8 +1,10 @@
 Alexey S. Kachayev
 -----------------------------------------
+Median : 0.0
 =========================================
 Ben Hughes
 -----------------------------------------
+Median : 2
 storm--src/clj/backtype/storm/clojure.clj : 7
 storm--src/jvm/backtype/storm/tuple/Tuple.java : 5
 storm--test/clj/backtype/storm/integration_test.clj : 3
@@ -17,24 +19,30 @@ storm--src/jvm/backtype/storm/clojure/ClojureBolt.java : 1
 =========================================
 Dan Dillinger
 -----------------------------------------
+Median : 1
 storm--conf/defaults.yaml : 1
 =========================================
 Dan Harvey
 -----------------------------------------
+Median : 1
 storm--src/jvm/backtype/storm/drpc/DRPCSpout.java : 1
 storm--project.clj : 1
 =========================================
 Fabian Neumann
 -----------------------------------------
+Median : 0.0
 =========================================
 Gabriel Grant
 -----------------------------------------
+Median : 0.0
 =========================================
 Haitao Yao
 -----------------------------------------
+Median : 0.0
 =========================================
 James Xu
 -----------------------------------------
+Median : 2
 storm--src/clj/backtype/storm/daemon/nimbus.clj : 14
 storm--src/jvm/backtype/storm/scheduler/Cluster.java : 8
 storm--src/jvm/backtype/storm/scheduler/SchedulerAssignment.java : 6
@@ -73,15 +81,18 @@ storm--src/jvm/backtype/storm/scheduler/INimbus.java : 1
 =========================================
 Jason Trost
 -----------------------------------------
+Median : 1
 storm--src/jvm/backtype/storm/task/ShellBolt.java : 1
 =========================================
 Kang Xiao
 -----------------------------------------
+Median : 1
 storm--src/clj/backtype/storm/ui/helpers.clj : 1
 storm--src/clj/backtype/storm/ui/core.clj : 1
 =========================================
 Kasper Madsen
 -----------------------------------------
+Median : 1
 storm--src/jvm/backtype/storm/testing/SpoutTracker.java : 1
 storm--src/jvm/backtype/storm/spout/SpoutOutputCollector.java : 1
 storm--src/jvm/backtype/storm/spout/ISpoutOutputCollector.java : 1
@@ -91,11 +102,13 @@ storm--src/clj/backtype/storm/LocalCluster.clj : 1
 =========================================
 Michael Cetrulo
 -----------------------------------------
+Median : 1
 storm--test/clj/backtype/storm/fields_test.clj : 1
 storm--src/jvm/backtype/storm/tuple/Fields.java : 1
 =========================================
 Nathan Marz
 -----------------------------------------
+Median : 3
 storm--src/clj/backtype/storm/daemon/nimbus.clj : 73
 storm--src/clj/backtype/storm/daemon/worker.clj : 66
 storm--src/clj/backtype/storm/daemon/task.clj : 65
@@ -435,25 +448,30 @@ storm--src/jvm/backtype/storm/testing/BatchProcessWord.java : 1
 =========================================
 Patrick Houk
 -----------------------------------------
+Median : 1
 storm--src/clj/backtype/storm/util.clj : 1
 storm--src/clj/backtype/storm/testing.clj : 1
 =========================================
 Sam Ritchie
 -----------------------------------------
+Median : 2
 storm--src/clj/backtype/storm/util.clj : 2
 =========================================
 Sam Stokes
 -----------------------------------------
+Median : 1
 storm--src/jvm/backtype/storm/Config.java : 1
 =========================================
 Soren Macbeth
 -----------------------------------------
+Median : 1
 storm--project.clj : 2
 storm--src/clj/backtype/storm/thrift.clj : 1
 storm--src/clj/backtype/storm/testing.clj : 1
 =========================================
 Thomas Jack
 -----------------------------------------
+Median : 2
 storm--src/jvm/backtype/storm/task/ShellBolt.java : 5
 storm--src/jvm/backtype/storm/utils/ShellProcess.java : 4
 storm--test/clj/backtype/storm/integration_test.clj : 3
@@ -466,13 +484,16 @@ storm--src/clj/backtype/storm/clojure.clj : 1
 =========================================
 Tom Payne
 -----------------------------------------
+Median : 0.0
 =========================================
 Travis Wellman
 -----------------------------------------
+Median : 1
 storm--src/jvm/backtype/storm/tuple/Tuple.java : 1
 =========================================
 Trevor Summers Smith
 -----------------------------------------
+Median : 1
 storm--test/clj/backtype/storm/nimbus_test.clj : 1
 storm--src/jvm/backtype/storm/Config.java : 1
 storm--src/clj/backtype/storm/daemon/nimbus.clj : 1
@@ -480,11 +501,13 @@ storm--conf/defaults.yaml : 1
 =========================================
 ashley
 -----------------------------------------
+Median : 1
 storm--src/clj/backtype/storm/zookeeper.clj : 1
 storm--project.clj : 1
 =========================================
 dennis zhuang
 -----------------------------------------
+Median : 1
 storm--src/clj/backtype/storm/zookeeper.clj : 3
 storm--src/clj/backtype/storm/cluster.clj : 2
 storm--project.clj : 1
@@ -493,11 +516,13 @@ storm--conf/defaults.yaml : 1
 =========================================
 haitao.yao
 -----------------------------------------
+Median : 2
 storm--src/jvm/backtype/storm/utils/Utils.java : 3
 storm--src/jvm/backtype/storm/utils/DRPCClient.java : 1
 =========================================
 xumingming
 -----------------------------------------
+Median : 1
 storm--test/clj/backtype/storm/integration_test.clj : 1
 storm--src/jvm/backtype/storm/Config.java : 1
 storm--src/clj/backtype/storm/testing.clj : 1
