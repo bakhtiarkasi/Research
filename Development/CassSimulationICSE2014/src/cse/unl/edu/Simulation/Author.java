@@ -9,8 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import cse.unl.edu.Simulation.Merge.File;
 import cse.unl.edu.util.Utils;
 
 public class Author {
@@ -207,42 +205,7 @@ public class Author {
 				+ "storm--src/clj/backtype/storm/messaging/zmq.clj : 2\n"
 				+ "storm--src/clj/backtype/storm/messaging/local.clj : 1\n"
 				+ "storm--src/clj/backtype/storm/daemon/worker.clj : 1\n"
-				+ "storm--src/clj/backtype/storm/daemon/task.clj : 1";
-
-		Author auth = new Author("Nathan", fileContents);
-		int n = 5;
-		Integer[] set = new Integer[n];
-		for (int i = 0; i < n; i++)
-			set[i] = i;
-
-		System.out.println(Utils.choose(1, 6));
-		auth.processSubsets(1,6);
-		System.out.println(auth.combinations.size() + " =20");
-		
-		System.out.println(Utils.choose(8, 3));
-		auth.processSubsets(8,3);
-		System.out.println(auth.combinations.size()+ " =3");
-		
-		System.out.println(Utils.choose(20, 3));
-		auth.processSubsets(20,3);
-		System.out.println(auth.combinations.size());
-		
-		System.out.println(Utils.choose(12, 4));
-		auth.processSubsets(12,4);
-		System.out.println(auth.combinations.size());
-		
-		System.out.println(Utils.choose(5, 5));
-		auth.processSubsets(5,5);
-		System.out.println(auth.combinations.size());
-		
-		System.out.println(Utils.choose(6, 2));
-		auth.processSubsets(6,2);
-		System.out.println(auth.combinations.size());
-		
-		System.out.println(Utils.choose(15, 3));
-		auth.processSubsets(15,3);
-		System.out.println(auth.combinations.size());
-		
+				+ "storm--src/clj/backtype/storm/daemon/task.clj : 1";		
 		
 		/*
 		 * for(int i=0;i<5;i++) { int num = Utils.getRandomNumber(1, 10, null,
@@ -254,27 +217,23 @@ public class Author {
 		 */
 
 		/*
-		ArrayList<Integer[]> combinations = new ArrayList();
-		List<Integer> hashCodes = new ArrayList();
-
-		for (int i = 0; i < 75; i++) {
-			
-			Integer[] a = Utils.pickKRandomArray(8, 2);
-			
-			List<Integer> vals = new ArrayList();
-			System.out.println(Utils.standardDeviation(vals));
-			
-			if (hashCodes.contains(Arrays.hashCode(a))) {
-				System.out.println("Contains " + Arrays.toString(a));
-
-			} else {
-				combinations.add(a);
-				hashCodes.add(Arrays.hashCode(a));
-				System.out.println("Added " + Arrays.toString(a) + " : "+ Arrays.hashCode(a));
-				//System.out.println(hashCodes);
-			}
-		}
-		*/
+		 * ArrayList<Integer[]> combinations = new ArrayList(); List<Integer>
+		 * hashCodes = new ArrayList();
+		 * 
+		 * for (int i = 0; i < 75; i++) {
+		 * 
+		 * Integer[] a = Utils.pickKRandomArray(8, 2);
+		 * 
+		 * List<Integer> vals = new ArrayList();
+		 * System.out.println(Utils.standardDeviation(vals));
+		 * 
+		 * if (hashCodes.contains(Arrays.hashCode(a))) {
+		 * System.out.println("Contains " + Arrays.toString(a));
+		 * 
+		 * } else { combinations.add(a); hashCodes.add(Arrays.hashCode(a));
+		 * System.out.println("Added " + Arrays.toString(a) + " : "+
+		 * Arrays.hashCode(a)); //System.out.println(hashCodes); } }
+		 */
 
 		/*
 		 * 

@@ -16,8 +16,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import cse.unl.edu.Simulation.Merge.Conflict;
-import cse.unl.edu.Simulation.Merge.File;
 import cse.unl.edu.util.Utils;
 
 public class Simulator {
@@ -34,21 +32,32 @@ public class Simulator {
 	float[] results;
 	int lastDCCount;
 
-	 //private final String path = "/Users/bkasi/Documents/Research/DAScripts/";
-	 private final String path = "/work/esquared/bkasi/DataAnalysis/Storm/";
-	 // private final String path = "/work/esquared/bkasi/DataAnalysis/Voldemort/";
+	private String path = "";
+	private String runEnvironment;
+	private String xmlFileName;
 
 	public Simulator() {
 		authorsMap = new HashMap();
 	}
 
 	private void loadAuthorFileCount() {
-		String stormFileCount = path;
+		String stormFileCount ="";
 
 		if (project.toLowerCase().equals("s")) {
-			stormFileCount += "StormFileCounts.txt";
+			if (runEnvironment.toLowerCase().equals("l"))
+				path = "/Users/bkasi/Documents/Research/DAScripts/";
+			else
+				path = "/work/esquared/bkasi/DataAnalysis/Storm/";
+
+			stormFileCount = path + "StormFileCounts.txt";
+
 		} else if (project.toLowerCase().equals("v")) {
-			stormFileCount += "VoldemortFileCounts.txt";
+			if (runEnvironment.toLowerCase().equals("l"))
+				path = "/Users/bkasi/Documents/Research/DAScripts/";
+			else
+				path = "/work/esquared/bkasi/DataAnalysis/Voldemort/";
+
+			stormFileCount = path + "VoldemortFileCounts.txt";
 		}
 
 		try {
@@ -89,10 +98,10 @@ public class Simulator {
 
 		if (project.toLowerCase().equals("s")) {
 			rubyFilePath = path + "StormDFIcse.rb";
-			xmlFilePath = path + "StormMerges.xml";
+			xmlFilePath = path + xmlFileName;
 		} else if (project.toLowerCase().equals("v")) {
 			rubyFilePath = path + "VoldemortDFIcse.rb";
-			xmlFilePath = path + "VoldemortMerges2.xml";
+			xmlFilePath = path + xmlFileName;
 		}
 
 		String hash = "";
@@ -242,8 +251,8 @@ public class Simulator {
 	// the new mutant.
 	// do not pic at random files but pick based on teh index in set.
 	// that means move required files logic upstairs...
-	private void simulateConstraintAssignment(Merge merge, Integer[] comb,
-			int i, String rubyFilePath, String hash) {
+	private void simulateConstraintAssignment(final Merge merge,
+			Integer[] comb, int i, String rubyFilePath, String hash) {
 
 		try {
 
@@ -269,9 +278,15 @@ public class Simulator {
 
 				} else if (project.toLowerCase().equals("v")) {
 					filename = filename.replaceAll("voldemort--", "");
+					filename = filename.split("\\.")[0];
+
 				}
-				merge25.remoteFiles.get(comb[pickedNumer]).fileName = filename;
-				merge25.remoteFiles.get(comb[pickedNumer]).dependencies.clear();
+
+				if (filename.trim().length() > 0) {
+					merge25.remoteFiles.get(comb[pickedNumer]).fileName = filename;
+					merge25.remoteFiles.get(comb[pickedNumer]).dependencies
+							.clear();
+				}
 				pickedNumer++;
 			}
 
@@ -282,8 +297,8 @@ public class Simulator {
 				allFiles = allFiles.replaceAll("voldemort--", "");
 			}
 
-			// System.out.println("ruby " + rubyFilePath + " " + hash + " " +
-			// allFiles);
+			// System.out.println("ruby " + rubyFilePath + " " + hash + " "
+			// + allFiles);
 
 			Process process = Runtime.getRuntime().exec(
 					"ruby " + rubyFilePath + " " + hash + " " + allFiles);
@@ -308,11 +323,19 @@ public class Simulator {
 			for (String item : dataArray) {
 				if (project.toLowerCase().equals("s")) {
 
-					if (item.endsWith(".java") || item.endsWith(".clj"))
+					if (item.endsWith(".class"))
 						item = item.split("\\.")[0];
 				}
-				merge25.remoteFiles.get(comb[comb.length - 1]).dependencies
-						.add(item);
+
+				else if (project.toLowerCase().equals("v")) {
+					item = item.replaceAll("voldemort--", "");
+
+					if (item.endsWith(".java"))
+						item = item.split("\\.")[0];
+				}
+				if (item.trim().length() > 0)
+					merge25.remoteFiles.get(comb[comb.length - 1]).dependencies
+							.add(item);
 			}
 
 			merge25.analyzeForConflicts();
@@ -370,7 +393,7 @@ public class Simulator {
 
 	}
 
-	private void simulateTaskAssignment(Merge merge, int i,
+	private void simulateTaskAssignment(final Merge merge, int i,
 			String rubyFilePath, String hash) {
 
 		try {
@@ -424,7 +447,7 @@ public class Simulator {
 							.replaceAll("storm--src/clj", "classes")
 							.split("\\.")[0];
 
-					fileT = merge25.new File();
+					fileT = new File();
 					fileT.fileName = filename;
 
 					merge25.remoteFiles.add(fileT);
@@ -556,6 +579,8 @@ public class Simulator {
 		sim.project = args[0];
 		sim.median = Integer.parseInt(args[1]);
 		sim.percentage = Integer.parseInt(args[2]);
+		sim.runEnvironment = args[3];
+		sim.xmlFileName = args[4];
 		sim.startSimulation();
 
 	}
@@ -572,10 +597,10 @@ public class Simulator {
 
 		for (int i = 0; i < allFiles.getLength(); i++) {
 			Element file = (Element) allFiles.item(i);
-			File fileElem = merge.new File();
+			File fileElem = new File();
 			String fileName = file.getAttribute("FileName");
 			boolean trun = true;
-			
+
 			if (project.toLowerCase().equals("s")) {
 				if (fileName.endsWith(".java") || fileName.endsWith(".clj"))
 					trun = true;
@@ -599,7 +624,8 @@ public class Simulator {
 				}
 
 			}
-			filesList.add(fileElem);
+			if (fileElem.fileName.trim().length() > 0)
+				filesList.add(fileElem);
 
 		}
 

@@ -33,7 +33,9 @@ public class Merge {
 					conf = new Conflict();
 					conf.fromFile = masterFile.fileName;
 					conf.toFile = remoteFile.fileName;
-					directConflicts.add(conf);
+					if(!directConflicts.contains(conf))
+						directConflicts.add(conf);
+					
 				}
 			}
 		}
@@ -45,8 +47,9 @@ public class Merge {
 					if (masterFile.fileName.equals(depFile)) {
 						conf = new Conflict();
 						conf.fromFile = masterFile.fileName;
-						conf.toFile = remoteFile.fileName;
-						inDirectConflicts.add(conf);
+						conf.toFile = depFile;
+						if(!inDirectConflicts.contains(conf))
+							inDirectConflicts.add(conf);
 					}
 				}
 			}
@@ -56,37 +59,29 @@ public class Merge {
 	
 	@Override
     public Merge clone() {
-		Merge merge = new Merge();
-		merge.mergeId = this.mergeId;
-		merge.masterDevName = this.masterDevName;
-		merge.remoteDevName = this.remoteDevName;
-		merge.percentage = this.percentage;
+		Merge merge2 = new Merge();
+		merge2.mergeId = this.mergeId;
+		merge2.masterDevName = this.masterDevName;
+		merge2.remoteDevName = this.remoteDevName;
+		merge2.percentage = this.percentage;
 
-		merge.directConflicts = new ArrayList(this.directConflicts);
-		merge.inDirectConflicts = new ArrayList(this.inDirectConflicts);
-
-		merge.masterFiles = new ArrayList(this.masterFiles);
-		merge.remoteFiles = new ArrayList(this.remoteFiles);
+		merge2.directConflicts = new ArrayList();
+		for(Conflict c : this.directConflicts)
+			merge2.directConflicts.add(c.clone());
 		
-        return merge;
+		merge2.inDirectConflicts = new ArrayList();
+		for(Conflict c : this.inDirectConflicts)
+			merge2.inDirectConflicts.add(c.clone());		
+		
+		merge2.masterFiles = new ArrayList();
+		for(File f : this.masterFiles)
+			merge2.masterFiles.add(f.clone());
+		
+		
+		merge2.remoteFiles = new ArrayList();
+		for(File f : this.remoteFiles)
+			merge2.remoteFiles.add(f.clone());
+		
+        return merge2;
     }
-
-	public class File {
-		public String fileName;
-		public List<String> dependencies;
-
-		public File() {
-			dependencies = new ArrayList();
-		}
-
-		public String toString() {
-			return fileName + "{" + dependencies.toString() + "}";
-
-		}
-	}
-
-	public class Conflict {
-		public String fromFile;
-		public String toFile;
-	}
 }
