@@ -42,12 +42,13 @@ public class WeeklySimulator {
 	public List<Conflict> groundTIC;
 	public List<String> groundTaskConstMap;
 
-	//private final String path = "/Users/bkasi/Documents/Research/DAScripts/";
+	// private final String path = "/Users/bkasi/Documents/Research/DAScripts/";
 
-	 //private final String path = "/work/esquared/bkasi/DataAnalysis/Storm/";
-	 private String path = "";// "/work/esquared/bkasi/DataAnalysis/Voldemort/";
-	 private String runEnvironment;
-	 private String xmlFileName;
+	// private final String path = "/work/esquared/bkasi/DataAnalysis/Storm/";
+	private String path = "";// "/work/esquared/bkasi/DataAnalysis/Voldemort/";
+	private String runEnvironment;
+	private String xmlFileName;
+	private String simulationType;
 
 	public WeeklySimulator() {
 		authorsMap = new HashMap();
@@ -152,7 +153,7 @@ public class WeeklySimulator {
 
 			}
 
-			//System.out.println("Tasks " + task.length);			
+			// System.out.println("Tasks " + task.length);
 			this.analyzeForConflicts();
 
 			this.groundTDC = new ArrayList();
@@ -181,7 +182,8 @@ public class WeeklySimulator {
 				Author ath = authorsMap.get(task[j].developerName);
 				int count = ath.allFilesCount;
 
-				int requiredFile = (int) Math.round(percentage * 0.01
+				int setSize = Math.abs(percentage);
+				int requiredFile = (int) Math.round(setSize * 0.01
 						* task[j].filesList.size());
 
 				requiredFile = requiredFile == 0 ? 1 : requiredFile;
@@ -234,9 +236,12 @@ public class WeeklySimulator {
 							&& task[j].combinations.size() > 0) {
 						Integer[] comb = task[j].combinations.get(0);
 						task[j].combinations.remove(0);
-
-						this.simulateConstraintAssignment(task[j], comb,
+						if (simulationType.toLowerCase().equals("f"))
+							this.simulateConstraintAssignment(task[j], comb,
 								percentage, rubyFilePath, hash);
+						else
+							this.simulateTaskAssignment(task[j], comb,
+									percentage, rubyFilePath, hash);
 					}
 
 				}
@@ -309,15 +314,15 @@ public class WeeklySimulator {
 					DC += results[j] + "\t";
 				else
 					IC += results[j] + "\t";
-				
-				if(j == 2)
+
+				if (j == 2)
 					DC += "\t";
-				
+
 				else if (j == 8)
 					IC += "\t";
 			}
 
-			System.out.println(i+1);
+			System.out.println(i + 1);
 			System.out.println(DC);
 			System.out.println(IC);
 
@@ -355,17 +360,18 @@ public class WeeklySimulator {
 									directConflicts.add(conf);
 							} else {
 
-								/*String masFile = masterFile.fileName;
-								masFile = masFile.substring(masFile
-										.lastIndexOf('/') + 1);
-								String remFile = remoteFile.fileName;
-								remFile = remFile.substring(remFile
-										.lastIndexOf('/') + 1);
-
-								if (remFile.contains(masFile))
-									System.out.println("ErrorD: "
-											+ masterFile.fileName + " : "
-											+ remoteFile.fileName);*/
+								/*
+								 * String masFile = masterFile.fileName; masFile
+								 * = masFile.substring(masFile .lastIndexOf('/')
+								 * + 1); String remFile = remoteFile.fileName;
+								 * remFile = remFile.substring(remFile
+								 * .lastIndexOf('/') + 1);
+								 * 
+								 * if (remFile.contains(masFile))
+								 * System.out.println("ErrorD: " +
+								 * masterFile.fileName + " : " +
+								 * remoteFile.fileName);
+								 */
 
 							}
 						}
@@ -390,17 +396,19 @@ public class WeeklySimulator {
 											inDirectConflicts.add(conf);
 									} else {
 
-										/*String masFile = masterFile.fileName;
-										masFile = masFile.substring(masFile
-												.lastIndexOf('/') + 1);
-										String remFile = depFile;
-										remFile = remFile.substring(remFile
-												.lastIndexOf('/') + 1);
-
-										if (remFile.contains(masFile))
-											System.out.println("ErrorI: "
-													+ masterFile.fileName
-													+ " : " + depFile);*/
+										/*
+										 * String masFile = masterFile.fileName;
+										 * masFile = masFile.substring(masFile
+										 * .lastIndexOf('/') + 1); String
+										 * remFile = depFile; remFile =
+										 * remFile.substring(remFile
+										 * .lastIndexOf('/') + 1);
+										 * 
+										 * if (remFile.contains(masFile))
+										 * System.out.println("ErrorI: " +
+										 * masterFile.fileName + " : " +
+										 * depFile);
+										 */
 
 									}
 								}
@@ -523,6 +531,129 @@ public class WeeklySimulator {
 
 	}
 
+	private void simulateTaskAssignment(final Task task2, Integer[] comb,
+			int i, String rubyFilePath, String hash) {
+
+		try {
+
+			Boolean reduced = false;
+
+			Task task25 = new Task();
+			task25.percentage = i;
+			task25 = task2.clone();
+
+			if (i < 0) {
+				reduced = true;
+				i = i * -1;
+			}
+
+			int requiredFile = comb.length;
+			Author ath = authorsMap.get(task25.developerName);
+
+			if (reduced) {
+				if (task25.filesList.size() == requiredFile) {
+					System.out.println("Skipped");
+					return;
+				}
+
+				Arrays.sort(comb);
+
+				for (int j = comb.length - 1; j >= 0; j--) {
+					int pickedNumber = comb[j];
+					task25.filesList.remove(pickedNumber);
+				}
+
+			} else {
+
+				List files = ath.getFiles(requiredFile, task25.filesList);
+
+				File fileT = null;
+
+				for (Object file : files) {
+					String filename = (String) file;
+
+					if (project.toLowerCase().equals("s")) {
+						filename = filename.replaceAll("storm--src/jvm",
+								"classes").replaceAll("storm--src/clj",
+								"classes");
+
+						if (filename.endsWith(".java")
+								|| filename.endsWith(".clj"))
+							filename = filename.split("\\.")[0];
+
+					} else if (project.toLowerCase().equals("v")) {
+						filename = filename.replaceAll("voldemort--", "");
+						filename = filename.split("\\.")[0];
+
+					}
+					if (filename.trim().length() > 0) {
+						fileT = new File();
+						fileT.fileName = filename;
+
+						task25.filesList.add(fileT);
+
+					}
+				}
+
+				String allFiles = files.toString().replaceAll("\\[", "")
+						.replaceAll("\\]", "").replaceAll(" ", "");
+
+				if (project.toLowerCase().equals("v")) {
+					allFiles = allFiles.replaceAll("voldemort--", "");
+				}
+
+				// System.out.println("ruby " + rubyFilePath + " " + hash + " "
+				// +
+				// allFiles);
+
+				Process process = Runtime.getRuntime().exec(
+						"ruby " + rubyFilePath + " " + hash + " " + allFiles);
+
+				String tmp, output = "";
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						process.getInputStream()));
+
+				while (isAlive(process)) {
+					while (br.ready() && (tmp = br.readLine()) != null) {
+						output += tmp;
+					}
+				}
+				while (br.ready() && (tmp = br.readLine()) != null) {
+					output += tmp;
+				}
+				process.waitFor();
+				// System.out.println(process.waitFor());
+				br.close();
+
+				String[] dataArray = output.split(",");
+				for (String item : dataArray) {
+					if (project.toLowerCase().equals("s")) {
+
+						if (item.endsWith(".class"))
+							item = item.split("\\.")[0];
+					} else if (project.toLowerCase().equals("v")) {
+						item = item.replaceAll("voldemort--", "");
+
+						if (item.endsWith(".java"))
+							item = item.split("\\.")[0];
+					}
+					if (item.trim().length() > 0)
+						task25.filesList.get(task25.filesList.size() - 1).dependencies
+								.add(item);
+				}
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	private boolean contains(List<Conflict> inDirectConfs, Conflict conf) {
 
 		return inDirectConfs.contains(conf);
@@ -579,8 +710,9 @@ public class WeeklySimulator {
 		sim.project = args[0];
 		sim.median = Integer.parseInt(args[1]);
 		sim.percentage = Integer.parseInt(args[2]);
-		sim.runEnvironment = args[3];
-		sim.xmlFileName = args[4];
+		sim.simulationType = args[3];
+		sim.runEnvironment = args[4];
+		sim.xmlFileName = args[5];
 		sim.startSimulation();
 
 	}
