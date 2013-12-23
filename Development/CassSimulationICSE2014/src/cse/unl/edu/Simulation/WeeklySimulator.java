@@ -33,6 +33,7 @@ public class WeeklySimulator {
 	float[] results;
 	int lastDCCount;
 	Task[] task;
+	Task[] initialTask;
 
 	public List<Conflict> directConflicts;
 	public List<Conflict> inDirectConflicts;
@@ -68,7 +69,7 @@ public class WeeklySimulator {
 			if (runEnvironment.toLowerCase().equals("l"))
 				path = "/Users/bkasi/Documents/Research/DAScripts/";
 			else
-				path = "/work/esquared/bkasi/DataAnalysis/Voldemort2/";
+				path = "/work/esquared/bkasi/DataAnalysis/Voldemort/";
 
 			stormFileCount = path + "VoldemortFileCounts.txt";
 		}
@@ -130,6 +131,7 @@ public class WeeklySimulator {
 			Element element = (Element) comit;
 
 			task = new Task[element.getElementsByTagName("Remote").getLength() + 1];
+			initialTask = new Task[task.length];
 
 			hash = element.getAttribute("MergeId");
 
@@ -154,6 +156,9 @@ public class WeeklySimulator {
 			}
 
 			// System.out.println("Tasks " + task.length);
+			for (int l = 0; l < task.length; l++)
+				initialTask[l] = task[l].clone();
+
 			this.analyzeForConflicts();
 
 			this.groundTDC = new ArrayList();
@@ -229,6 +234,7 @@ public class WeeklySimulator {
 				int icTContains = 0;
 				int icTNewAdds = 0;
 				int icTRemoved = 0;
+				Task taskTemp = null;
 
 				for (int j = 1; j < task.length; j++) {
 
@@ -237,15 +243,20 @@ public class WeeklySimulator {
 						Integer[] comb = task[j].combinations.get(0);
 						task[j].combinations.remove(0);
 						if (simulationType.toLowerCase().equals("f"))
-							this.simulateConstraintAssignment(task[j], comb,
-								percentage, rubyFilePath, hash);
+							taskTemp = this.simulateConstraintAssignment(
+									task[j], comb, percentage, rubyFilePath,
+									hash);
 						else
-							this.simulateTaskAssignment(task[j], comb,
-									percentage, rubyFilePath, hash);
+							taskTemp = this.simulateTaskAssignment(task[j],
+									comb, percentage, rubyFilePath, hash);
+						initialTask[j] = taskTemp;
 					}
 
 				}
 				this.analyzeForConflicts();
+
+				for (int l = 0; l < task.length; l++)
+					initialTask[l] = task[l].clone();
 
 				for (Conflict conf : directConflicts) {
 					if (contains(groundTDC, conf)) {
@@ -341,15 +352,16 @@ public class WeeklySimulator {
 
 		Conflict conf;
 
-		for (int i = 0; i < task.length; i++) {
-			for (int j = i + 1; j < task.length; j++) {
-				if (!task[i].developerName.equals(task[j].developerName)) {
-					for (File masterFile : task[i].filesList) {
-						for (File remoteFile : task[j].filesList) {
+		for (int i = 0; i < initialTask.length; i++) {
+			for (int j = i + 1; j < initialTask.length; j++) {
+				if (!initialTask[i].developerName
+						.equals(initialTask[j].developerName)) {
+					for (File masterFile : initialTask[i].filesList) {
+						for (File remoteFile : initialTask[j].filesList) {
 							if (remoteFile.fileName.equals(masterFile.fileName)) {
 								conf = new Conflict();
-								conf.fromTask = task[i].taskId;
-								conf.toTask = task[j].taskId;
+								conf.fromTask = initialTask[i].taskId;
+								conf.toTask = initialTask[j].taskId;
 								conf.fromFile = masterFile.fileName;
 								conf.toFile = remoteFile.fileName;
 								if (!taskConstMap.contains("D" + conf.fromTask
@@ -377,14 +389,14 @@ public class WeeklySimulator {
 						}
 					}
 					// analyzing in direct conflicts
-					for (File masterFile : task[i].filesList)
-						for (File remoteFile : task[j].filesList)
+					for (File masterFile : initialTask[i].filesList)
+						for (File remoteFile : initialTask[j].filesList)
 							for (String depFile : remoteFile.dependencies) {
 								{
 									if (masterFile.fileName.equals(depFile)) {
 										conf = new Conflict();
-										conf.fromTask = task[i].taskId;
-										conf.toTask = task[j].taskId;
+										conf.fromTask = initialTask[i].taskId;
+										conf.toTask = initialTask[j].taskId;
 										conf.fromFile = masterFile.fileName;
 										conf.toFile = depFile;
 										if (!taskConstMap.contains("I"
@@ -436,7 +448,7 @@ public class WeeklySimulator {
 	// the new mutant.
 	// do not pic at random files but pick based on teh index in set.
 	// that means move required files logic upstairs...
-	private void simulateConstraintAssignment(final Task task2, Integer[] comb,
+	private Task simulateConstraintAssignment(final Task task2, Integer[] comb,
 			int i, String rubyFilePath, String hash) {
 
 		try {
@@ -519,6 +531,7 @@ public class WeeklySimulator {
 					task25.filesList.get(comb[comb.length - 1]).dependencies
 							.add(item);
 			}
+			return task25;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -528,10 +541,11 @@ public class WeeklySimulator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 
 	}
 
-	private void simulateTaskAssignment(final Task task2, Integer[] comb,
+	private Task simulateTaskAssignment(final Task task2, Integer[] comb,
 			int i, String rubyFilePath, String hash) {
 
 		try {
@@ -551,16 +565,13 @@ public class WeeklySimulator {
 			Author ath = authorsMap.get(task25.developerName);
 
 			if (reduced) {
-				if (task25.filesList.size() == requiredFile) {
-					System.out.println("Skipped");
-					return;
-				}
+				if (task25.filesList.size() < requiredFile) {
+					Arrays.sort(comb);
 
-				Arrays.sort(comb);
-
-				for (int j = comb.length - 1; j >= 0; j--) {
-					int pickedNumber = comb[j];
-					task25.filesList.remove(pickedNumber);
+					for (int j = comb.length - 1; j >= 0; j--) {
+						int pickedNumber = comb[j];
+						task25.filesList.remove(pickedNumber);
+					}
 				}
 
 			} else {
@@ -643,6 +654,8 @@ public class WeeklySimulator {
 				}
 			}
 
+			return task25;
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -651,6 +664,7 @@ public class WeeklySimulator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 
 	}
 
@@ -713,8 +727,88 @@ public class WeeklySimulator {
 		sim.simulationType = args[3];
 		sim.runEnvironment = args[4];
 		sim.xmlFileName = args[5];
+		//sim.printSummary();
 		sim.startSimulation();
 
+	}
+
+	public void printSummary() {
+		
+		if (project.toLowerCase().equals("s")) {
+			if (runEnvironment.toLowerCase().equals("l"))
+				path = "/Users/bkasi/Documents/Research/DAScripts/";
+			else
+				path = "/work/esquared/bkasi/DataAnalysis/Storm/";
+
+		} else if (project.toLowerCase().equals("v")) {
+			if (runEnvironment.toLowerCase().equals("l"))
+				path = "/Users/bkasi/Documents/Research/DAScripts/";
+			else
+				path = "/work/esquared/bkasi/DataAnalysis/Voldemort2/";
+		}
+
+		String rubyFilePath = "", xmlFilePath = "";
+
+		if (project.toLowerCase().equals("s")) {
+			xmlFilePath = path + xmlFileName;
+		} else if (project.toLowerCase().equals("v")) {
+			xmlFilePath = path + xmlFileName;
+		}
+
+		String hash = "";
+		Document doc = Utils.openTaskList(xmlFilePath);
+		Element root = doc.getDocumentElement();
+
+		NodeList allCommits = root.getElementsByTagName("Commit");
+
+		System.out.println("Printing Summary for " + xmlFileName);
+		System.out.println("No of Weeks:" + allCommits.getLength());
+
+		int allFilesCount = 0;
+		int alldevscount = 0;
+		int alltaskscount = 0;
+		List<String> devs = new ArrayList();
+
+		for (int i = 0; i < allCommits.getLength(); i++) {
+
+			// i =5;
+			Node comit = allCommits.item(i);
+			Element element = (Element) comit;
+
+			alltaskscount += element.getElementsByTagName("Remote").getLength() + 1;
+
+			Element masterElement = (Element) element.getElementsByTagName(
+					"Master").item(0);
+
+			devs.add(masterElement.getAttribute("DevName"));
+			allFilesCount += masterElement.getElementsByTagName("File")
+					.getLength();
+
+			for (int j = 1; j <= element.getElementsByTagName("Remote")
+					.getLength(); j++) {
+				Element remoteElement = (Element) element.getElementsByTagName(
+						"Remote").item(j - 1);
+
+				String devName = remoteElement.getAttribute("DevName");
+
+				if (!devs.contains(devName))
+					devs.add(devName);
+
+				allFilesCount += remoteElement.getElementsByTagName("File")
+						.getLength();
+
+			}
+			
+			alldevscount += devs.size();
+			devs.clear();
+		}
+		
+		float avg = (alldevscount+0.0f)/(allCommits.getLength()+0.0f);
+		System.out.println("Avg devs per week:" + avg);
+		avg = (alltaskscount+0.0f)/(allCommits.getLength()+0.0f);
+		System.out.println("Avg tasks per week:" + avg);
+		avg = (allFilesCount+0.0f)/(alldevscount+0.0f);
+		System.out.println("Avg files per tasks:" + avg);
 	}
 
 	private static void addFilesFor(Task task, NodeList allFiles) {

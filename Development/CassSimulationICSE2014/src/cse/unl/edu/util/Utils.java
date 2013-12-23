@@ -110,7 +110,7 @@ public class Utils {
 
 				if (exclude != null) {
 					if (enforced && exclude.size() == (end - start + 1))
-						throw new Exception("Exclude List already full");
+						throw new Exception("Exclude List already full" + start + ", " + end + ", " + exclude);
 
 					else if (exclude.contains(pickedNumber))
 						pickedNumber = -1;

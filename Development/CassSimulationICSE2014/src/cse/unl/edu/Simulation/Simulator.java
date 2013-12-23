@@ -112,7 +112,7 @@ public class Simulator {
 		NodeList allCommits = root.getElementsByTagName("Commit");
 
 		for (int i = 0; i < allCommits.getLength(); i++) {
-
+			
 			// i =5;
 			Node comit = allCommits.item(i);
 			Element element = (Element) comit;
@@ -142,94 +142,107 @@ public class Simulator {
 			Author ath = authorsMap.get(merge.remoteDevName);
 
 			int count = ath.allFilesCount;
-			int setSize = Math.abs(percentage); 
+			int setSize = Math.abs(percentage);
 			int requiredFile = (int) Math.round(setSize * 0.01
 					* merge.remoteFiles.size());
 
 			requiredFile = requiredFile == 0 ? 1 : requiredFile;
 
 			System.out.println(i + 1);
-			if (percentage > 0
-					&& (count - requiredFile - merge.remoteFiles.size()) <= 0) {
-				System.out.println("Skipped");
-				continue;
-			}
 
-			if (merge.remoteFiles.size() <= this.median) {
-
-				processSubsets(merge.remoteFiles.size(), requiredFile);
-
+			if (simulationType.toLowerCase().equals("b")) {
 				results = new float[6];
+				
+				for (int k = 0; k < 3; k++)
+					this.simulateBaseCase(merge, rubyFilePath, hash);
 
-				for (Integer[] comb : combinations) {
-					if (simulationType.toLowerCase().equals("f"))
-						this.simulateConstraintAssignment(merge, comb,
-								percentage, rubyFilePath, hash);
-					else
-						this.simulateTaskAssignment(merge, comb, percentage,
-								rubyFilePath, hash);
-				}
 			} else {
 
-				combinations = new ArrayList();
-				List<Integer> hashCodes = new ArrayList();
-				List<Integer> vals = new ArrayList();
-				results = new float[6];
+				if (percentage > 0
+						&& (count - requiredFile - merge.remoteFiles.size()) <= 0) {
+					System.out.println("Skipped");
+					continue;
+				}
 
-				// in while loop
-				Integer[] selectedSet;
-				boolean bContinue = true;
-				double prevStdDeviation = 0.0;
-				double tempStdDev;
-				int iCount = 0;
+				if (merge.remoteFiles.size() <= this.median) {
 
-				while (bContinue) {
-					selectedSet = Utils.pickKRandomArray(
-							merge.remoteFiles.size(), requiredFile);
+					processSubsets(merge.remoteFiles.size(), requiredFile);
 
-					if (!hashCodes.contains(Arrays.hashCode(selectedSet))) {
-						combinations.add(selectedSet);
-						hashCodes.add(Arrays.hashCode(selectedSet));
+					results = new float[6];
 
+					for (Integer[] comb : combinations) {
 						if (simulationType.toLowerCase().equals("f"))
-							this.simulateConstraintAssignment(merge,
-									selectedSet, percentage, rubyFilePath, hash);
-						else
-							this.simulateTaskAssignment(merge, selectedSet,
+							this.simulateConstraintAssignment(merge, comb,
 									percentage, rubyFilePath, hash);
+						else
+							this.simulateTaskAssignment(merge, comb,
+									percentage, rubyFilePath, hash);
+					}
+				} else {
 
-						// vals.add((int) (results[0]));
-						vals.add(lastDCCount);
+					combinations = new ArrayList();
+					List<Integer> hashCodes = new ArrayList();
+					List<Integer> vals = new ArrayList();
+					results = new float[6];
 
-						if (vals.size() >= 2) {
-							tempStdDev = Utils.standardDeviation(vals);
+					// in while loop
+					Integer[] selectedSet;
+					boolean bContinue = true;
+					double prevStdDeviation = 0.0;
+					double tempStdDev;
+					int iCount = 0;
 
-							// System.out.println(prevStdDeviation + " " +
-							// tempStdDev + " : " + Math.abs(prevStdDeviation -
-							// tempStdDev));
+					while (bContinue) {
+						selectedSet = Utils.pickKRandomArray(
+								merge.remoteFiles.size(), requiredFile);
 
-							if (Math.abs(prevStdDeviation - tempStdDev) < 0.15) {
-								iCount++;
-								if (iCount >= 5)
-									bContinue = false;
+						if (!hashCodes.contains(Arrays.hashCode(selectedSet))) {
+							combinations.add(selectedSet);
+							hashCodes.add(Arrays.hashCode(selectedSet));
+
+							if (simulationType.toLowerCase().equals("f"))
+								this.simulateConstraintAssignment(merge,
+										selectedSet, percentage, rubyFilePath,
+										hash);
+							else
+								this.simulateTaskAssignment(merge, selectedSet,
+										percentage, rubyFilePath, hash);
+
+							// vals.add((int) (results[0]));
+							vals.add(lastDCCount);
+
+							if (vals.size() >= 2) {
+								tempStdDev = Utils.standardDeviation(vals);
+
+								// System.out.println(prevStdDeviation + " " +
+								// tempStdDev + " : " +
+								// Math.abs(prevStdDeviation -
+								// tempStdDev));
+
+								if (Math.abs(prevStdDeviation - tempStdDev) < 0.15) {
+									iCount++;
+									if (iCount >= 5)
+										bContinue = false;
+								}
+
+								prevStdDeviation = tempStdDev;
 							}
 
-							prevStdDeviation = tempStdDev;
+							if (combinations.size() == Utils.choose(
+									merge.remoteFiles.size(), requiredFile))
+								bContinue = false;
 						}
 
-						if (combinations.size() == Utils.choose(
-								merge.remoteFiles.size(), requiredFile))
-							bContinue = false;
 					}
 
 				}
-
 			}
 
-			DC += "\t\tReps\t" + combinations.size() + "\t\t";
-			IC += "\t\tReps\t" + combinations.size() + "\t\t";
+			int combSize = combinations != null ? combinations.size() : 1;
+			DC += "\t\tReps\t" + combSize + "\t\t";
+			IC += "\t\tReps\t" + combSize + "\t\t";
 			for (int j = 0; j < results.length; j++) {
-				results[j] = results[j] / combinations.size();
+				results[j] = results[j] / combSize;
 
 				if (j < 3)
 					DC += results[j] + "\t";
@@ -421,7 +434,7 @@ public class Simulator {
 
 			int requiredFile = comb.length;
 			Author ath = authorsMap.get(merge25.remoteDevName);
-			
+
 			// when removing files, we use combinations, since files can be
 			// replaced in many different ways
 			if (reduced) {
@@ -429,10 +442,10 @@ public class Simulator {
 					System.out.println("Skipped");
 					return;
 				}
-				
+
 				Arrays.sort(comb);
-			
-				for (int j=comb.length-1; j>=0; j--){
+
+				for (int j = comb.length - 1; j >= 0; j--) {
 					int pickedNumber = comb[j];
 					merge25.remoteFiles.remove(pickedNumber);
 				}
@@ -561,6 +574,146 @@ public class Simulator {
 			results[3] += icContains;
 			results[4] += icNewAdds;
 			results[5] += icRemoved;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private void simulateBaseCase(final Merge merge, String rubyFilePath,
+			String hash) {
+
+		try {
+
+			Merge merge25 = new Merge();
+			merge25 = merge.clone();
+			Author ath = authorsMap.get(merge25.remoteDevName);
+
+			List files = ath.getFilesForBaseCase(merge25.remoteFiles.size());
+			
+			int pickedNumer = 0;
+			for (Object file : files) {
+				String filename = (String) file;
+
+				if (project.toLowerCase().equals("s")) {
+					filename = filename.replaceAll("storm--src/jvm", "classes")
+							.replaceAll("storm--src/clj", "classes");
+
+					if (filename.endsWith(".java") || filename.endsWith(".clj"))
+						filename = filename.split("\\.")[0];
+
+				} else if (project.toLowerCase().equals("v")) {
+					filename = filename.replaceAll("voldemort--", "");
+					filename = filename.split("\\.")[0];
+
+				}
+				
+				if (filename.trim().length() > 0) {
+					merge25.remoteFiles.get(pickedNumer).fileName = filename;
+					merge25.remoteFiles.get(pickedNumer).dependencies.clear();
+				}
+				pickedNumer++;
+			}
+
+			String allFiles = files.toString().replaceAll("\\[", "")
+					.replaceAll("\\]", "").replaceAll(" ", "");
+
+			if (project.toLowerCase().equals("v")) {
+				allFiles = allFiles.replaceAll("voldemort--", "");
+			}
+
+			// System.out.println("ruby " + rubyFilePath + " " + hash + " "
+			// + allFiles);
+
+			Process process = Runtime.getRuntime().exec(
+					"ruby " + rubyFilePath + " " + hash + " " + allFiles);
+
+			String tmp, output = "";
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
+
+			while (isAlive(process)) {
+				while (br.ready() && (tmp = br.readLine()) != null) {
+					output += tmp;
+				}
+			}
+			while (br.ready() && (tmp = br.readLine()) != null) {
+				output += tmp;
+			}
+			process.waitFor();
+			// System.out.println(process.waitFor());
+			br.close();
+
+			String[] dataArray = output.split(",");
+			for (String item : dataArray) {
+				if (project.toLowerCase().equals("s")) {
+
+					if (item.endsWith(".class"))
+						item = item.split("\\.")[0];
+				}
+
+				else if (project.toLowerCase().equals("v")) {
+					item = item.replaceAll("voldemort--", "");
+
+					if (item.endsWith(".java"))
+						item = item.split("\\.")[0];
+				}
+				if (item.trim().length() > 0)
+					merge25.remoteFiles.get(merge25.remoteFiles.size() - 1).dependencies
+							.add(item);
+			}
+
+			merge25.analyzeForConflicts();
+
+			int dcContains = 0;
+			int dcNewAdds = 0;
+			int dcRemoved = 0;
+
+			for (Conflict conf : merge25.directConflicts) {
+				if (contains(merge.directConflicts, conf)) {
+					dcContains++;
+				} else {
+					dcNewAdds++;
+				}
+			}
+			dcRemoved = merge.directConflicts.size() - dcContains;
+
+			int icContains = 0;
+			int icNewAdds = 0;
+			int icRemoved = 0;
+
+			for (Conflict conf : merge25.inDirectConflicts) {
+				if (contains(merge.inDirectConflicts, conf)) {
+					icContains++;
+				} else {
+					icNewAdds++;
+				}
+			}
+			icRemoved = merge.inDirectConflicts.size() - icContains;
+
+			DC += "DC\t" + merge25.masterFiles.size() + "\t"
+					+ merge25.remoteFiles.size() + "\t"
+					+ merge25.remoteFiles.size() + "\t"
+					+ merge.directConflicts.size() + "\t" + dcContains + "\t"
+					+ dcNewAdds + "\t" + dcRemoved + "\n";
+			IC += "IC\t" + merge25.masterFiles.size() + "\t"
+					+ merge25.remoteFiles.size() + "\t"
+					+ merge25.remoteFiles.size() + "\t"
+					+ merge.inDirectConflicts.size() + "\t" + icContains + "\t"
+					+ icNewAdds + "\t" + icRemoved + "\n";
+			lastDCCount = dcContains;
+			results[0] += dcContains;
+			results[1] += dcNewAdds;
+			results[2] += dcRemoved;
+			results[3] += icContains;
+			results[4] += icNewAdds;
+			results[5] += icRemoved;
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

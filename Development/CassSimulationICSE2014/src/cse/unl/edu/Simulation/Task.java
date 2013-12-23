@@ -25,7 +25,10 @@ public class Task {
 		task.developerName = this.developerName;
 		task.percentage = this.percentage;
 
-		task.filesList = new ArrayList(this.filesList);
+		task.filesList = new ArrayList();
+		for(File f : this.filesList)
+			task.filesList.add(f.clone());
+		
 		
         return task;
     }
