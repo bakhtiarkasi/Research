@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import cse.unl.edu.util.Utils;
 
@@ -18,9 +19,12 @@ public class Author {
 
 	Map<Integer, List> filesMap;
 	private float median;
+	
+	List<String> allFiles;
 
 	public Author() {
 		filesMap = new HashMap();
+		allFiles = new ArrayList();
 
 	}
 
@@ -80,6 +84,7 @@ public class Author {
 				filesMap.put(keys, new ArrayList());
 
 			filesMap.get(keys).add(fileInfo[0]);
+			allFiles.add(fileInfo[0]);
 		}
 	}
 
@@ -195,6 +200,27 @@ public class Author {
 				processLargerSubsets(set, subset, subsetSize + 1, j + 1);
 			}
 		}
+	}
+	
+	public List getFilesForBaseCase(int size) {
+		
+		List files = new ArrayList();
+		Collections.shuffle(allFiles);
+		
+	    int length = allFiles.size()-1;
+	    List<Integer> exclude = new ArrayList();
+	      
+	    if(size > length)
+	    {
+	    	return allFiles;
+	    }
+	    
+	    for (int i = 0; i < size; i++) {
+	    	 Integer value = Utils.getRandomNumber(0, length, exclude, true);
+	    	 files.add(allFiles.get(value));
+	    	 exclude.add(value);
+	    }
+		return files;
 	}
 
 	public static void main(String[] args) {
