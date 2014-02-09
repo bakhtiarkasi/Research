@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -36,6 +37,8 @@ public class Simulator {
 	private String runEnvironment;
 	private String xmlFileName;
 	private String simulationType;
+	private List allDevFiles;
+	private boolean baseCaseSimulation = false;
 
 	public Simulator() {
 		authorsMap = new HashMap();
@@ -111,9 +114,16 @@ public class Simulator {
 
 		NodeList allCommits = root.getElementsByTagName("Commit");
 
+		// if suimulation is run for all developers
+		if (simulationType.toLowerCase().equals("d")) {
+			allDevFiles = new ArrayList();
+			this.loadFilesallAuthors();
+		}
+
 		for (int i = 0; i < allCommits.getLength(); i++) {
 			
 			// i =5;
+			
 			Node comit = allCommits.item(i);
 			Element element = (Element) comit;
 
@@ -150,11 +160,36 @@ public class Simulator {
 
 			System.out.println(i + 1);
 
-			if (simulationType.toLowerCase().equals("b")) {
+			//This block corresponds to the base case simulation
+			if (simulationType.toLowerCase().equals("b")
+					|| simulationType.toLowerCase().equals("d") || (simulationType.toLowerCase().equals("f") && percentage==100)) {
+
 				results = new float[6];
-				
-				for (int k = 0; k < 3; k++)
-					this.simulateBaseCase(merge, rubyFilePath, hash);
+				baseCaseSimulation = true;
+
+				if (simulationType.toLowerCase().equals("b")) {
+					for (int k = 0; k < 3; k++)
+						this.simulateBaseCase(merge, rubyFilePath, hash);
+				} else if(simulationType.toLowerCase().equals("d")) {
+
+					for (int k = 0; k < 3; k++) {
+						this.simulateBaseCaseAllDevs(merge, rubyFilePath, hash);
+					}
+
+				}
+				else if(simulationType.toLowerCase().equals("f"))
+				{
+					Integer[] selectedSet = new Integer[merge.remoteFiles.size()];
+					for(int k = 0; k< merge.remoteFiles.size();k++)
+					{
+						selectedSet[k] = k; 
+					}
+							
+					for (int j = 0; j < 3; j++)
+					this.simulateConstraintAssignment(merge,
+							selectedSet, percentage, rubyFilePath,
+							hash);
+				}
 
 			} else {
 
@@ -171,12 +206,13 @@ public class Simulator {
 					results = new float[6];
 
 					for (Integer[] comb : combinations) {
-						if (simulationType.toLowerCase().equals("f"))
-							this.simulateConstraintAssignment(merge, comb,
-									percentage, rubyFilePath, hash);
-						else
+						if (simulationType.toLowerCase().equals("f")) {
+								this.simulateConstraintAssignment(merge, comb,
+										percentage, rubyFilePath, hash);
+						} else
 							this.simulateTaskAssignment(merge, comb,
 									percentage, rubyFilePath, hash);
+
 					}
 				} else {
 
@@ -201,9 +237,11 @@ public class Simulator {
 							hashCodes.add(Arrays.hashCode(selectedSet));
 
 							if (simulationType.toLowerCase().equals("f"))
+							{
 								this.simulateConstraintAssignment(merge,
 										selectedSet, percentage, rubyFilePath,
 										hash);
+							}
 							else
 								this.simulateTaskAssignment(merge, selectedSet,
 										percentage, rubyFilePath, hash);
@@ -239,6 +277,10 @@ public class Simulator {
 			}
 
 			int combSize = combinations != null ? combinations.size() : 1;
+
+			if (baseCaseSimulation)
+				combSize = 3;
+
 			DC += "\t\tReps\t" + combSize + "\t\t";
 			IC += "\t\tReps\t" + combSize + "\t\t";
 			for (int j = 0; j < results.length; j++) {
@@ -285,9 +327,20 @@ public class Simulator {
 
 			int requiredFile = comb.length;
 			Author ath = authorsMap.get(merge25.remoteDevName);
-
-			List files = ath.getFiles(requiredFile, merge25.remoteFiles);
-
+			List files = null;
+			
+			if(!baseCaseSimulation)
+				files = ath.getFiles(requiredFile, merge25.remoteFiles);
+			else
+			{
+				if(requiredFile==0 || (requiredFile > ath.allFilesCount))
+				{
+					System.out.println("Skipped");
+					return;
+				}
+				files = ath.getFiles(requiredFile, new ArrayList());
+			}
+			
 			int pickedNumer = 0;
 			for (Object file : files) {
 				String filename = (String) file;
@@ -594,8 +647,15 @@ public class Simulator {
 			merge25 = merge.clone();
 			Author ath = authorsMap.get(merge25.remoteDevName);
 
+			if(merge25.remoteFiles.size()==0)
+			{
+				System.out.println("Skipped");
+				return;
+			}
+			
 			List files = ath.getFilesForBaseCase(merge25.remoteFiles.size());
 			
+
 			int pickedNumer = 0;
 			for (Object file : files) {
 				String filename = (String) file;
@@ -612,7 +672,7 @@ public class Simulator {
 					filename = filename.split("\\.")[0];
 
 				}
-				
+
 				if (filename.trim().length() > 0) {
 					merge25.remoteFiles.get(pickedNumer).fileName = filename;
 					merge25.remoteFiles.get(pickedNumer).dependencies.clear();
@@ -725,6 +785,182 @@ public class Simulator {
 
 	}
 
+	private void loadFilesallAuthors() {
+
+		List files = new ArrayList();
+		for (Author ath : authorsMap.values()) {
+			files = new ArrayList();
+			files = ath.getFilesForBaseCase(ath.allFilesCount);
+
+			for (Object o : files) {
+				if (!allDevFiles.contains(o))
+					allDevFiles.add(o);
+			}
+		}
+
+		Collections.shuffle(allDevFiles);
+	}
+
+	private void simulateBaseCaseAllDevs(Merge merge, String rubyFilePath,
+			String hash) {
+
+		try {
+
+			Merge merge25 = new Merge();
+			merge25 = merge.clone();
+			Author ath = authorsMap.get(merge25.remoteDevName);
+
+			List files = new ArrayList();
+
+			int size = merge25.remoteFiles.size();
+			int length = allDevFiles.size() - 1;
+			List<Integer> exclude = new ArrayList();
+
+			if (size > 0) {
+				for (int i = 0; i < size; i++) {
+					Integer value = Utils.getRandomNumber(0, length, exclude,
+							true);
+					files.add(allDevFiles.get(value));
+					exclude.add(value);
+				}
+
+				int pickedNumer = 0;
+				for (Object file : files) {
+					String filename = (String) file;
+
+					if (project.toLowerCase().equals("s")) {
+						filename = filename.replaceAll("storm--src/jvm",
+								"classes").replaceAll("storm--src/clj",
+								"classes");
+
+						if (filename.endsWith(".java")
+								|| filename.endsWith(".clj"))
+							filename = filename.split("\\.")[0];
+
+					} else if (project.toLowerCase().equals("v")) {
+						filename = filename.replaceAll("voldemort--", "");
+						filename = filename.split("\\.")[0];
+
+					}
+
+					if (filename.trim().length() > 0) {
+						merge25.remoteFiles.get(pickedNumer).fileName = filename;
+						merge25.remoteFiles.get(pickedNumer).dependencies
+								.clear();
+					}
+					pickedNumer++;
+				}
+
+				String allFiles = files.toString().replaceAll("\\[", "")
+						.replaceAll("\\]", "").replaceAll(" ", "");
+
+				if (project.toLowerCase().equals("v")) {
+					allFiles = allFiles.replaceAll("voldemort--", "");
+				}
+
+				// System.out.println("\nruby " + rubyFilePath + " " + hash +
+				// " " + allFiles);
+
+				Process process = Runtime.getRuntime().exec(
+						"ruby " + rubyFilePath + " " + hash + " " + allFiles);
+
+				String tmp, output = "";
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						process.getInputStream()));
+
+				while (isAlive(process)) {
+					while (br.ready() && (tmp = br.readLine()) != null) {
+						output += tmp;
+					}
+				}
+				while (br.ready() && (tmp = br.readLine()) != null) {
+					output += tmp;
+				}
+				process.waitFor();
+				// System.out.println(process.waitFor());
+				br.close();
+
+				// System.out.println("\nOutput is "+ output);
+				String[] dataArray = output.split(",");
+
+				// System.out.println("Deps count "+ dataArray.length);
+
+				for (String item : dataArray) {
+					if (project.toLowerCase().equals("s")) {
+
+						if (item.endsWith(".class"))
+							item = item.split("\\.")[0];
+					}
+
+					else if (project.toLowerCase().equals("v")) {
+						item = item.replaceAll("voldemort--", "");
+
+						if (item.endsWith(".java"))
+							item = item.split("\\.")[0];
+					}
+					if (item.trim().length() > 0)
+						merge25.remoteFiles.get(merge25.remoteFiles.size() - 1).dependencies
+								.add(item);
+				}
+
+				merge25.analyzeForConflicts();
+
+				int dcContains = 0;
+				int dcNewAdds = 0;
+				int dcRemoved = 0;
+
+				for (Conflict conf : merge25.directConflicts) {
+					if (contains(merge.directConflicts, conf)) {
+						dcContains++;
+					} else {
+						dcNewAdds++;
+					}
+				}
+				dcRemoved = merge.directConflicts.size() - dcContains;
+
+				int icContains = 0;
+				int icNewAdds = 0;
+				int icRemoved = 0;
+
+				for (Conflict conf : merge25.inDirectConflicts) {
+					if (contains(merge.inDirectConflicts, conf)) {
+						icContains++;
+					} else {
+						icNewAdds++;
+					}
+				}
+				icRemoved = merge.inDirectConflicts.size() - icContains;
+
+				DC += "DC\t" + merge25.masterFiles.size() + "\t"
+						+ merge25.remoteFiles.size() + "\t"
+						+ merge25.remoteFiles.size() + "\t"
+						+ merge.directConflicts.size() + "\t" + dcContains
+						+ "\t" + dcNewAdds + "\t" + dcRemoved + "\n";
+				IC += "IC\t" + merge25.masterFiles.size() + "\t"
+						+ merge25.remoteFiles.size() + "\t"
+						+ merge25.remoteFiles.size() + "\t"
+						+ merge.inDirectConflicts.size() + "\t" + icContains
+						+ "\t" + icNewAdds + "\t" + icRemoved + "\n";
+				lastDCCount = dcContains;
+				results[0] += dcContains;
+				results[1] += dcNewAdds;
+				results[2] += dcRemoved;
+				results[3] += icContains;
+				results[4] += icNewAdds;
+				results[5] += icRemoved;
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	private boolean contains(List<Conflict> inDirectConflicts, Conflict conf) {
 
 		for (Conflict confl : inDirectConflicts) {
@@ -771,6 +1007,11 @@ public class Simulator {
 		// TODO Auto-generated method stub
 
 		Simulator sim = new Simulator();
+
+		if (args[0].equalsIgnoreCase("help"))
+			System.out
+					.println("Simulator [Project(s=storm, v=voldemort) s|v] [median=median number of files for all tasks] [percentage= value|-value for the number of files to be replaced, -value for removing files from grount truth] [simulationType=d|b|f (d and b used for base case simultion e.g b=same devs files, no frequency function d=all random case. f= fixed lenght used for constraint simultion, task lenght kept constant o= simuation with variable lenght tasks use with +percentage to add more files and -percentage for removing files from eixisting tasks] [runEnvironment =l|r l for local machine and r for remote in this case Sandhills] [xmlFileName= name of xmlfile used to load merge information]");
+
 		sim.project = args[0];
 		sim.median = Integer.parseInt(args[1]);
 		sim.percentage = Integer.parseInt(args[2]);

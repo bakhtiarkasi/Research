@@ -17,6 +17,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import cse.unl.edu.util.Utils;
 
 public class WeeklySimulator {
@@ -42,6 +46,8 @@ public class WeeklySimulator {
 	public List<Conflict> groundTDC;
 	public List<Conflict> groundTIC;
 	public List<String> groundTaskConstMap;
+	
+	public Map<String,Integer> devTaskCount;
 
 	// private final String path = "/Users/bkasi/Documents/Research/DAScripts/";
 
@@ -50,9 +56,26 @@ public class WeeklySimulator {
 	private String runEnvironment;
 	private String xmlFileName;
 	private String simulationType;
+	private boolean baseCaseSimulation = false;
+
+	private final static Logger LOGGER = Logger.getLogger(WeeklySimulator.class
+			.getName());
 
 	public WeeklySimulator() {
 		authorsMap = new HashMap();
+		devTaskCount = new HashMap();
+		LOGGER.setLevel(Level.INFO);
+		FileHandler fileHandler = null;
+		try {
+			fileHandler = new FileHandler("myLogFile");
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		LOGGER.addHandler(fileHandler);
 	}
 
 	private void loadAuthorFileCount() {
@@ -88,6 +111,7 @@ public class WeeklySimulator {
 				if (devFiles.length < 2)
 					continue;
 
+				devFiles[0] = devFiles[0].toLowerCase();
 				Author auth = new Author(devFiles[0], devFiles[1]);
 
 				authorsMap.put(devFiles[0], auth);
@@ -126,7 +150,12 @@ public class WeeklySimulator {
 
 		for (int i = 0; i < allCommits.getLength(); i++) {
 
+			LOGGER.info("\n\n***********************************************\nRunning for instance " + i);
 			// i =5;
+			
+			devTaskCount.clear();
+			
+			
 			Node comit = allCommits.item(i);
 			Element element = (Element) comit;
 
@@ -141,6 +170,10 @@ public class WeeklySimulator {
 			task[0] = new Task();
 			task[0].developerName = masterElement.getAttribute("DevName");
 			task[0].taskId = 0;
+			
+			devTaskCount.put(task[0].developerName, 1);
+			
+			
 			addFilesFor(task[0], masterElement.getElementsByTagName("File"));
 
 			for (int j = 1; j <= element.getElementsByTagName("Remote")
@@ -151,6 +184,12 @@ public class WeeklySimulator {
 				task[j] = new Task();
 				task[j].developerName = remoteElement.getAttribute("DevName");
 				task[j].taskId = j;
+				
+				if(devTaskCount.containsKey(task[j].developerName))
+					devTaskCount.put(task[j].developerName, devTaskCount.get(task[j].developerName)+1);
+				else
+					devTaskCount.put(task[j].developerName, 1);
+				
 				addFilesFor(task[j], remoteElement.getElementsByTagName("File"));
 
 			}
@@ -158,7 +197,14 @@ public class WeeklySimulator {
 			// System.out.println("Tasks " + task.length);
 			for (int l = 0; l < task.length; l++)
 				initialTask[l] = task[l].clone();
+			
+			LOGGER.info("\n\nAll tasks Lenght " + task.length);
+			for(String auth : devTaskCount.keySet())
+			{
+				LOGGER.info(auth + " : " + devTaskCount.get(auth));
+			}
 
+			LOGGER.info("\n\nAnalyzing ground truth conflicts");
 			this.analyzeForConflicts();
 
 			this.groundTDC = new ArrayList();
@@ -174,39 +220,222 @@ public class WeeklySimulator {
 			DC = "";
 			IC = "";
 
-			int maxFiles = 0;
-			for (int j = 1; j < task.length; j++) {
-				if (task[j].filesList.size() > maxFiles)
-					maxFiles = task[j].filesList.size();
-			}
+			if (simulationType.toLowerCase().equals("b")) {
+				if(i < 28)
+					continue;
+				
+				System.out.println(i + 1);
+				this.simulateBaseCaseNoFreq(rubyFilePath, hash);
 
-			if (maxFiles > this.median)
-				maxFiles = this.median;
+			} else {
 
-			for (int j = 1; j < task.length; j++) {
-				Author ath = authorsMap.get(task[j].developerName);
-				int count = ath.allFilesCount;
-
-				int setSize = Math.abs(percentage);
-				int requiredFile = (int) Math.round(setSize * 0.01
-						* task[j].filesList.size());
-
-				requiredFile = requiredFile == 0 ? 1 : requiredFile;
-
-				// System.out.println(i + 1);
-
-				if ((count - requiredFile - task[j].filesList.size()) > 0) {
-
-					processSubsets(task[j].filesList.size(), requiredFile);
-
-					task[j].combinations = new ArrayList();
-					for (Integer[] comb : this.combinations)
-						task[j].combinations.add(comb.clone());
-
-					combinations.clear();
+				int maxFiles = 0;
+				for (int j = 1; j < task.length; j++) {
+					if (task[j].filesList.size() > maxFiles)
+						maxFiles = task[j].filesList.size();
 				}
 
+				if (maxFiles > this.median)
+					maxFiles = this.median;
+
+				for (int j = 1; j < task.length; j++) {
+					Author ath = authorsMap.get(task[j].developerName
+							.toLowerCase());
+					int count = ath.allFilesCount;
+
+					int setSize = Math.abs(percentage);
+					int requiredFile = (int) Math.round(setSize * 0.01
+							* task[j].filesList.size());
+
+					requiredFile = requiredFile == 0 ? 1 : requiredFile;
+
+					// System.out.println(i + 1);
+
+					if ((count - requiredFile - task[j].filesList.size()) > 0) {
+
+						if (simulationType.toLowerCase().equals("f")
+								&& percentage == 100) {
+							
+							baseCaseSimulation = true;
+							Integer[] selectedSet = new Integer[task[j].filesList
+									.size()];
+							for (int k = 0; k < task[j].filesList.size(); k++) {
+								selectedSet[k] = k;
+							}
+							task[j].combinations = new ArrayList();
+							
+							for(int l=0; l<3; l++)
+								task[j].combinations.add(selectedSet.clone());
+							
+							maxFiles = 3;
+						} else {
+
+							processSubsets(task[j].filesList.size(),
+									requiredFile);
+
+							task[j].combinations = new ArrayList();
+							for (Integer[] comb : this.combinations)
+								task[j].combinations.add(comb.clone());
+
+							combinations.clear();
+						}
+					}
+
+				}
+				results = new float[12];
+
+				int gTDC = 0;
+				int gTIC = 0;
+
+				for (String cons : groundTaskConstMap)
+					if (cons.startsWith("D"))
+						gTDC++;
+					else
+						gTIC++;
+
+				for (int k = 0; k < maxFiles; k++) {
+
+					LOGGER.info("\nrunning rep " + k);
+					int dcContains = 0;
+					int dcNewAdds = 0;
+					int dcRemoved = 0;
+
+					int icContains = 0;
+					int icNewAdds = 0;
+					int icRemoved = 0;
+
+					int dcTContains = 0;
+					int dcTNewAdds = 0;
+					int dcTRemoved = 0;
+
+					int icTContains = 0;
+					int icTNewAdds = 0;
+					int icTRemoved = 0;
+					Task taskTemp = null;
+
+					for (int j = 1; j < task.length; j++) {
+
+						if (task[j].combinations != null
+								&& task[j].combinations.size() > 0) {
+							Integer[] comb = task[j].combinations.get(0);
+							task[j].combinations.remove(0);
+							if (simulationType.toLowerCase().equals("f"))
+								taskTemp = this.simulateConstraintAssignment(
+										task[j], comb, percentage,
+										rubyFilePath, hash);
+							else
+								taskTemp = this.simulateTaskAssignment(task[j],
+										comb, percentage, rubyFilePath, hash);
+							
+							if(taskTemp == null)
+							{
+								initialTask[j] = task[j];
+								continue;
+							}
+								
+							initialTask[j] = taskTemp;
+						}
+
+					}
+					LOGGER.info("\n\nAnalyzing simulation conflicts");
+					this.analyzeForConflicts();
+
+					for (int l = 0; l < task.length; l++)
+						initialTask[l] = task[l].clone();
+
+					for (Conflict conf : directConflicts) {
+						if (contains(groundTDC, conf)) {
+							dcContains++;
+						} else {
+							dcNewAdds++;
+						}
+					}
+					dcRemoved = groundTDC.size() - dcContains;
+
+					for (Conflict conf : inDirectConflicts) {
+						if (contains(groundTIC, conf)) {
+							icContains++;
+						} else {
+							icNewAdds++;
+						}
+					}
+					icRemoved = groundTIC.size() - icContains;
+
+					for (String taskCon : taskConstMap) {
+
+						if (groundTaskConstMap.contains(taskCon)) {
+							if (taskCon.startsWith("D"))
+								dcTContains++;
+							else
+								icTContains++;
+						} else {
+							if (taskCon.startsWith("D"))
+								dcTNewAdds++;
+							else
+								icTNewAdds++;
+						}
+					}
+					dcTRemoved = gTDC - dcTContains;
+					icTRemoved = gTIC - icTContains;
+
+					DC += "DC\t" + groundTDC.size() + "\t" + dcContains + "\t"
+							+ dcNewAdds + "\t" + dcRemoved + "\t" + gTDC + "\t"
+							+ dcTContains + "\t" + dcTNewAdds + "\t"
+							+ dcTRemoved + "\n";
+					IC += "IC\t" + groundTIC.size() + "\t" + icContains + "\t"
+							+ icNewAdds + "\t" + icRemoved + "\t" + gTIC + "\t"
+							+ icTContains + "\t" + icTNewAdds + "\t"
+							+ icTRemoved + "\n";
+					lastDCCount = dcContains;
+					results[0] += dcContains;
+					results[1] += dcNewAdds;
+					results[2] += dcRemoved;
+					results[3] += dcTContains;
+					results[4] += dcTNewAdds;
+					results[5] += dcTRemoved;
+					results[6] += icContains;
+					results[7] += icNewAdds;
+					results[8] += icRemoved;
+					results[9] += icTContains;
+					results[10] += icTNewAdds;
+					results[11] += icTRemoved;
+				}
+
+				DC += "Reps\t" + maxFiles + "\t";
+				IC += "Reps\t" + maxFiles + "\t";
+				for (int j = 0; j < results.length; j++) {
+					results[j] = results[j] / maxFiles;
+
+					if (j < 6)
+						DC += results[j] + "\t";
+					else
+						IC += results[j] + "\t";
+
+					if (j == 2)
+						DC += "\t";
+
+					else if (j == 8)
+						IC += "\t";
+				}
+
+				System.out.println(i + 1);
+				System.out.println(DC);
+				System.out.println(IC);
+
+				System.out.println("\n");
 			}
+
+		}
+
+		// break;
+
+	}
+
+	private void simulateBaseCaseNoFreq(String rubyFilePath, String hash) {
+
+		try {
+
+			LOGGER.info("inside function simulateBaseCaseNoFreq");
 			results = new float[12];
 
 			int gTDC = 0;
@@ -218,7 +447,9 @@ public class WeeklySimulator {
 				else
 					gTIC++;
 
-			for (int k = 0; k < maxFiles; k++) {
+			for (int k = 0; k < 3; k++) {
+				LOGGER.info("\nrunning rep " + k);
+
 				int dcContains = 0;
 				int dcNewAdds = 0;
 				int dcRemoved = 0;
@@ -234,25 +465,111 @@ public class WeeklySimulator {
 				int icTContains = 0;
 				int icTNewAdds = 0;
 				int icTRemoved = 0;
-				Task taskTemp = null;
 
 				for (int j = 1; j < task.length; j++) {
+					Author ath = authorsMap.get(task[j].developerName
+							.toLowerCase());
+					LOGGER.info("Dev name " + task[j].developerName);
 
-					if (task[j].combinations != null
-							&& task[j].combinations.size() > 0) {
-						Integer[] comb = task[j].combinations.get(0);
-						task[j].combinations.remove(0);
-						if (simulationType.toLowerCase().equals("f"))
-							taskTemp = this.simulateConstraintAssignment(
-									task[j], comb, percentage, rubyFilePath,
-									hash);
-						else
-							taskTemp = this.simulateTaskAssignment(task[j],
-									comb, percentage, rubyFilePath, hash);
-						initialTask[j] = taskTemp;
+					int requiredFile = task[j].filesList.size();
+
+					if (requiredFile == 0)
+						continue;
+
+					List files = ath.getFilesForBaseCase(requiredFile);
+
+					if (files.isEmpty() || files.size() == 0)
+						continue;
+
+					LOGGER.info("req files " + requiredFile + " got fies  "
+							+ files.size());
+
+					if (requiredFile != files.size()) {
+						LOGGER.info("All files count for author "
+								+ ath.allFilesCount);
 					}
 
+					Task task25 = new Task();
+					task25 = task[j].clone();
+
+					int pickedNumer = 0;
+					for (Object file : files) {
+						String filename = (String) file;
+
+						if (project.toLowerCase().equals("s")) {
+							filename = filename.replaceAll("storm--src/jvm",
+									"classes").replaceAll("storm--src/clj",
+									"classes");
+
+							if (filename.endsWith(".java")
+									|| filename.endsWith(".clj"))
+								filename = filename.split("\\.")[0];
+
+						} else if (project.toLowerCase().equals("v")) {
+							filename = filename.replaceAll("voldemort--", "");
+							filename = filename.split("\\.")[0];
+
+						}
+						if (filename.trim().length() > 0) {
+							task25.filesList.get(pickedNumer).fileName = filename;
+							task25.filesList.get(pickedNumer).dependencies
+									.clear();
+						}
+						pickedNumer++;
+					}
+
+					String allFiles = files.toString().replaceAll("\\[", "")
+							.replaceAll("\\]", "").replaceAll(" ", "");
+
+					if (project.toLowerCase().equals("v")) {
+						allFiles = allFiles.replaceAll("voldemort--", "");
+					}
+
+					LOGGER.info("ruby " + rubyFilePath + " " + hash + " "
+							+ allFiles);
+
+					Process process = Runtime.getRuntime().exec(
+							"ruby " + rubyFilePath + " " + hash + " "
+									+ allFiles);
+
+					String tmp, output = "";
+					BufferedReader br = new BufferedReader(
+							new InputStreamReader(process.getInputStream()));
+
+					while (isAlive(process)) {
+						while (br.ready() && (tmp = br.readLine()) != null) {
+							output += tmp;
+						}
+					}
+					while (br.ready() && (tmp = br.readLine()) != null) {
+						output += tmp;
+					}
+					process.waitFor();
+					// System.out.println(process.waitFor());
+					br.close();
+
+					String[] dataArray = output.split(",");
+					LOGGER.info("total dep found " + dataArray.length);
+
+					for (String item : dataArray) {
+						if (project.toLowerCase().equals("s")) {
+
+							if (item.endsWith(".class"))
+								item = item.split("\\.")[0];
+						} else if (project.toLowerCase().equals("v")) {
+							item = item.replaceAll("voldemort--", "");
+
+							if (item.endsWith(".java"))
+								item = item.split("\\.")[0];
+						}
+						if (item.trim().length() > 0)
+							task25.filesList.get(task25.filesList.size() - 1).dependencies
+									.add(item);
+					}
+
+					initialTask[j] = task25;
 				}
+
 				this.analyzeForConflicts();
 
 				for (int l = 0; l < task.length; l++)
@@ -316,10 +633,10 @@ public class WeeklySimulator {
 				results[11] += icTRemoved;
 			}
 
-			DC += "Reps\t" + maxFiles + "\t";
-			IC += "Reps\t" + maxFiles + "\t";
+			DC += "Reps\t" + 3 + "\t";
+			IC += "Reps\t" + 3 + "\t";
 			for (int j = 0; j < results.length; j++) {
-				results[j] = results[j] / maxFiles;
+				results[j] = results[j] / 3;
 
 				if (j < 6)
 					DC += results[j] + "\t";
@@ -333,15 +650,19 @@ public class WeeklySimulator {
 					IC += "\t";
 			}
 
-			System.out.println(i + 1);
 			System.out.println(DC);
 			System.out.println(IC);
 
 			System.out.println("\n");
 
-		}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 
-		// break;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -351,6 +672,12 @@ public class WeeklySimulator {
 		taskConstMap = new ArrayList();
 
 		Conflict conf;
+		
+		String directCon = "";
+		String inDirectCon = "";
+		
+		
+		LOGGER.info("\n\n\nAnalyzing Conflicts ");
 
 		for (int i = 0; i < initialTask.length; i++) {
 			for (int j = i + 1; j < initialTask.length; j++) {
@@ -365,9 +692,11 @@ public class WeeklySimulator {
 								conf.fromFile = masterFile.fileName;
 								conf.toFile = remoteFile.fileName;
 								if (!taskConstMap.contains("D" + conf.fromTask
-										+ conf.toTask))
+										+ conf.toTask)){
 									taskConstMap.add("D" + conf.fromTask
 											+ conf.toTask);
+									directCon += (conf.fromTask+1) + ":" + (conf.toTask+1) + ",";
+								}
 								if (!directConflicts.contains(conf))
 									directConflicts.add(conf);
 							} else {
@@ -401,9 +730,12 @@ public class WeeklySimulator {
 										conf.toFile = depFile;
 										if (!taskConstMap.contains("I"
 												+ conf.fromTask + conf.toTask))
+										{
 											taskConstMap.add("I"
 													+ conf.fromTask
 													+ conf.toTask);
+											inDirectCon += (conf.fromTask+1) + ":" + (conf.toTask+1) + "|>,";
+										}
 										if (!inDirectConflicts.contains(conf))
 											inDirectConflicts.add(conf);
 									} else {
@@ -425,11 +757,15 @@ public class WeeklySimulator {
 									}
 								}
 							}
+					
+					
 
 				}
 
 			}
 		}
+		LOGGER.info("Direct " + directCon);
+		LOGGER.info("InDirect " + inDirectCon);
 
 		// analyzing direct conflicts
 
@@ -453,14 +789,27 @@ public class WeeklySimulator {
 
 		try {
 
+			LOGGER.info("inside function simulateConstraintAssignment");
+
 			Task task25 = new Task();
 			task25.percentage = i;
 			task25 = task2.clone();
 
 			int requiredFile = comb.length;
-			Author ath = authorsMap.get(task25.developerName);
+			Author ath = authorsMap.get(task25.developerName.toLowerCase());
 
-			List files = ath.getFiles(requiredFile, task25.filesList);
+			List files = null;
+			
+			if(!baseCaseSimulation )
+				files = ath.getFiles(requiredFile, task25.filesList);
+			else
+			{
+				if(requiredFile==0 || (requiredFile > ath.allFilesCount))
+					return null;
+				
+				files = ath.getFiles(requiredFile, new ArrayList());
+			}
+			
 
 			int pickedNumer = 0;
 			for (Object file : files) {
@@ -493,8 +842,7 @@ public class WeeklySimulator {
 				allFiles = allFiles.replaceAll("voldemort--", "");
 			}
 
-			// System.out.println("ruby " + rubyFilePath + " " + hash + " " +
-			// allFiles);
+			LOGGER.info("ruby " + rubyFilePath + " " + hash + " " + allFiles);
 
 			Process process = Runtime.getRuntime().exec(
 					"ruby " + rubyFilePath + " " + hash + " " + allFiles);
@@ -516,6 +864,8 @@ public class WeeklySimulator {
 			br.close();
 
 			String[] dataArray = output.split(",");
+			LOGGER.info("deps found " + dataArray.length);
+
 			for (String item : dataArray) {
 				if (project.toLowerCase().equals("s")) {
 
@@ -562,7 +912,7 @@ public class WeeklySimulator {
 			}
 
 			int requiredFile = comb.length;
-			Author ath = authorsMap.get(task25.developerName);
+			Author ath = authorsMap.get(task25.developerName.toLowerCase());
 
 			if (reduced) {
 				if (task25.filesList.size() < requiredFile) {
@@ -721,19 +1071,24 @@ public class WeeklySimulator {
 		// TODO Auto-generated method stub
 
 		WeeklySimulator sim = new WeeklySimulator();
+
+		if (args[0].equalsIgnoreCase("help"))
+			System.out
+					.println("Simulator [Project(s=storm, v=voldemort) s|v] [median=median number of files for all tasks] [percentage= value|-value for the number of files to be replaced, -value for removing files from grount truth] [simulationType=d|b|f (d and b used for base case simultion e.g b=same devs files, no frequency function d=all random case. f= fixed lenght used for constraint simultion, task lenght kept constant o= simuation with variable lenght tasks use with +percentage to add more files and -percentage for removing files from eixisting tasks] [runEnvironment =l|r l for local machine and r for remote in this case Sandhills] [xmlFileName= name of xmlfile used to load merge information]");
+
 		sim.project = args[0];
 		sim.median = Integer.parseInt(args[1]);
 		sim.percentage = Integer.parseInt(args[2]);
 		sim.simulationType = args[3];
 		sim.runEnvironment = args[4];
 		sim.xmlFileName = args[5];
-		//sim.printSummary();
+		// sim.printSummary();
 		sim.startSimulation();
 
 	}
 
 	public void printSummary() {
-		
+
 		if (project.toLowerCase().equals("s")) {
 			if (runEnvironment.toLowerCase().equals("l"))
 				path = "/Users/bkasi/Documents/Research/DAScripts/";
@@ -744,7 +1099,7 @@ public class WeeklySimulator {
 			if (runEnvironment.toLowerCase().equals("l"))
 				path = "/Users/bkasi/Documents/Research/DAScripts/";
 			else
-				path = "/work/esquared/bkasi/DataAnalysis/Voldemort2/";
+				path = "/work/esquared/bkasi/DataAnalysis/Voldemort/";
 		}
 
 		String rubyFilePath = "", xmlFilePath = "";
@@ -798,16 +1153,16 @@ public class WeeklySimulator {
 						.getLength();
 
 			}
-			
+
 			alldevscount += devs.size();
 			devs.clear();
 		}
-		
-		float avg = (alldevscount+0.0f)/(allCommits.getLength()+0.0f);
+
+		float avg = (alldevscount + 0.0f) / (allCommits.getLength() + 0.0f);
 		System.out.println("Avg devs per week:" + avg);
-		avg = (alltaskscount+0.0f)/(allCommits.getLength()+0.0f);
+		avg = (alltaskscount + 0.0f) / (allCommits.getLength() + 0.0f);
 		System.out.println("Avg tasks per week:" + avg);
-		avg = (allFilesCount+0.0f)/(alldevscount+0.0f);
+		avg = (allFilesCount + 0.0f) / (alldevscount + 0.0f);
 		System.out.println("Avg files per tasks:" + avg);
 	}
 
