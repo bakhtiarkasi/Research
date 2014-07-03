@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="MacRoman" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2014-06-29T20:31:58</date>
+  <millis>1404091918375</millis>
+  <sequence>6</sequence>
+  <logger>cse.unl.edu.Lucene.LuceneIndexer</logger>
+  <level>INFO</level>
+  <class>cse.unl.edu.Lucene.LuceneIndexer</class>
+  <method>initializeforDescription</method>
+  <thread>10</thread>
+  <message>Total Tasks 5 Training Tasks 4 Test Tasks 1</message>
+</record>
+<record>
+  <date>2014-06-29T20:31:58</date>
+  <millis>1404091918498</millis>
+  <sequence>7</sequence>
+  <logger>cse.unl.edu.Lucene.LuceneIndexer</logger>
+  <level>INFO</level>
+  <class>cse.unl.edu.Lucene.LuceneIndexer</class>
+  <method>initializeforDescription</method>
+  <thread>10</thread>
+  <message>All docs have been added 
+</message>
+</record>
+<record>
+  <date>2014-06-29T20:31:58</date>
+  <millis>1404091918642</millis>
+  <sequence>8</sequence>
+  <logger>cse.unl.edu.Lucene.LuceneIndexer</logger>
+  <level>INFO</level>
+  <class>cse.unl.edu.Lucene.LuceneIndexer</class>
+  <method>initializeforDescription</method>
+  <thread>10</thread>
+  <message>
+ Query: nouns:(Sorry if this is a dup \- couldn't find a matching report.
+
+The functionality added by bug 189787 does not work for me any longer with Eclipse 3.4 and MyLyn 3.0.1.v20080721\-2100\-e3x.
+
+The query says \"Parsing error null argument\" when adding a named query group like \(\{Id\}\\d\+\), unnamed groups work as expected.
+)</message>
+</record>
+<record>
+  <date>2014-06-29T20:31:58</date>
+  <millis>1404091918761</millis>
+  <sequence>9</sequence>
+  <logger>cse.unl.edu.Lucene.LuceneIndexer</logger>
+  <level>INFO</level>
+  <class>cse.unl.edu.Lucene.LuceneIndexer</class>
+  <method>initializeforDescription</method>
+  <thread>10</thread>
+  <message>
+ Found 0 hits: </message>
+</record>
+<record>
+  <date>2014-06-29T20:31:58</date>
+  <millis>1404091918762</millis>
+  <sequence>10</sequence>
+  <logger>cse.unl.edu.Lucene.LuceneIndexer</logger>
+  <level>INFO</level>
+  <class>cse.unl.edu.Lucene.LuceneIndexer</class>
+  <method>initializeforDescription</method>
+  <thread>10</thread>
+  <message>Task to be tested 1 task id 243131</message>
+</record>
+<record>
+  <date>2014-06-29T20:31:58</date>
+  <millis>1404091918763</millis>
+  <sequence>11</sequence>
+  <logger>cse.unl.edu.Lucene.LuceneIndexer</logger>
+  <level>INFO</level>
+  <class>cse.unl.edu.Lucene.LuceneIndexer</class>
+  <method>initializeforDescription</method>
+  <thread>10</thread>
+  <message>
+ Result for 1</message>
+</record>
+</log>

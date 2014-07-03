@@ -1,0 +1,220 @@
+201739
+We would like to be able to share mylyn contexts without the requirement of the project needing to be named the same.  We have 20+ developers that work on 100+ projects and it is difficult to require everyone to name their projects the same.
+Even if this is some sort of manual mapping, that is more desireable than not being able to use Mylyn at all.
+----------------------------------------------------------------------------------
+267693
+When there is a crash on startup (e.g. reading a corrupt activity context) and there is a error reporter, there can be a ClassCircularityError if the error reporter requires tasks.ui.
+----------------------------------------------------------------------------------
+283877
+The Mylyn architecture is intended to support the following layers:
+# Headless: Only core components, capable of running in a headless Equinox runtime, some able to run on a plain Java classpath
+# RCP: Components like the Task List and Task Editor should be able to run in RCP applications and not require the entire Eclipse SDK
+# IDE: The rest of Mylyn, which requires the entire Eclipse IDE/SDK
+We've had some additional dependencies creep in which prevent some of this reuse, e.g., the coupling of org.eclipse.mylyn.tasks.ui to org.eclipse.ui.ide.  In order to support reuse outside of the IDE, we need to improve on the separation of the layers.
+----------------------------------------------------------------------------------
+286337
+If a scheduled task is deleted data structures in TaskActivityManager may still hold references to those tasks. That causes some memory bloat and can have weird effects if those tasks are accessed by clients (e.g. bug 280939).
+----------------------------------------------------------------------------------
+290604
+When repositories are updated to a new version or the supported feature set of a connector changes it can be desirable to update the offline data or tasks in the task list without causing an incoming notification. This has also been raised on the mylyn-integrators mailing list:
+http://dev.eclipse.org/mhonarc/lists/mylyn-integrators/msg00537.html: new version of connector now fetches more data than previous one, and creates some new attributes. I'd like to force fetching this new data for all existing user's tasks (which don't have new attributes yet), but I prefer not to indicate that there is incoming data for every task, because this would break existing 'state of tasks' for user.
+----------------------------------------------------------------------------------
+292318
+Step:
+1. Startup with active task and focused breakpoints view visible
+An error is displayed.
+----------------------------------------------------------------------------------
+162335
+When I'm adding files as landmarks, if I just click at the top of the file, above the class declaration, and execute "Make Landmark", it complains that I have to select an element and then make that a landmark.
+It seems to me that it would be sensible to automatically find the top-level element and use that, if no element is selected.
+----------------------------------------------------------------------------------
+233055
+For each place that we use reflection we should file a bug against Platform/SDK and consider providing a patch if the fix is not trivial.
+----------------------------------------------------------------------------------
+233379
+Contexts are saved on the UI thread on task deactivation. This is not strictly necessary and could be done asynchronously to improve the responsiveness of task deactivation.
+----------------------------------------------------------------------------------
+243900
+Removing the Eclipse task repository is undone after an Eclipse restart.
+Steps to reproduce:
+1. Open Eclipse
+2. Open view "Task Repositories"
+3. Select repository "https://bugs.eclipse.org/bugs"
+4. Right mouse click
+5. Delete
+6. Close Eclipse
+7. Start Eclipse
+The repository "https://bugs.eclipse.org/bugs" is added again to the Task Repositories.
+The reason why this matters:
+Synchronizing the task list from within the "Task List" view will then synchronize the Eclipse bugs, too.
+Workaround: disconnect the Eclipse task repository (it's not reconnected after an Eclipse restart)
+I am using Eclipse 3.3 with Mylyn 3.0.1.v20080721-2100-e33 / -e3x
+----------------------------------------------------------------------------------
+247582
+Review the fix for bug 247383 and implement a test case.
+----------------------------------------------------------------------------------
+247383: [context] all java files get added to the context on rebuild
+https://bugs.eclipse.org/bugs/show_bug.cgi?id=247383
+----------------------------------------------------------------------------------
+257972
+Context tests included in AllHeadlessStandaloneTests currently fail since they expect ContextCorePlugin to be initialized:
+ContextCore needs to be changed to work when used in standalone mode.
+----------------------------------------------------------------------------------
+267675
+To reproduce:
+# Open any *.textile containing headings (try the WikiText User Guide.textile)
+# Ensure that a task is active and that the outline view has the interest filter enabled
+# In the outline view, select all and mark as uninteresting.  The outline view should now appear empty
+# Close the file editor
+# Reopen the file editor on the same file
+# observe that the outline view now shows all heading in the file, when it should just show the one where the caret is positioned
+----------------------------------------------------------------------------------
+269544
+Recently with bug 268434 I've had to interact with the Mylyn team around potential bugs in a task context.  The team asked for my task context, however it contains references to code that are proprietary to our project and cannot be disclosed publicly.  It would be useful to have an 'Export Obfuscated Task Context' function that would export the task context while renaming files and code elements so that no confidential information is contained in the exported task context.
+----------------------------------------------------------------------------------
+272094
+Querying for task activity based on date ranges is very slow (bug 235853). Performance of TaskActivityManager should be improved.
+----------------------------------------------------------------------------------
+272187
+If task editor pages do not use TaskData for the data model there is no way to mark a task as read in the task list.
+----------------------------------------------------------------------------------
+275774
+Steps:
+1. Activate task
+2. Open a second task in the Task Editor
+3. Activate the second task
+The task editor of the second task is closed. It would be nice if the editor stayed open instead.
+----------------------------------------------------------------------------------
+276361
+The current infrastructure doesn't seem to report upload progress when adding an attachment to a task. Looking at AbstractTaskAttachmentSource the code seems designed for progress reporting but neither TaskAttachmentPartSource nor any of the concrete TaskAttachmentSource classes seem to make any use of it.
+I got some quite good results with the attached code. The only issue it has is that the monitor handed to me trough AbstractTaskAttachmentHandler seems to use only about a third of the ticks of the parent monitor. So the visual effect is that the progress bar steadily moving form 0% to 33% and the suddenly jumping to 100%. Four fifths or even nine tenths of the ticks would probably yield much better results.
+----------------------------------------------------------------------------------
+279361
+Hello,
+when tracking down 'overdue' problem with my connector, I found that TaskActivityManager.isOverdue() calls TaskRepositoryManager.isOwnedByUser, which only uses simple string comparison of task owner and username from repository. Unfortunately, this doesn't work for FogBugz, where repository.userName may be full name or email address, but task owner is specified as "Fullname <email>", so comparison always fails :-(
+I suggest to consult connector instead of simply comparing strings to decide whether task is owned by user. One way would be to add ITask.isOwnedByUser (+ setter) methods, so that connectors can explicitly specify this.
+----------------------------------------------------------------------------------
+284212
+The DelegatingProgressMonitor, currently used in SubmitJob (and subclasses), might end up in an indefinite loop under certain circumstances:
+If a wrapped progressMonitor is created (e.g. new SubProgressMonitor) from a DelegatingProgressMonitor, and that one (or on a deeper nested level) is than (accidentally, or because there was no real way of telling what is wrapped all the way down) is attached to the same DelegatingProgressMonitor, the endless loop is closed.
+One solution could be to make sure that the attached monitor to a DelegatingMonitor is not the same DelegatingMonitor just wrapped, but it might not always be possible to actually determine that.
+A possible solution would be to add a boolean flag that is set to true at the start of each delegating method, then the delegating to all attached monitors is done and in a finally block the flag set back to false.
+----------------------------------------------------------------------------------
+284386
+The Mantis SOAP API does not provide a direct means of retrieving all tasks changed in a given interval. The most efficient possibility is to re-run all queries ( 1 SOAP call for each query ) and see which tasks have changed. Unfortunately, that forces us to use internal apis:
+I would welcome the possibility of retrieving all queries attached to a connector. All queries for a specific connector kind would work as well.
+----------------------------------------------------------------------------------
+291518
+Recent modifications of WebUtil have changed the way connectors need to handle progress monitors. JIRA, Trac and Bugzilla need to be updated accordingly.
+----------------------------------------------------------------------------------
+291693
+Comment from Steffen from bug 219173: 
+What I find weird in the context architecture is that DegreeOfInterest holds on to events. Shouldn't storing those be be limited to InteractionContext?
+----------------------------------------------------------------------------------
+292314
+Steps:
+1. Create Java project
+2. Add JUnit test case
+3. Run Task Context Plug-in test
+----------------------------------------------------------------------------------
+292315
+Steps:
+1. Restart
+2. Activate task with clean context
+3. Run Task Context Test
+A message dialog appears that says Invalid project specified.
+I have also seen this appear in the console in other scenarios:
+----------------------------------------------------------------------------------
+292316
+The Task Context tests fail with strange error messages when no task is active. They should either be disabled or fail more gracefully.
+----------------------------------------------------------------------------------
+299360
+Build Identifier: 
+Deadlock when refactoring (moving Java source file).  Eclipse freezes and has to be killed.
+Reproducible: Couldn't Reproduce
+----------------------------------------------------------------------------------
+303350
+Some context bridges need to do a lot of work to get the element handle or determine if the element should be shown (i.e. loading the java model).  As this can be expensive, we should try to get this processing out of the UI thread as much as possible.  This could sacrafice some responsiveness of the focused UI for overall Eclipse responsiveness.
+----------------------------------------------------------------------------------
+332074
+When Mylyn creates a repository from a template, it doesn't configure that repository with any of the generic attributes contained in the template.
+For example: here's an element from a plugin.xml file that defines a repository with a generic attribute called "repository-type".  When the enclosing plugin is loaded, Mylyn will create a RepositoryTemplate object configured with all the specified information, including the repository-type attribute, but shortly thereafter, when it creates a repository from this template, it will ignore that attribute.
+As far as I can tell, template attributes are not used anywhere in Mylyn.  What we need is for TasksUiPlugin.loadTemplateRepositories() to copy them from the template to the newly-created repository.
+----------------------------------------------------------------------------------
+215371
+The FocusedViewerManager can have the expandAll and collapseAll events sent in the wrong order on task deactivation causing the viewer to expand all elements.  The following is a small trace of events.
+It seems that the problem is that updateExpansionState is normally called from an asyncExec whereas the collapseAll is not.  This means that the expandAll runs after the collapseAll.
+----------------------------------------------------------------------------------
+267348
+While trying to retrieve context saved on bug 188646 with Mylyn build on 20090211 I got the following exception:
+org.eclipse.core.runtime.CoreException: Could not get context handle from 
+----------------------------------------------------------------------------------
+385702
+Build Identifier: 20120216-1857
+When doing "SaveAs", the created document clone is not added to the context. As a result, to open and edit the document, one must disable "focus on active task" in the package explorer, open the file, and enable "focus on active task" again. This is really nasty.
+Reproducible: Always
+Steps to Reproduce:
+1. Enable "focus on active task" in "package explorer"
+2. double click any document in the explorer to open it
+3. apply "file > SaveAs" to create a clone of the open file
+Expected:
+* Clone should be added to context, so one can see it in "focus on active task" mode.
+Actual:
+* Clone is not added to the context, so one cannot see it in "focus on active task" mode.
+----------------------------------------------------------------------------------
+400860
+1. I have stablished a template for commit (Window->Preferences->Mylyn->Team)
+2. I activate the task
+3. I add some files to the context
+4. I go to the Team Synchronizing perspective
+5. I synchronize, update and select commit
+In that case, if at least on of the modified files is in the repository, it works perfect (the commit message template is shown), but if none of them are already in the repository, then the commit message template is not shown :(
+----------------------------------------------------------------------------------
+403001
+git checkout
+git submodule init
+git submodule update
+mvn package
+and I get:
+----------------------------------------------------------------------------------
+412217
+After a certain number of days (not sure how many), tasks that were scheduled for the current day change from the current day color (blue on my system) to just plain black.  I would think it would stay blue indefinitely (what I would prefer) or change to perhaps the overdue color.  Going back to black seems wrong since it seems to imply that it's "neutral" and perhaps not scheduled.
+----------------------------------------------------------------------------------
+426300
+RepositoryStatus.* error codes are very specific. It would be useful to have a general error code for temporary/retryable errors to use.
+----------------------------------------------------------------------------------
+111362
+Mylar currently manages the "Open Type" history, and could manage "Open Resource" history
+in a similar way.
+----------------------------------------------------------------------------------
+119307
+This is similar to the refactoring support that is (partly) working for Java.
+----------------------------------------------------------------------------------
+137486
+It would be handy to be able to search trough Mylar contexts by class or method name (perhaps using the same options as Java search), so it would show artifacts (classes and methods) and tasks where those artifacts appear.
+----------------------------------------------------------------------------------
+161834
+Opening for example a pdf file that is opened with a pdf viewer outside of Eclipse does not result in interest calculated for this file if it is opened using ctrl+shift+r. resource should gain interest so that it is shown in e.g., package explorer and can be opened by double clicking the next time.
+I think that it is also not added to context, changes in such a resource are not detected and when doing commit context, the file in question will not be committed.
+----------------------------------------------------------------------------------
+164243
+Use the refactoring history (project -> Properties -> Refactoring History) to migrate the handles of elements that have disappeared as the result of refactoring while the context was inactive.
+----------------------------------------------------------------------------------
+165391
+Categories are a static thing.  You put elements in it, and then that category contains those elements.  Thus, a task can't belong to more than one category at a time.  But what if we borrowed the concept of labels from gmail?
+Using labels as a context grouping mechanism, a task can be annotated to belong to multiple, functional areas simultaneously.  
+For instance, A and B are two features.  However, they are both contingent on completing a shared task, C.  So, I could create labelA and labelB to represent context groups for these two features, and annotate the appropriate feature-specific tasks with those respective labels.  Anything that both features depend on could simply have both labels applied to it.
+I can't tell you how handy it is to be able to view a single piece of email from multiple contexts - and email is rather innocuous.  I think bugs and tasks take up a far greater part of my day, and thus are much more important to have a flexible annotation mechanism like this.
+What does everyone else think?
+----------------------------------------------------------------------------------
+175064
+We need to automate creating new repositories linked trough org.eclipse.mylar.tasks.ui.projectLinkProviders extension point. See http://wiki.eclipse.org/index.php/Mylar_Integrator_Reference#Mapping_from_projects_to_Task_Repositories
+It seems like AbstractTaskRepositoryLinkProvider need some API for creating new repositories. Probably just return repository template instance. That would be used from [Add Repository] action in the Project preferences and also picked up by the New Repository wizard when project/resource is in selection.
+TaskUI could also iterate trough all workbench projects on startup and ask link providers for these repository templates. But there are some performance concerns about this.
+----------------------------------------------------------------------------------
+197649
+While working on a task I opened a file. I then wanted to compare to an earlier revision from cvs so I opened this in a new tab, in this case revision 1.16.
+I checked the context tab of the tasks I was working on, it only shows the current/local revision not the 1.16 revision I also have open.
+I deactivate then reactivate the task. It only re-opens the local revision and not the 1.16 revision. This is annoying because I have to remember which revision I was looking at then manually open it instead of letting Mylyn for it. 
+I then tried: opening the file, opening 1.16 revision, closing the file but leaving 1.16 revision open, deactivate then reactivate the task. In this case it re-opens the local/current revision of the file even though I only had the 1.16 revision open last time I was working on the task.
+Tried with revisions from cvs of other files (*.java) and it works the same way.
