@@ -137,9 +137,8 @@ public class TaskScheduler {
 
 			boolean optimise = false;
 			String fileName= "";
-			
-			int sessionId = 281;
-			//for (int sessionId = 226; sessionId <= 265; sessionId++) {
+			//int sessionId = 281
+			for (int sessionId = 760; sessionId <= 1029; sessionId++) {
 				TaskScheduler obj = new TaskScheduler(sessionId);
 				fileName= "";
 
@@ -157,7 +156,7 @@ public class TaskScheduler {
 					
 				Utils.writePyhtonFile(fileName, script, filePath);
 				System.out.println("Finished sucessful");
-			//}
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -308,13 +307,12 @@ public class TaskScheduler {
 			dev1PrefId = this.getTask(-1, idc.getTask1Id()).preferedSequence - 1;
 			dev2PrefId = this.getTask(-1, idc.getTask2Id()).preferedSequence - 1;
 
-			//if(idc.getConflictDirection() == Direction.Left)
-			//	confDirection = "<";
-			
-			//else if(idc.getConflictDirection() == Direction.Right)
-				//confDirection = ">";
-			
-			confDirection = ">";
+			if(idc.getConflictDirection() == Direction.Left)
+				confDirection = "<";
+			else if(idc.getConflictDirection() == Direction.Right)
+				confDirection = ">";
+			else
+				confDirection = "!=";
 
 			scrpt.append("s.add(Implies(IC[" + (index++) + "], D" + dev1 + "["
 					+ dev1PrefId + "] " + confDirection + " D" + dev2 + "["
