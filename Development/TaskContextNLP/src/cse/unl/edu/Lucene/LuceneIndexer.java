@@ -3,11 +3,7 @@ package cse.unl.edu.Lucene;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,16 +12,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.Fields;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.MultiFields;
+import org.apache.lucene.index.Terms;
+import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -34,11 +38,15 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
+import cse.unl.edu.Framework.DBConnector;
 import cse.unl.edu.Framework.Task;
 import cse.unl.edu.Framework.TaskDownloader;
+import cse.unl.edu.util.JCommanderArgs;
 import cse.unl.edu.util.Utils;
 
 import org.tartarus.snowball.ext.PorterStemmer;
+
+import com.beust.jcommander.JCommander;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
@@ -50,13 +58,20 @@ public class LuceneIndexer {
 
 	ArrayList<String> StopWords;
 	MaxentTagger tagger;
-	IndexWriter w;
+	IndexWriter indexWriter;
 	StringBuffer nouns;
 	StringBuffer verbs;
 	TaskDownloader tw;
 	Map<String, Integer> fileFrequency;
 
+	public final String descriptionField = "nouns";
+
 	String results[];
+	private List<Task> allTasksList;
+	String resultText = "";
+	String commitResultText = "";
+
+	int res[];
 
 	private final static Logger LOGGER = Logger.getLogger(LuceneIndexer.class
 			.getName());
@@ -89,107 +104,84 @@ public class LuceneIndexer {
 
 	}
 
-	public void initializeforDescription(String idsPath,
-			String contextFilePath, String taggerPath, String taskSavedFilePath) {
+	public void initializeforDescription(String idsForAnalysis) {
 		// 0. Specify the analyzer for tokenizing text.
 		// The same analyzer should be used for indexing and searching
-		StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
+		WhitespaceAnalyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_47);
 
 		// 1. create the index
 		Directory index = new RAMDirectory();
+
+		DBConnector db = new DBConnector();
+		db.createConnection();
 
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47,
 				analyzer);
 
 		try {
 
-			w = new IndexWriter(index, config);
+			// "100671,102243,107146,113848,174993,213661,225538,391121"
+			indexWriter = new IndexWriter(index, config);
+			List<Task> taskList = db.getIssueDescription(idsForAnalysis);
 
-			tw = new TaskDownloader(idsPath, contextFilePath, taskSavedFilePath);
-			ArrayList<Task> taskList = tw.allTasks;
+			this.allTasksList = taskList;
 
-			int allTasks = taskList.size();
-			int testTask = (int) (0.1 * allTasks);
-			testTask = testTask < 1 ? 1 : testTask;
-			int trainingTask = allTasks - testTask;
-
-			LOGGER.info("Total Tasks " + allTasks + " Training Tasks "
-					+ trainingTask + " Test Tasks " + testTask);
-
-			for (int i = 0; i < trainingTask; i++) {
+			for (int i = 0; i < allTasksList.size(); i++) {
 				Task task = taskList.get(i);
-				addDocumentToIndexWithDesc(task, true);
+				addDocumentToIndexWithDesc(task);
 			}
 
 			LOGGER.info("All docs have been added \n");
-			w.close();
+			indexWriter.close();
 
-			int count = 1;
+			IndexReader reader = DirectoryReader.open(index);
+			Fields fields = MultiFields.getFields(reader);
+			Terms terms = fields.terms(descriptionField);
+			TermsEnum te = terms.iterator(null);
+			while (te.next() != null) {
+				te.term().utf8ToString();
+			}
+			
+			res = new int[5]; // 1,3,5,7,10
 
-			results = new String[] { "", "", "", "", "", "", "", "", "" };
-
-			// for testing
-			for (int i = trainingTask; i < allTasks; i++) {
-				String querystr = "";
+			for (int i = 0; i < allTasksList.size(); i++) {
 
 				Task task = taskList.get(i);
+				String querystr = task.longDescription + " " + task.comments;
+				querystr = QueryParser.escape(querystr);
+				BooleanQuery.setMaxClauseCount(20000);
 
-				querystr = "nouns:("
-						+ QueryParser.escape(task.longDescription.replaceAll(
-								Pattern.quote(":"), "")) + ")";
+				Query q = new QueryParser(Version.LUCENE_47, descriptionField,
+						analyzer).parse(querystr);
 
-				LOGGER.info("\n Query: " + querystr);
-
-				Query q = new QueryParser(Version.LUCENE_47, "nouns", analyzer)
-						.parse(querystr);
-
-				// QueryParser.escape
+				LOGGER.info("\n Query: " + q);
 
 				// 3. search
 				int hitsPerPage = 10;
-				IndexReader reader = DirectoryReader.open(index);
+
 				IndexSearcher searcher = new IndexSearcher(reader);
 				TopScoreDocCollector collector = TopScoreDocCollector.create(
 						hitsPerPage, true);
 				searcher.search(q, collector);
 				ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
-				// 4. display results
-				String taskIds = "";
-				String sep = "";
+				// System.out.print("Here are results for :" + task.taskId);
+
+				compileResultsForMurphy(hits, searcher, task.taskId);
 
 				for (int j = 0; j < hits.length; ++j) {
 					int docId = hits[j].doc;
-					Document d = searcher.doc(docId);
-					taskIds += "";
-					taskIds += d.get("taskid");
-					taskIds += ",";
-				}
-
-				LOGGER.info("\n Found " + hits.length + " hits: " + taskIds);
-				LOGGER.info("Task to be tested " + count + " task id "
-						+ task.taskId);
-				count++;
-
-				LOGGER.info("\n Result for 1");
-				compileResults(taskIds, 1, task, 0);
-
-				LOGGER.info("\n Result for 3");
-				compileResults(taskIds, 3, task, 3);
-
-				if (hits.length > 3) {
-					LOGGER.info("\n Result for 5");
-					compileResults(taskIds, 5, task, 6);
-				} else {
-					LOGGER.info("\n Skipped result for 5");
-					results[6] += task.taskId + "\t5\tU Skip\n";
-					results[7] += task.taskId + "\t5\tI Skip\n";
-					results[8] += task.taskId + "\t5\tF Skip\n";
+					searcher.doc(docId);
 				}
 			}
 
-			printResults();
-
+			System.out.println(resultText);
+			float allTasksLen = allTasksList.size()*1.0f;
+			System.out.printf("Results:   1\t3\t5\t7\t10\n         %s\t%s\t%s\t%s\t%s",(res[0]*1.0f)/allTasksLen,(res[1]*1.0f)/allTasksLen,(res[2]*1.0f)/allTasksLen,(res[3]*1.0f)/allTasksLen,(res[4]*1.0f)/allTasksLen);
+			System.out.println(commitResultText);
+			
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -198,6 +190,171 @@ public class LuceneIndexer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			LOGGER.info("Exception in initialize() " + e.getMessage());
+		}finally
+		{
+			db.close();
+		}
+	}
+
+	
+	private void compileResultsForMurphy(ScoreDoc[] hits,
+			IndexSearcher searcher, String taskId) {
+		try {
+			boolean found = false;
+
+			Task task;
+			Task firstTask = getTask(taskId);
+			String subTaskid;
+			List<String> interectionFiles;
+
+			for (int j = 0; j < hits.length; ++j) {
+
+				subTaskid = searcher.doc(hits[j].doc).get("taskid");
+				task = getTask(subTaskid);
+				if (!task.taskId.equals(taskId)) {
+					
+					interectionFiles = Utils.intersection(firstTask.getFileNamesList(),
+							 task.getFileNamesList());
+						
+					if (interectionFiles.size() > 0) {
+						this.getCommitGraphResults(firstTask, task, interectionFiles);
+						found = true;
+
+						switch (j) {
+						case 1:
+							res[0]++;
+							res[1]++;
+							res[2]++;
+							res[3]++;
+							res[4]++;
+							break;
+						case 2:
+						case 3:
+							res[1]++;
+							res[2]++;
+							res[3]++;
+							res[4]++;
+							break;
+						case 4:
+						case 5:
+							res[2]++;
+							res[3]++;
+							res[4]++;
+							break;
+						case 6:
+						case 7:
+							res[3]++;
+							res[4]++;
+							break;
+						default:
+							res[4]++;
+							break;
+						}
+						break;
+					}
+				}
+			}
+
+			resultText += (found == true ? "Yes" : "No") + "\n";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	
+
+	public void initializeforNLP(String idsForAnalysis, String taggerPath) {
+		// 0. Specify the analyzer for tokenizing text.
+		// The same analyzer should be used for indexing and searching
+		NLPAnalyzer analyzer = new NLPAnalyzer();
+
+		// 1. create the index
+		Directory index = new RAMDirectory();
+
+		DBConnector db = new DBConnector();
+		db.createConnection();
+
+		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47,
+				analyzer);
+
+		try {
+
+			tagger = new MaxentTagger(taggerPath);
+
+			// "100671,102243,107146,113848,174993,213661,225538,391121"
+			indexWriter = new IndexWriter(index, config);
+			List<Task> taskList = db.getIssueDescription(idsForAnalysis);
+
+			this.allTasksList = taskList;
+
+			for (int i = 0; i < allTasksList.size(); i++) {
+				Task task = taskList.get(i);
+				addDocumentToIndexWithNLP(task);
+			}
+
+			LOGGER.info("All docs have been added \n");
+			indexWriter.close();
+
+			IndexReader reader = DirectoryReader.open(index);
+		
+			/*
+			Fields fields = MultiFields.getFields(reader);
+			Terms terms = fields.terms(descriptionField);
+			TermsEnum te = terms.iterator(null);
+			while (te.next() != null) {
+				te.term().utf8ToString();
+			}*/
+
+			res = new int[5]; // 1,3,5,7,10
+
+			for (int i = 0; i < allTasksList.size(); i++) {
+
+				Task task = taskList.get(i);
+				String querystr = task.longDescription + " " + task.comments;
+				querystr = QueryParser.escape(querystr);
+				querystr = tagger.tagString(querystr);
+				querystr = QueryParser.escape(querystr);
+				BooleanQuery.setMaxClauseCount(20000);
+
+				Query q = new QueryParser(Version.LUCENE_47, descriptionField,
+						analyzer).parse(querystr);
+
+				LOGGER.info("\n Query: " + q);
+
+				// 3. search
+				int hitsPerPage = 10;
+
+				IndexSearcher searcher = new IndexSearcher(reader);
+				TopScoreDocCollector collector = TopScoreDocCollector.create(
+						hitsPerPage, true);
+				searcher.search(q, collector);
+				ScoreDoc[] hits = collector.topDocs().scoreDocs;
+
+				compileResultsForMurphy(hits, searcher, task.taskId);
+
+				for (int j = 0; j < hits.length; ++j) {
+					int docId = hits[j].doc;
+					searcher.doc(docId);
+				}
+			}
+
+			float allTasksLen = allTasksList.size()*1.0f;
+			System.out.printf("Results:  1\t3\t5\t7\t10\n       %s\t%s\t%s\t%s\t%s",(res[0]*1.0f)/allTasksLen,(res[1]*1.0f)/allTasksLen,(res[2]*1.0f)/allTasksLen,(res[3]*1.0f)/allTasksLen,(res[4]*1.0f)/allTasksLen);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			LOGGER.info("Exception in initialize() " + e.getMessage());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			LOGGER.info("Exception in initialize() " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			db.close();
 		}
 	}
 
@@ -215,7 +372,7 @@ public class LuceneIndexer {
 
 		try {
 
-			w = new IndexWriter(index, config);
+			indexWriter = new IndexWriter(index, config);
 
 			tw = new TaskDownloader(idsPath, contextFilePath, taskSavedFilePath);
 			ArrayList<Task> taskList = tw.allTasks;
@@ -252,7 +409,7 @@ public class LuceneIndexer {
 
 			LOGGER.info("All nouns and Verbs \n" + allNouns.toString() + "\n"
 					+ allVerbs.toString());
-			w.close();
+			indexWriter.close();
 
 			int count = 1;
 
@@ -299,8 +456,8 @@ public class LuceneIndexer {
 
 				LOGGER.info("\n Query: " + querystr);
 
-				Query q = new QueryParser(Version.LUCENE_47, "nouns", analyzer)
-						.parse(querystr);
+				Query q = new QueryParser(Version.LUCENE_47, descriptionField,
+						analyzer).parse(querystr);
 
 				// QueryParser.escape
 
@@ -315,8 +472,6 @@ public class LuceneIndexer {
 
 				// 4. display results
 				String taskIds = "";
-				String sep = "";
-
 				for (int j = 0; j < hits.length; ++j) {
 					int docId = hits[j].doc;
 					Document d = searcher.doc(docId);
@@ -352,15 +507,18 @@ public class LuceneIndexer {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			LOGGER.info("Exception in initializeforDescription() " + e.getMessage());
+			LOGGER.info("Exception in initializeforDescription() "
+					+ e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			LOGGER.info("Exception in initializeforDescription() " + e.getMessage());
+			LOGGER.info("Exception in initializeforDescription() "
+					+ e.getMessage());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			LOGGER.info("Exception in initializeforDescription() " + e.getMessage());
+			LOGGER.info("Exception in initializeforDescription() "
+					+ e.getMessage());
 		}
 	}
 
@@ -372,33 +530,33 @@ public class LuceneIndexer {
 
 		int max = tasks.length > maxBound ? maxBound : tasks.length;
 
-		ArrayList unionFiles = task.files;
-		ArrayList intersectionFiles = task.files;
+		List<String> unionFiles = task.getFileNamesList();
+		List<String> intersectionFiles = task.getFileNamesList();
 
 		for (int i = 1; i < max; i++) {
 			task = getTask(tasks[i]);
-			unionFiles = (ArrayList) Utils.union(unionFiles, task.files);
+			unionFiles = (ArrayList) Utils.union(unionFiles, task.getFileNamesList());
 			intersectionFiles = (ArrayList) Utils.intersection(
-					intersectionFiles, task.files);
+					intersectionFiles, task.getFileNamesList());
 		}
 
 		LOGGER.info("Union length " + unionFiles.size()
 				+ " intersection length " + intersectionFiles.size()
-				+ " target task lenght " + targetTask.files.size());
+				+ " target task lenght " + targetTask.getFileNamesList().size());
 
 		// for union
-		int TP = Utils.intersection(unionFiles, targetTask.files).size();
+		int TP = Utils.intersection(unionFiles, targetTask.getFileNamesList()).size();
 		int FP = unionFiles.size() - TP;
-		int FN = targetTask.files.size() - TP;
+		int FN = targetTask.getFileNamesList().size() - TP;
 		LOGGER.info("For union with max bound " + maxBound);
 		LOGGER.info("TP FP FN " + TP + "\t" + FP + "\t" + FN);
 		results[resultIndex] += task.taskId + "\t" + maxBound
 				+ "\tUnion       \t" + TP + "\t" + FP + "\t" + FN + "\n";
 
 		// for intersection
-		TP = Utils.intersection(intersectionFiles, targetTask.files).size();
+		TP = Utils.intersection(intersectionFiles, targetTask.getFileNamesList()).size();
 		FP = intersectionFiles.size() - TP;
-		FN = targetTask.files.size() - TP;
+		FN = targetTask.getFileNamesList().size() - TP;
 		LOGGER.info("For intersection with max bound " + maxBound);
 		LOGGER.info("TP FP FN " + TP + "\t" + FP + "\t" + FN);
 		results[resultIndex + 1] += task.taskId + "\t" + maxBound
@@ -411,14 +569,14 @@ public class LuceneIndexer {
 
 		// for file rankings
 		for (Entry<String, Integer> entry : fileFrequency.entrySet()) {
-			String key = entry.getKey();
-			Integer value = entry.getValue();
+			entry.getKey();
+			entry.getValue();
 		}
 
 		// for Ranking
-		TP = Utils.intersection(keys, targetTask.files).size();
+		TP = Utils.intersection(keys, targetTask.getFileNamesList()).size();
 		FP = keys.size() - TP;
-		FN = targetTask.files.size() - TP;
+		FN = targetTask.getFileNamesList().size() - TP;
 		LOGGER.info("For ranking with max bound " + maxBound);
 		LOGGER.info("TP FP FN " + TP + "\t" + FP + "\t" + FN);
 		results[resultIndex + 2] += task.taskId + "\t" + maxBound
@@ -437,7 +595,7 @@ public class LuceneIndexer {
 		for (int i = 0; i < tasks.length; i++) {
 			task = getTask(tasks[i]);
 
-			for (Object f : task.files) {
+			for (Object f : task.getFileNamesList()) {
 				String file = (String) f;
 				if (fileFrequency.containsKey(file)) {
 					fileFrequency.put(file, fileFrequency.get(file) + 1);
@@ -453,7 +611,7 @@ public class LuceneIndexer {
 
 	private Task getTask(String string) {
 
-		ArrayList<Task> taskList = tw.allTasks;
+		List<Task> taskList = allTasksList;
 		for (Task task : taskList)
 			if (task.taskId.equals(string))
 				return task;
@@ -504,7 +662,7 @@ public class LuceneIndexer {
 					continue;
 
 				task.nouns.add(term);
-				doc.add(new StringField("nouns", term, Field.Store.YES));
+				doc.add(new StringField(descriptionField, term, Field.Store.YES));
 				nouns.append(term);
 				nouns.append(" ");
 
@@ -534,7 +692,7 @@ public class LuceneIndexer {
 				 * Field.Store.YES)); verbs.append(term); verbs.append(" ");
 				 */
 				task.nouns.add(term);
-				doc.add(new StringField("nouns", term, Field.Store.YES));
+				doc.add(new StringField(descriptionField, term, Field.Store.YES));
 				nouns.append(term);
 				nouns.append(" ");
 
@@ -543,40 +701,87 @@ public class LuceneIndexer {
 
 		// adding teh keywords to nouns.
 		for (Object word : task.spKeywords) {
-			doc.add(new StringField("nouns", word.toString(), Field.Store.YES));
+			doc.add(new StringField(descriptionField, word.toString(),
+					Field.Store.YES));
 			nouns.append(word.toString().toLowerCase());
 			nouns.append(" ");
 		}
 
 		// add to index only training set tasks.
 		if (trainingSet)
-			w.addDocument(doc);
+			indexWriter.addDocument(doc);
 	}
 
-	private void addDocumentToIndexWithDesc(Task task, boolean trainingSet)
-			throws IOException {
+	private void addDocumentToIndexWithDesc(Task task) throws IOException {
 
 		Document doc = new Document();
-		doc.add(new StringField("taskid", task.taskId, Field.Store.YES));
-		doc.add(new StringField("nouns", task.longDescription, Field.Store.YES));
+		doc.add(new StoredField("taskid", task.taskId));
+		doc.add(new TextField(descriptionField, task.longDescription + " "
+				+ task.comments, Field.Store.NO));
+		indexWriter.addDocument(doc);
+	}
 
-		if (trainingSet)
-			w.addDocument(doc);
+	private void addDocumentToIndexWithNLP(Task task) throws IOException {
+
+		Document doc = new Document();
+		doc.add(new StoredField("taskid", task.taskId));
+		String taggedString = tagger.tagString(task.longDescription + " "
+				+ task.comments);
+		doc.add(new TextField(descriptionField, taggedString, Field.Store.NO));
+		indexWriter.addDocument(doc);
+	}
+	
+	private void getCommitGraphResults(Task firstTask, Task task,
+			List<String> interectionFiles) {
+		// TODO Auto-generated method stub
+		String commitIds = "";
+		List<String> files;
+		DBConnector db = new DBConnector();
+		db.createConnection();
+		
+		LOGGER.info("Search Result for Task id " + firstTask.taskId + " found: " + task.taskId );
+		
+		for(String file : interectionFiles)
+		{
+			commitIds = task.getCommitsForFileName(file).toString().replaceAll("\\[|\\]","");
+			files = db.getCommitGraphForFile(file,commitIds);
+			
+			if(files == null || files.size() == 0)
+				files = task.getFileNamesList();
+			
+			
+			// for intersection
+			int TP = Utils.intersection(files, firstTask.getFileNamesList()).size();
+			int FP = files.size() - TP;
+			int FN = firstTask.getFileNamesList().size() - TP;
+			
+			LOGGER.info("For Commit graphs with max bound");
+			LOGGER.info("TP FP FN " + TP + "\t" + FP + "\t" + FN);
+			
+			commitResultText += TP + "\t" + FP + "\t" + FN + "\n";	
+		}
+		db.close();
+		
 	}
 
 	public static void main(String[] args) {
 
-		LOGGER.info("Starting for taskIds " + args[0] + " Context saved at  "
-				+ args[1] + " Tagger " + args[2] + " Task saved at "
-				+ (args.length == 3 ? "NULL" : args[3]));
+		JCommanderArgs jct = new JCommanderArgs();
+		JCommander jc = new JCommander(jct, args);
 
+		if (args == null || args.length == 0) {
+			jc.usage();
+			System.exit(0);
+		}
 		LuceneIndexer lc = new LuceneIndexer();
-//		lc.initialize(args[0], args[1], args[2], (args.length == 3 ? null
-	//			: args[3]));
-		
-		lc.initializeforDescription(args[0], args[1], args[2], (args.length == 3 ? null
-				: args[3]));
 
+		LOGGER.info("Starting for " + Arrays.toString(args));
+		if (jct.experimentType.equals("s")) {
+			lc.initializeforDescription(jct.taskIds.length() == 0 ? null
+					: jct.taskIds);
+		} else if (jct.experimentType.equals("n")) {
+			lc.initializeforNLP(jct.taskIds, jct.taggerPath);
+		}
 	}
 
 }

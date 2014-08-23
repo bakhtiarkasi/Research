@@ -308,7 +308,7 @@ public class TaskDownloader {
 
 	private void readTaskContext(File xmlfile, Task task) {
 
-		org.w3c.dom.Document doc = this.getXMLDocument(xmlfile);
+	/*	org.w3c.dom.Document doc = this.getXMLDocument(xmlfile);
 		org.w3c.dom.Element root = doc.getDocumentElement();
 		String fileName = "";
 		NodeList allEvents = root.getElementsByTagName("InteractionEvent");
@@ -327,7 +327,7 @@ public class TaskDownloader {
 			}
 
 		}
-
+*/
 	}
 
 	private org.w3c.dom.Document getXMLDocument(File xmlfile) {
