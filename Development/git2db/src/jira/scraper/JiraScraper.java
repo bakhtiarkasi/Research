@@ -246,12 +246,14 @@ public class JiraScraper {
 			// if(file.getName().contains("12.xml"))
 			{
 				// scraper.getIssues(file.getAbsolutePath());
+				 //scraper.getCommits(file.getAbsolutePath());
+				 
 
-				System.out.println(file.getAbsolutePath());
+				//System.out.println(file.getAbsolutePath());
 			}
 		}
 
-		// scraper.updateCommitLinkage();
+		scraper.updateCommitLinkage();
 		// scraper.getCommitsStatus();
 
 	}

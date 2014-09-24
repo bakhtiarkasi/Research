@@ -10,8 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.select.Evaluator.IsEmpty;
 
@@ -68,9 +72,11 @@ public class DBConnector {
 	public int insertCommit(Commit commit, String comment, String projectName) {
 		ResultSet keys = null;
 		try {
-			String query = "INSERT INTO " + prefix + "_commit VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO " + prefix
+					+ "_commit VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-			statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			statement = conn.prepareStatement(query,
+					Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, commit.getHash());
 			statement.setString(2, projectName);
 			statement.setString(3, commit.getAuthorDate());
@@ -101,15 +107,19 @@ public class DBConnector {
 
 	}
 
-	public int insertFile(String file, String hash, Integer commit_id, String extension) {
+	public int insertFile(String file, String hash, Integer commit_id,
+			String extension) {
 		ResultSet keys = null;
 		try {
-			String query = "INSERT INTO " + prefix + "_file VALUES (0, ?, ?, ?)";
+			String query = "INSERT INTO " + prefix
+					+ "_file VALUES (0, ?, ?, ?, ?)";
 
-			statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			statement = conn.prepareStatement(query,
+					Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, commit_id);
 			statement.setString(2, file);
 			statement.setString(3, extension);
+			statement.setBoolean(4, true);
 
 			statement.executeUpdate();
 			keys = statement.getGeneratedKeys();
@@ -119,7 +129,8 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("ERROR Inserting file [" + file + "] for commit " + hash);
+			System.err.println("ERROR Inserting file [" + file
+					+ "] for commit " + hash);
 			e.printStackTrace();
 		} finally {
 			try {
@@ -136,7 +147,8 @@ public class DBConnector {
 		try {
 			String query = "INSERT INTO " + prefix + "_parent VALUES (0, ?, ?)";
 
-			statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			statement = conn.prepareStatement(query,
+					Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, commit_id);
 			statement.setString(2, parent);
 
@@ -148,7 +160,8 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("ERROR Inserting parent [" + parent + "] for commit " + hash);
+			System.err.println("ERROR Inserting parent [" + parent
+					+ "] for commit " + hash);
 			e.printStackTrace();
 		} finally {
 			try {
@@ -160,19 +173,26 @@ public class DBConnector {
 
 	}
 
-	public List<FileData> getFiledata(String[] extensions, String initDate, String endDate, boolean desc) {
+	public List<FileData> getFiledata(String[] extensions, String initDate,
+			String endDate, boolean desc) {
 		ResultSet result = null;
 		List<FileData> filedatas = new ArrayList<FileData>();
 		String query = "";
 		try {
-			String select = "SELECT " + prefix + "_commit.id, hash, filename, author, committer, " + prefix + "_commit.date ";
-			String from = "FROM " + prefix + "_file JOIN " + prefix + "_commit ON (" + prefix + "_file.commit_id = " + prefix + "_commit.id) ";
+			String select = "SELECT " + prefix
+					+ "_commit.id, hash, filename, author, committer, "
+					+ prefix + "_commit.date ";
+			String from = "FROM " + prefix + "_file JOIN " + prefix
+					+ "_commit ON (" + prefix + "_file.commit_id = " + prefix
+					+ "_commit.id) ";
 			String where = " WHERE ";
 			if (extensions != null && extensions.length > 0) {
 				where += getExtensionsClause(extensions) + " ";
 				where += " AND ";
 			}
-			where += "STRCMP('" + initDate + "', " + prefix + "_commit.date) < 0 AND STRCMP('" + endDate + "', " + prefix + "_commit.date) > 0 ";
+			where += "STRCMP('" + initDate + "', " + prefix
+					+ "_commit.date) < 0 AND STRCMP('" + endDate + "', "
+					+ prefix + "_commit.date) > 0 ";
 			String order = "ORDER BY " + prefix + "_commit.date ";
 			if (desc == true) {
 				order += " DESC";
@@ -181,7 +201,7 @@ public class DBConnector {
 			query = select + from + where + order;
 
 			statement = conn.prepareStatement(query);
-//			statement = conn.prepareStatement(select + from);
+			// statement = conn.prepareStatement(select + from);
 
 			result = statement.executeQuery();
 
@@ -211,19 +231,26 @@ public class DBConnector {
 		return filedatas;
 	}
 
-	public List<FileData> getFiledata(int start, int step, String[] extensions, String initDate, String endDate, boolean desc) {
+	public List<FileData> getFiledata(int start, int step, String[] extensions,
+			String initDate, String endDate, boolean desc) {
 		ResultSet result = null;
 		List<FileData> filedatas = new ArrayList<FileData>();
 		String query = "";
 		try {
-			String select = "SELECT " + prefix + "_commit.id, hash, filename, author, committer, " + prefix + "_commit.date ";
-			String from = "FROM " + prefix + "_file JOIN " + prefix + "_commit ON (" + prefix + "_file.commit_id = " + prefix + "_commit.id) ";
+			String select = "SELECT " + prefix
+					+ "_commit.id, hash, filename, author, committer, "
+					+ prefix + "_commit.date ";
+			String from = "FROM " + prefix + "_file JOIN " + prefix
+					+ "_commit ON (" + prefix + "_file.commit_id = " + prefix
+					+ "_commit.id) ";
 			String where = " WHERE ";
 			if (extensions != null && extensions.length > 0) {
 				where += getExtensionsClause(extensions) + " ";
 				where += " AND ";
 			}
-			where += "STRCMP('" + initDate + "', " + prefix + "_commit.date) < 0 AND STRCMP('" + endDate + "', " + prefix + "_commit.date) > 0 ";
+			where += "STRCMP('" + initDate + "', " + prefix
+					+ "_commit.date) < 0 AND STRCMP('" + endDate + "', "
+					+ prefix + "_commit.date) > 0 ";
 			String order = "ORDER BY " + prefix + "_commit.date ";
 			if (desc == true) {
 				order += " DESC ";
@@ -265,14 +292,16 @@ public class DBConnector {
 		return filedatas;
 	}
 
-	public List<String> getFilesByYearMonth(Integer year, String month, String[] extensions) {
+	public List<String> getFilesByYearMonth(Integer year, String month,
+			String[] extensions) {
 		ResultSet result = null;
 		List<String> files = new ArrayList<String>();
 		String query = "";
 		try {
 
-			String select = "SELECT DISTINCT filename FROM " + prefix + "_file JOIN " + prefix + "_commit ON " + prefix + "_commit.id = " + prefix
-					+ "_file.commit_id ";
+			String select = "SELECT DISTINCT filename FROM " + prefix
+					+ "_file JOIN " + prefix + "_commit ON " + prefix
+					+ "_commit.id = " + prefix + "_file.commit_id ";
 			String where = "WHERE " + prefix + "_commit.date LIKE ? ";
 
 			if (extensions != null && extensions.length > 0) {
@@ -316,7 +345,8 @@ public class DBConnector {
 		ResultSet result = null;
 		List<Integer> ids = new ArrayList<Integer>();
 		try {
-			String query = "SELECT " + prefix + "_commit.id FROM " + prefix + "_commit ";
+			String query = "SELECT " + prefix + "_commit.id FROM " + prefix
+					+ "_commit ";
 			String where = "WHERE " + prefix + "_commit.date LIKE ?";
 
 			statement = conn.prepareStatement(query + where);
@@ -329,7 +359,8 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("ERROR: Getting commit ids for date [" + year + "-" + month + "]");
+			System.err.println("ERROR: Getting commit ids for date [" + year
+					+ "-" + month + "]");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -345,9 +376,11 @@ public class DBConnector {
 		ResultSet result = null;
 		List<String> files = new ArrayList<String>();
 		try {
-			String query = "SELECT filename FROM " + prefix + "_file JOIN " + prefix + "_commit ON " + prefix + "_commit.id = " + prefix
-					+ "_file.commit_id ";
-			String where = "WHERE " + prefix + "_commit.id = ? ORDER BY filename";
+			String query = "SELECT filename FROM " + prefix + "_file JOIN "
+					+ prefix + "_commit ON " + prefix + "_commit.id = "
+					+ prefix + "_file.commit_id ";
+			String where = "WHERE " + prefix
+					+ "_commit.id = ? ORDER BY filename";
 
 			statement = conn.prepareStatement(query + where);
 			statement.setInt(1, id);
@@ -359,7 +392,8 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("ERROR: Getting files for commit id [" + id + "]");
+			System.err.println("ERROR: Getting files for commit id [" + id
+					+ "]");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -376,7 +410,9 @@ public class DBConnector {
 		try {
 
 			String select = "SELECT COUNT(DISTINCT author), COUNT(DISTINCT committer), COUNT(filename) ";
-			String from = "FROM `" + prefix + "_file` JOIN `" + prefix + "_commit` ON (" + prefix + "_file.commit_id = " + prefix + "_commit.id) ";
+			String from = "FROM `" + prefix + "_file` JOIN `" + prefix
+					+ "_commit` ON (" + prefix + "_file.commit_id = " + prefix
+					+ "_commit.id) ";
 			String where = "WHERE `filename` LIKE ? AND STRCMP(?, `date`) <> -1;";
 
 			statement = conn.prepareStatement(select + from + where);
@@ -408,13 +444,16 @@ public class DBConnector {
 	public int insertFileData(FileData data) {
 		ResultSet keys = null;
 		try {
-			//                                                            1  2  3  4  5  6  7  8  9 10 11 12 13 14 15  16   17 
-			String query = "INSERT INTO `" + prefix + "_filedata` values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)";
-			//                                                               1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14       15
+			// 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17
+			String query = "INSERT INTO `"
+					+ prefix
+					+ "_filedata` values (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)";
+			// 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14 15
 
 			System.out.println("\t\t\t" + query);
 
-			statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			statement = conn.prepareStatement(query,
+					Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, data.getCommitId());
 			statement.setString(2, data.getCommitHash());
 			statement.setInt(3, data.getIssueId());
@@ -439,7 +478,8 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("Filedata: " + data.getCommitHash() + " -- " + data.getFilename());
+			System.err.println("Filedata: " + data.getCommitHash() + " -- "
+					+ data.getFilename());
 			e.printStackTrace();
 		} finally {
 			try {
@@ -454,7 +494,9 @@ public class DBConnector {
 	public boolean checkFileData(FileData data) {
 		ResultSet result = null;
 		try {
-			String query = "SELECT 1 FROM `" + prefix + "_filedata` WHERE `commit_hash` LIKE ? AND `filename` LIKE ?;";
+			String query = "SELECT 1 FROM `"
+					+ prefix
+					+ "_filedata` WHERE `commit_hash` LIKE ? AND `filename` LIKE ?;";
 			statement = conn.prepareStatement(query);
 
 			statement.setString(1, data.getCommitHash());
@@ -481,7 +523,8 @@ public class DBConnector {
 		String query = "";
 
 		try {
-			String update = "UPDATE " + prefix + "_filedata SET centrality = ? ";
+			String update = "UPDATE " + prefix
+					+ "_filedata SET centrality = ? ";
 			String where = "WHERE filename LIKE ? AND `date` LIKE ?";
 			query = update + where;
 
@@ -510,8 +553,10 @@ public class DBConnector {
 	public String getCentralityQuery(String file, String date, float value) {
 		String query = "";
 
-		String update = "UPDATE " + prefix + "_filedata SET centrality = " + value;
-		String where = "WHERE filename LIKE '" + file + "' AND date LIKE '" + date + "%'";
+		String update = "UPDATE " + prefix + "_filedata SET centrality = "
+				+ value;
+		String where = "WHERE filename LIKE '" + file + "' AND date LIKE '"
+				+ date + "%'";
 		query = update + where;
 
 		return query;
@@ -522,7 +567,8 @@ public class DBConnector {
 		String query = "";
 
 		try {
-			String update = "UPDATE " + prefix + "_filedata SET complexity = ? ";
+			String update = "UPDATE " + prefix
+					+ "_filedata SET complexity = ? ";
 			String where = "WHERE filename LIKE ? AND `date` LIKE ?";
 			query = update + where;
 
@@ -547,16 +593,16 @@ public class DBConnector {
 		return -1;
 
 	}
-	
+
 	public static void main(String[] args) {
 		PropUtil props = new PropUtil("config.properties");
 		DBConnector db = new DBConnector(props);
 		db.createConnection();
-		
+
 		boolean test = db.testConnection();
-		
+
 		db.close();
-		
+
 		if (test == true) {
 			System.out.println("OK");
 		} else {
@@ -576,17 +622,19 @@ public class DBConnector {
 			System.err.println("ERROR: Testing connection [" + query + "]");
 			e.printStackTrace();
 			return false;
-		} 
-		
+		}
+
 		return true;
 	}
-	
+
 	// ---
-	
+
 	public int insertComment(Comment comment, int issueId) {
 		ResultSet keys = null;
 		try {
-			statement = conn.prepareStatement("insert into " + prefix + "_comment values (0, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+			statement = conn.prepareStatement("insert into " + prefix
+					+ "_comment values (0, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, issueId);
 			statement.setString(2, comment.getAuthor());
 			statement.setString(3, comment.getDate());
@@ -610,12 +658,16 @@ public class DBConnector {
 		return -1;
 
 	}
-	
+
 	public int insertIssue(Issue issue) {
 		ResultSet keys = null;
 		try {
-			statement = conn.prepareStatement("INSERT INTO " + prefix + "_issue VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
+			statement = conn
+					.prepareStatement(
+							"INSERT INTO "
+									+ prefix
+									+ "_issue VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+							Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, issue.getId());
 			statement.setString(2, issue.getTitle());
 			statement.setString(3, issue.getDescription());
@@ -652,7 +704,8 @@ public class DBConnector {
 		String query = "";
 
 		try {
-			String update = "UPDATE " + prefix + "_filedata SET issue_id = ?, issue_key = ? ";
+			String update = "UPDATE " + prefix
+					+ "_filedata SET issue_id = ?, issue_key = ? ";
 			String where = "WHERE commit_hash LIKE ?";
 			query = update + where;
 
@@ -680,8 +733,9 @@ public class DBConnector {
 	public int createAction(String issueCode, Action action) {
 		ResultSet keys = null;
 		try {
-			
-			String query = "INSERT INTO " + prefix + "_actions VALUES (0, ?, ?, ?, ?, ?, ?, ?)";
+
+			String query = "INSERT INTO " + prefix
+					+ "_actions VALUES (0, ?, ?, ?, ?, ?, ?, ?)";
 			statement = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, issueCode);
@@ -699,7 +753,8 @@ public class DBConnector {
 				return id;
 			}
 		} catch (SQLException e) {
-			System.err.println("ERROR: While creating action for [" + issueCode + ", " + action.getAction() + "]");
+			System.err.println("ERROR: While creating action for [" + issueCode
+					+ ", " + action.getAction() + "]");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -708,14 +763,15 @@ public class DBConnector {
 			}
 		}
 		return -1;
-		
+
 	}
-	
+
 	public int getIssueId(String key) {
 		ResultSet result = null;
 		int id = -1;
 		try {
-			String query = "SELECT " + prefix + "_issue.id FROM " + prefix + "_issue ";
+			String query = "SELECT " + prefix + "_issue.id FROM " + prefix
+					+ "_issue ";
 			String where = "WHERE " + prefix + "_issue.key LIKE ?";
 
 			statement = conn.prepareStatement(query + where);
@@ -739,14 +795,14 @@ public class DBConnector {
 
 		return id;
 	}
-	
-	
+
 	public List<String> getAllIssueKeys() {
 		ResultSet result = null;
 		List<String> issues = new ArrayList();
 		try {
-			String query = "SELECT `key` FROM " + prefix + "_issue order by `key`";
-			
+			String query = "SELECT `key` FROM " + prefix
+					+ "_issue order by `key`";
+
 			statement = conn.prepareStatement(query);
 			result = statement.executeQuery();
 
@@ -766,19 +822,19 @@ public class DBConnector {
 
 		return issues;
 	}
-	
-	
-	
+
 	public List<Issue> getIssueDescription(String issueIds) {
 		ResultSet result = null;
 		List<Issue> files = new ArrayList<Issue>();
 		try {
 			String query = "SELECT `key`, description " + prefix + "_issue ";
-			String where = (issueIds != null && !issueIds.isEmpty()) ? " Where `key` in(" + issueIds + ")" : "";
-			
+			String where = (issueIds != null && !issueIds.isEmpty()) ? " Where `key` in("
+					+ issueIds + ")"
+					: "";
+
 			statement = conn.prepareStatement(query + where);
 			result = statement.executeQuery();
-			
+
 			Issue issue;
 
 			while (result.next()) {
@@ -789,7 +845,9 @@ public class DBConnector {
 			}
 
 		} catch (SQLException e) {
-			System.err.println("ERROR: Getting getIssueDescription for commit id [" + issueIds + "]");
+			System.err
+					.println("ERROR: Getting getIssueDescription for commit id ["
+							+ issueIds + "]");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -805,19 +863,20 @@ public class DBConnector {
 		String query = "";
 
 		try {
-						
-			String update = "INSERT INTO " + prefix + "_issue2commit(`issue_id`,`commit_id`) ";
+
+			String update = "INSERT INTO " + prefix
+					+ "_issue2commit(`issue_id`,`commit_id`) ";
 			update += "Select  c1.id, c2.id from " + prefix + "_issue c1 ";
 			String where = "inner join  " + prefix + "_commit c2 ";
 			where += "on c2.comment REGEXP CONCAT('[[:<:]]',c1.KEY,'[^0-9]*[[:>:]]') ";
 			where += "order by c1.key";
 			query = update + where;
 
-			//System.out.println(query);
-			
+			// System.out.println(query);
+
 			statement = conn.prepareStatement(query);
 			statement.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			System.err.println("ERROR: updateCommitLinkage [" + query + "]");
 			e.printStackTrace();
@@ -828,8 +887,113 @@ public class DBConnector {
 			}
 		}
 		// TODO Auto-generated method stub
-		
-		
+	}
+
+	public List<String> getSourceFiles() {
+		ResultSet result = null;
+		String query = "";
+		List<String> files = new ArrayList();
+		try {
+
+			query = "select distinct filename from " + prefix + "_file"
+					+ " where isSource=1 and creationDate is null";
+
+			statement = conn.prepareStatement(query);
+			result = statement.executeQuery();
+
+			while (result.next()) {
+				files.add(result.getString(1));
+			}
+
+		} catch (SQLException e) {
+			System.err.println("ERROR: Getting updateFileCreationDate");
+			System.err.println(query + " : \n" + query);
+			e.printStackTrace();
+		} finally {
+			try {
+				result.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return files;
+	}
+
+	public void updateFileCreationDates(Map<String, String> results) {
+
+		try {
+			List<String> files = new ArrayList(results.keySet());
+			String fileName;
+			String dateStr;
+			String vals[];
+
+			Date dt;
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					"EEE, dd MMM yyyy HH:mm:ss Z");
+			SimpleDateFormat sqlFormat = new SimpleDateFormat(
+					"yyyy/MM/dd HH:mm");
+			java.sql.Date sqlDate;
+
+			String query;
+			for (int i = 0; i < files.size(); i++) {
+				fileName = files.get(i);
+				dateStr = results.get(fileName);
+				vals = dateStr.split("@");
+
+				dt = new Date();
+				dt = sdf.parse(vals[0]);
+
+				query = "update "
+						+ prefix
+						+ "_file"
+						+ " set creationDate = ?, createdCommit = ?, gitProject = ? where filename = ? ";
+
+				statement = conn.prepareStatement(query);
+				statement.setString(1, vals[0]);
+				statement.setString(2, vals[1]);
+				statement.setString(3, vals[2]);
+				statement.setString(4, fileName);
+				statement.executeUpdate();
+
+				if (i % 100 == 0) {
+					System.out.println("Done " + i);
+					System.out.println("Date d1: " + dateStr + " = "
+							+ sqlFormat.format(dt));
+				}
+			}
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(statement.toString());
+			e.printStackTrace();
+		}
+
+		// TODO Auto-generated method stub
+
+	}
+
+	public void updateCommitDate(Commit commit) {
+		String query;
+		try {
+			query = "update "
+					+ prefix
+					+ "_commit"
+					+ " set `Date` = ? where hash = ? ";
+
+			statement = conn.prepareStatement(query);
+			statement.setString(1, commit.getAuthorDate());
+			statement.setString(2, commit.getHash());
+			statement.executeUpdate();
+			
+		}  catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println(statement.toString());
+			e.printStackTrace();
+		}
+
 	}
 
 }

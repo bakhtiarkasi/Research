@@ -14,6 +14,9 @@ public class JCommanderArgs {
 
 	@Parameter(names = "-type", description = "Type of experiment to run, s: search, n: nlp")
 	public String experimentType = "s";
+	
+	@Parameter(names = "-seedSize", description = "No of files in seed set")
+	public int seedSize = 3;
 
 	@Parameter(names = "-ids", description = "Comma-separated list of tasks to be analyzed")
 	public String taskIds = "";

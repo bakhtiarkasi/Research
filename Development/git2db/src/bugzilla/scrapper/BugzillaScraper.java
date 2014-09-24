@@ -4,10 +4,14 @@ import git.scraper.db.DBConnector;
 import git.scraper.pojo.Comment;
 import git.scraper.pojo.Issue;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import org.jsoup.Jsoup;
@@ -164,9 +169,7 @@ public class BugzillaScraper {
 				String command = "git log --oneline --format=%h --grep "
 						+ issue.getId() + "[^0-9] --grep=" + issue.getId()
 						+ "$";
-				
-				
-				
+
 				String[] lines = Util.cmdExec(command.split(" "),
 						gitFolder + this.project + "/").split("\\r?\\n");
 				int counter2 = 0;
@@ -248,24 +251,198 @@ public class BugzillaScraper {
 		for (File file : files) {
 			// if(file.getName().contains("12.xml"))
 			{
-				scraper.getIssues(file.getAbsolutePath());
+				// scraper.getIssues(file.getAbsolutePath());
 
 				// System.out.println(file.getAbsolutePath());
 			}
 		}
 
-		scraper.updateCommitLinkage();
-		//scraper.getCommitsStatus();
-		
+		// scraper.updateCommitLinkage();
+		// scraper.getCommitsStatus();
+
+		// scraper.updateFileCreationDates();
+		scraper.updateFileCreationDatesHbase();
+
+	}
+
+	private void updateFileCreationDates() {
+
+		try {
+			String projects[] = new String[8];
+
+			projects[0] = "org.eclipse.mylyn";
+			projects[1] = "org.eclipse.mylyn.builds";
+			projects[2] = "org.eclipse.mylyn.commons";
+			projects[3] = "org.eclipse.mylyn.context";
+			projects[4] = "org.eclipse.mylyn.docs";
+			projects[5] = "org.eclipse.mylyn.reviews";
+			projects[6] = "org.eclipse.mylyn.tasks";
+			projects[7] = "org.eclipse.mylyn.versions";
+
+			DBConnector db = new DBConnector(props);
+			db.createConnection();
+			List<String> file = db.getSourceFiles();
+			db.close();
+
+			StringBuilder builder = new StringBuilder();
+
+			Map<String, String> results = new HashMap();
+			List<String> nonFound = new ArrayList();
+			;
+
+			String[] command = null;
+			String path = "";
+			boolean found = false;
+			int count = 0;
+
+			for (String fil : file) {
+				String proj = "";
+
+				for (int j = 0; j < projects.length; j++) {
+					String line = "";
+					proj = projects[j];
+
+					command = new String[] { "git", "log", "--diff-filter=A",
+							"--format=%aD@%H", "--", fil };
+					path = gitFolder + this.project + "/" + projects[j] + "/";
+
+					Process process = Runtime.getRuntime().exec(command, null,
+							new File(path));
+
+					BufferedReader br = new BufferedReader(
+							new InputStreamReader(process.getInputStream()));
+
+					String tmp = "";
+					while (isAlive(process)) {
+
+						while (br.ready() && (tmp = br.readLine()) != null) {
+							line = tmp;
+						}
+
+					}
+					while (br.ready() && (tmp = br.readLine()) != null) {
+						line = tmp;
+					}
+
+					builder = new StringBuilder();
+					for (String s : command) {
+						builder.append(s);
+						builder.append(" ");
+					}
+
+					if (line.isEmpty())
+						found = false;
+					else {
+						line += "@" + projects[j];
+						results.put(fil, line);
+						found = true;
+						break;
+					}
+				}
+				if (found == false) {
+					System.out.println("Not Found " + fil);
+					System.out.println("cd " + path + " \n "
+							+ builder.toString());
+					nonFound.add("cd " + path + " \n " + builder.toString());
+					// break;
+				}
+			}
+			db.createConnection();
+			db.updateFileCreationDates(results);
+			db.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void updateFileCreationDatesHbase() {
+
+		try {
+
+			DBConnector db = new DBConnector(props);
+			db.createConnection();
+			List<String> file = db.getSourceFiles();
+			db.close();
+
+			StringBuilder builder = new StringBuilder();
+
+			Map<String, String> results = new HashMap();
+			List<String> nonFound = new ArrayList();
+
+			String[] command = null;
+			String path = "";
+			boolean found = false;
+			int count = 0;
+
+			for (String fil : file) {
+
+				String line = "";
+
+				command = new String[] { "git", "log", "--diff-filter=A",
+						"--format=%aD@%H", "--", fil };
+				path = gitFolder + this.project;
+
+				Process process = Runtime.getRuntime().exec(command, null,
+						new File(path));
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						process.getInputStream()));
+
+				String tmp = "";
+				while (isAlive(process)) {
+
+					while (br.ready() && (tmp = br.readLine()) != null) {
+						line = tmp;
+					}
+
+				}
+				while (br.ready() && (tmp = br.readLine()) != null) {
+					line = tmp;
+				}
+
+				builder = new StringBuilder();
+				for (String s : command) {
+					builder.append(s);
+					builder.append(" ");
+				}
+
+				if (line.isEmpty()) {
+					found = false;
+					System.out.println("Not Found " + fil);
+					System.out.println("cd " + path + " \n "
+							+ builder.toString());
+				} else {
+					line += "@" + path;
+					results.put(fil, line);
+					found = true;
+				}
+			}
+			db.createConnection();
+			db.updateFileCreationDates(results);
+			db.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static boolean isAlive(Process p) {
+		try {
+			p.exitValue();
+			return false;
+		} catch (IllegalThreadStateException e) {
+			return true;
+		}
 	}
 
 	private void updateCommitLinkage() {
-		try{
+		try {
 			DBConnector db = new DBConnector(props);
 			db.createConnection();
-			
+
 			db.updateCommitLinkage();
-			
+
 			db.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -290,8 +467,9 @@ public class BugzillaScraper {
 			projects[5] = "org.eclipse.mylyn.reviews";
 			projects[6] = "org.eclipse.mylyn.tasks";
 			projects[7] = "org.eclipse.mylyn.versions";
-			
-			Map<String, Integer> issueCount = new HashMap();;
+
+			Map<String, Integer> issueCount = new HashMap();
+			;
 
 			String command = "";
 			for (int i = 0; i < issues.size(); i++) {
@@ -301,29 +479,32 @@ public class BugzillaScraper {
 				System.out.println(command);
 				for (int j = 0; j < projects.length; j++) {
 					String[] lines = Util.cmdExec(command.split(" "),
-							gitFolder + this.project + "/" + projects[j] + "/").split("\\r?\\n");
+							gitFolder + this.project + "/" + projects[j] + "/")
+							.split("\\r?\\n");
 
 					for (String line : lines) {
 						if (!line.trim().isEmpty()) {
-							issueCount.put(issues.get(i), issueCount.get(issues.get(i)) == null ? 1 :  issueCount.get(issues.get(i))+1);
+							issueCount
+									.put(issues.get(i),
+											issueCount.get(issues.get(i)) == null ? 1
+													: issueCount.get(issues
+															.get(i)) + 1);
 						}
 					}
 				}
-				
-				if(i% 100 == 0)
-				{
+
+				if (i % 100 == 0) {
 					System.out.println("done with " + i);
 				}
 			}
 
 			db.close();
-			
-			for(Entry<String, Integer> entry : issueCount.entrySet())
-			{
+
+			for (Entry<String, Integer> entry : issueCount.entrySet()) {
 				System.out.println(entry.getKey() + " " + entry.getValue());
-				
+
 			}
-			
+
 			System.out.println("All key size " + issueCount.keySet().size());
 
 		} catch (Exception e) {

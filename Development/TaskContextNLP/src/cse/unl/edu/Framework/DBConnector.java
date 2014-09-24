@@ -34,7 +34,7 @@ public class DBConnector {
 		this.url += "/" + "bkasi";
 		this.url += "?user=" + "bkasi";
 		this.url += "&password=" + "dj}3yv";
-		this.prefix = "mylyn";
+		this.prefix = "hbase";
 	}
 
 	public void createConnection() {
@@ -72,7 +72,7 @@ public class DBConnector {
 			// String query = "SELECT `key`, description from " + prefix +
 			// "_issue ";
 
-			String query = "Select `key`, if(description > '', description,title) description,  group_concat(fil.filename, ':', com.id) from "
+			String query = "Select `key`, if(description > '', description,title) description,  group_concat(fil.filename, ':', com.id, ':', if(comf.`hash` is null,0,1)), min(com.`date`) firstCommit, max(com.`date`) lastCommit, (Select commit_id from " + prefix + "_issue2commit ic inner join " + prefix + "_commit m on m.id = ic.commit_id  where ic.issue_id = i2c.issue_id order by m.date limit 1)firstCommitNo  from "
 					+ prefix
 					+ "_issue iis "
 					+ "inner join "
@@ -82,13 +82,14 @@ public class DBConnector {
 					+ prefix
 					+ "_commit com on i2c.commit_id = com.id "
 					+ "inner join "
-					+ prefix + "_file fil on fil.commit_id = com.id ";
+					+ prefix + "_file fil on fil.commit_id = com.id and fil.isSource = 1 "
+					+ "left outer join " + prefix + "_commit comf on comf.id = com.id and fil.createdCommit = comf.`hash` ";
 
 			String where = (issueIds != null && !issueIds.isEmpty()) ? " Where `key` in ("
 					+ issueIds + ")"
 					: "";
 
-			String groupby = " group by `key`,description";
+			String groupby = " group by `key`,description order by firstCommit";
 
 			statement = conn
 					.prepareStatement("SET group_concat_max_len := 90000000");
@@ -102,7 +103,7 @@ public class DBConnector {
 			Task task;
 
 			while (result.next()) {
-				task = new Task(result.getString(1), result.getString(2));
+				task = new Task(result.getString(1), result.getString(2), result.getString(4), result.getString(5), result.getString(6));
 				// task.comments = result.getString(3);
 				task.loadFiles(result.getString(3));
 
@@ -176,15 +177,15 @@ public class DBConnector {
 					+ "inner join ( Select mc1.id from " + prefix
 					+ "_commit mc1 " + "inner join " + prefix
 					+ "_file mf on mf.commit_id = mc1.id "
-					+ "where mf.filename = '" + file + "' "
+					+ "where mf.filename = '" + file + "' and mf.isSource = 1 "
 					+ "and mc1.date < (Select max(date) from " + prefix
 					+ "_commit where id in (" + commitIds + ")) "
 					+ "and mc1.id not in (" + commitIds
 					+ ") order by mc1.date desc limit 1) q "
-					+ "on f.commit_id = q.id;";
+					+ "on f.commit_id = q.id and f.isSource = 1";
 
 			statement = conn.prepareStatement(query);
-			// System.out.println(query);
+			//System.out.println(query);
 
 			result = statement.executeQuery();
 
@@ -216,7 +217,7 @@ public class DBConnector {
 		try {
 
 			String query = "Select distinct binary filename from " + prefix
-					+ "_file f  " + " order by filename ";
+					+ "_file f  where isSource = 1 order by filename ";
 
 			statement = conn.prepareStatement(query);
 
@@ -247,7 +248,7 @@ public class DBConnector {
 
 			String query = "Select f1.filename, f2.filename from " + prefix
 					+ "_file f1 inner join " + prefix + "_file f2 "
-					+ " on f1.commit_id = f2.commit_id "
+					+ " on f1.commit_id = f2.commit_id where f1.isSource = 1 and f2.isSource = 1 "
 					+ " order by f1.filename ";
 
 			statement = conn.prepareStatement(query);
@@ -279,7 +280,7 @@ public class DBConnector {
 		return array;
 	}
 
-	public Map getCommonAdjacentFiles(String fileNames, String taskId) {
+	public Map getCommonAdjacentFiles(String fileNames, String taskId, String date) {
 		Map results = new HashMap<String, List<String>>();
 		ResultSet result = null;
 		ArrayList array = null;
@@ -287,6 +288,7 @@ public class DBConnector {
 		String query = "", query1 = "";
 		try {
 
+			/*
 			query = "select max(c1.date) from " + prefix + "_commit c1 "
 					+ "inner join " + prefix
 					+ "_issue2commit i1 on i1.commit_id = c1.id "
@@ -303,14 +305,14 @@ public class DBConnector {
 
 			while (result.next()) {
 				date = result.getDate(1);
-			}
+			}*/
 
 			query1 = "Select f1.filename, f2.filename, count(f1.commit_id) from "
 					+ prefix
 					+ "_file f1 inner join "
 					+ prefix
 					+ "_file f2 "
-					+ " on f1.commit_id = f2.commit_id "
+					+ " on f1.commit_id = f2.commit_id and f1.isSource = 1 and f2.isSource = 1 "
 					+ " inner join "
 					+ prefix
 					+ "_commit c1 on c1.id = f1.commit_id and c1.date between DATE_SUB('"
@@ -379,4 +381,43 @@ public class DBConnector {
 
 		return results;
 	}
+
+	public List<String> getFrequentlyEditedFilesFrom(String selectedFile, int i, String fromDate) {
+		ResultSet result = null;
+		String query = "";
+		List<String> files = new ArrayList();
+		try {
+
+			query = "select filename, count(commit_id) from " + prefix + "_file f "
+					+ " inner join " + prefix + "_commit com on com.id = f.commit_id "
+					+ " and com.date <= '"+fromDate+"'"
+					+ " where filename in ("+selectedFile+") and isSource = 1"
+					+ " group by filename"
+					+ " order by 2 desc"
+					+ " Limit "
+					+ i;
+			
+			//System.out.println(query);
+			
+			statement = conn.prepareStatement(query);
+			result = statement.executeQuery();
+			
+			while (result.next()) {
+				files.add(result.getString(1));
+			}
+			
+			
+	} catch (SQLException e) {
+		System.err.println("ERROR: Getting getFrequentlyEditedFilesFrom");
+		System.err.println(query + " : \n" + query);
+		e.printStackTrace();
+	} finally {
+		try {
+			result.close();
+		} catch (Exception e) {
+		}
+	}	
+		return files;
+	}	
+	
 }

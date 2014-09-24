@@ -36,7 +36,7 @@ import rleano.util.Util;
 @SuppressWarnings("unused")
 public class Git2DB {
 
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:MM");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
 	public static void main(String[] args) {
 
@@ -51,12 +51,16 @@ public class Git2DB {
 
 		OptionGroup action = new OptionGroup();
 		Option fill = new Option("c", "fills Commits from .git to MySQL");
-		Option find = new Option("f", "finds FileData (from commit and files) and adds it to DB");
-		Option build = new Option("a", "builds Adjacency tables to rcode/files folder");
-		Option rcent = new Option("r", "runs R to find centrality using the adjacency tables");
+		Option find = new Option("f",
+				"finds FileData (from commit and files) and adds it to DB");
+		Option build = new Option("a",
+				"builds Adjacency tables to rcode/files folder");
+		Option rcent = new Option("r",
+				"runs R to find centrality using the adjacency tables");
 		Option complex = new Option("x", "updates compleXity into DB");
 		Option jira = new Option("j", "convert jira XML issues to database");
-		Option opened = new Option("o", "analyze jira XML and website for history of Opened issues");
+		Option opened = new Option("o",
+				"analyze jira XML and website for history of Opened issues");
 
 		action.setRequired(true);
 		action.addOption(fill);
@@ -66,17 +70,17 @@ public class Git2DB {
 		action.addOption(complex);
 		action.addOption(jira);
 		action.addOption(opened);
-		
 
 		@SuppressWarnings("static-access")
-		Option init = OptionBuilder.withLongOpt("integer-option").withDescription("used to paginate the filedata action").withType(Number.class)
-				.hasArg().withArgName("init").create("i");
+		Option init = OptionBuilder.withLongOpt("integer-option")
+				.withDescription("used to paginate the filedata action")
+				.withType(Number.class).hasArg().withArgName("init")
+				.create("i");
 
 		options.addOptionGroup(action);
 		options.addOption(init);
 		options.addOption(desc);
 		options.addOption(help);
-		
 
 		try {
 			// parse the command line arguments
@@ -96,20 +100,24 @@ public class Git2DB {
 			count += line.hasOption("o") ? 1 : 0;
 
 			if (count != 1) {
-				throw new ParseException(" -[cfarx] ONE and only ONE option needs to be specified");
+				throw new ParseException(
+						" -[cfarx] ONE and only ONE option needs to be specified");
 			}
 
 			int start = -1;
 			if (line.hasOption("i") == true) {
 				start = ((Number) line.getParsedOptionValue("i")).intValue();
 			}
-			
-			boolean descending = line.hasOption("d") ? true : false; 
+
+			boolean descending = line.hasOption("d") ? true : false;
 
 			Git2DB git2db = new Git2DB(descending);
 
 			if (line.hasOption("c")) {
-				git2db.getCommitsForProject();
+
+				// git2db.getCommitsForProject();
+				//git2db.getCommits();
+				git2db.updateCommitDates();
 			} else if (line.hasOption("f")) {
 				git2db.getFileData(start);
 			} else if (line.hasOption("a")) {
@@ -133,16 +141,16 @@ public class Git2DB {
 		FileUtil.writeLine("errors.log", "", true);
 		File folder = new File("files/issues");
 		File[] files = folder.listFiles();
-//		boolean ok = false;
+		// boolean ok = false;
 		for (File file : files) {
-//			if (file.getName().equals("hbase_2013-01-03.xml")){
-//				ok = true;
-//			}
-//			if (ok == true) {
-				scraper.getIssues("files/issues/" + file.getName());
-//			}
+			// if (file.getName().equals("hbase_2013-01-03.xml")){
+			// ok = true;
+			// }
+			// if (ok == true) {
+			scraper.getIssues("files/issues/" + file.getName());
+			// }
 		}
-		
+
 	}
 
 	private String project;
@@ -155,11 +163,12 @@ public class Git2DB {
 	public Git2DB(boolean desc) {
 		this.props = new PropUtil("config.properties");
 		this.project = this.props.get("project.name");
-		this.gitFolder = Util.fixPath(this.props.get("git.home") + this.props.get("project.location") + this.project);
+		this.gitFolder = Util.fixPath(this.props.get("git.home")
+				+ this.props.get("project.location") + this.project);
 		this.extensions = this.props.getArray("extensions");
 		this.exceptions = this.props.getArray("file.exceptions");
 		this.desc = desc;
-		
+
 		print("gitFolder: " + this.gitFolder);
 	}
 
@@ -193,7 +202,8 @@ public class Git2DB {
 
 			Set<String> files = GitUtil.getFiles(this.gitFolder, hash);
 			for (String file : files) {
-				other = db.insertFile(file, hash, id, FileUtil.getExtension(file));
+				other = db.insertFile(file, hash, id,
+						FileUtil.getExtension(file));
 				if (other == -1) {
 					System.err.println("FINISHING EARLY");
 					return;
@@ -201,6 +211,22 @@ public class Git2DB {
 			}
 		}
 		db.close();
+	}
+
+	public void updateCommitDates() {
+		List<String> hashes = GitUtil.getCommits(this.gitFolder, "HEAD", null);
+		DBConnector db = new DBConnector(this.props);
+		db.createConnection();
+
+		FileUtil.writeLine("log.txt", "hashes\n", true);
+
+		for (String hash : hashes) {
+			FileUtil.writeLine("log.txt", hash + "\n", false);
+
+			Commit commit = new Commit(hash, this.gitFolder);
+			db.updateCommitDate(commit);
+			db.close();
+		}
 	}
 
 	private void getFileData(int start) {
@@ -213,7 +239,7 @@ public class Git2DB {
 		String initDate = year + "-" + monthString + "-01";
 		monthString = Util.formatNumber("00", (double) endMonth);
 		String endDate = endYear + "-" + monthString + "-01";
-		
+
 		DBConnector db = new DBConnector(props);
 		db.createConnection();
 		List<FileData> datas = null;
@@ -221,7 +247,8 @@ public class Git2DB {
 			datas = db.getFiledata(this.extensions, initDate, endDate, desc);
 		} else {
 			start--;
-			datas = db.getFiledata(start * 10, 10, this.extensions, initDate, endDate, desc);
+			datas = db.getFiledata(start * 10, 10, this.extensions, initDate,
+					endDate, desc);
 		}
 		db.close();
 
@@ -231,25 +258,32 @@ public class Git2DB {
 
 		for (FileData data : datas) {
 			counter++;
-			print(counter + "\t" + data.getCommitHash() + " - " + data.getFilename());
+			print(counter + "\t" + data.getCommitHash() + " - "
+					+ data.getFilename());
 			print("\t\t\t\t\t" + Util.getTime());
-			log(counter + "\t" + data.getCommitHash() + " - " + data.getFilename());
+			log(counter + "\t" + data.getCommitHash() + " - "
+					+ data.getFilename());
 
 			db.createConnection();
-			if (db.checkFileData(data) == false && this.isException(data) == false) {
+			if (db.checkFileData(data) == false
+					&& this.isException(data) == false) {
 
 				db.getPastAuthorsFrequency(data);
 				db.close();
 				print("\t\tGetting file contents\t" + Util.getTime());
 
-				//get file contents
+				// get file contents
 				String extension = FileUtil.getExtension(data.getFilename());
-				String contents = Util.cmdExec(("git show " + data.getCommitHash() + ":" + data.getFilename()).split(" "), this.gitFolder);
+				String contents = Util.cmdExec(
+						("git show " + data.getCommitHash() + ":" + data
+								.getFilename()).split(" "), this.gitFolder);
 				print("\t\tGot Contents\t" + Util.getTime());
 				FileUtil.writeFile("temp_file." + extension, contents);
 
-				String cloc = "./cloc-1.56.pl temp_file." + extension + " --quiet --csv";
-				String[] output = Util.cmdExec(cloc.split(" "), "./").split("\n");
+				String cloc = "./cloc-1.56.pl temp_file." + extension
+						+ " --quiet --csv";
+				String[] output = Util.cmdExec(cloc.split(" "), "./").split(
+						"\n");
 				try {
 					String[] result = output[2].split(",");
 					int code = new Integer(result[4]);
@@ -277,14 +311,14 @@ public class Git2DB {
 		}
 
 	}
-	
+
 	private boolean isException(FileData data) {
 		String fullpath = data.getFilename();
 		String filename = FileUtil.getSimpleFilename(data.getFilename());
 		if (fullpath.contains("/generated/") == true) {
 			return true;
 		}
-		
+
 		for (String exception : this.exceptions) {
 			if (filename.equalsIgnoreCase(exception) == true) {
 				return true;
@@ -294,7 +328,7 @@ public class Git2DB {
 	}
 
 	private void getFileDataFiles(int start) {
-		
+
 		int year = this.props.getInt("year.init");
 		int endYear = this.props.getInt("year.end");
 		int month = this.props.getInt("month.init");
@@ -304,7 +338,7 @@ public class Git2DB {
 		String initDate = year + "-" + monthString + "-01";
 		monthString = Util.formatNumber("00", (double) endMonth);
 		String endDate = endYear + "-" + monthString + "-01";
-		
+
 		DBConnector db = new DBConnector(props);
 		db.createConnection();
 		List<FileData> datas = null;
@@ -312,7 +346,8 @@ public class Git2DB {
 			datas = db.getFiledata(this.extensions, initDate, endDate, desc);
 		} else {
 			start--;
-			datas = db.getFiledata(start * 10, 10, this.extensions, initDate, endDate, desc);
+			datas = db.getFiledata(start * 10, 10, this.extensions, initDate,
+					endDate, desc);
 		}
 		db.close();
 
@@ -322,9 +357,11 @@ public class Git2DB {
 
 		for (FileData data : datas) {
 			counter++;
-			print(counter + "\t" + data.getCommitHash() + " - " + data.getFilename());
+			print(counter + "\t" + data.getCommitHash() + " - "
+					+ data.getFilename());
 			print("\t\t\t\t\t" + Util.getTime());
-			log(counter + "\t" + data.getCommitHash() + " - " + data.getFilename());
+			log(counter + "\t" + data.getCommitHash() + " - "
+					+ data.getFilename());
 
 			db.createConnection();
 			if (db.checkFileData(data) == false) {
@@ -333,40 +370,45 @@ public class Git2DB {
 				db.close();
 				print("\t\tGetting file contents\t" + Util.getTime());
 
-				//get file contents
+				// get file contents
 				String extension = FileUtil.getExtension(data.getFilename());
-				String contents = Util.cmdExec(("git show " + data.getCommitHash() + ":" + data.getFilename()).split(" "), this.gitFolder);
+				String contents = Util.cmdExec(
+						("git show " + data.getCommitHash() + ":" + data
+								.getFilename()).split(" "), this.gitFolder);
 				print("\t\tGot Contents\t" + Util.getTime());
-				
+
 				// write it in a special folder
-				String newFilename = "files/" + data.getCommitHash() + "/" + data.getFilename();
+				String newFilename = "files/" + data.getCommitHash() + "/"
+						+ data.getFilename();
 				FileUtil.writeFile(newFilename, contents);
 
-//				String cloc = "./cloc-1.56.pl temp_file." + extension + " --quiet --csv";
-//				String[] output = Util.cmdExec(cloc.split(" "), this.props.get("git.home") + "git2db").split("\n");
-//				try {
-//					String[] result = output[2].split(",");
-//					int code = new Integer(result[4]);
-//					int comment = new Integer(result[3]);
-//					data.setCode(code);
-//					data.setComment(comment);
-//					data.setLoc(code + comment);
-//					double temp = MathUtil.div(comment, comment + code);
-//					float ratio = new Float(temp);
-//					data.setCommentRatio(ratio);
-//				} catch (IndexOutOfBoundsException e) {
-//					data.setCode(0);
-//					data.setComment(0);
-//					data.setLoc(0);
-//					data.setCommentRatio(0);
-//				}
-//
-//				print("\t\tGot LOC [" + data.getLoc() + "]");
-//				log("\t\tGot LOC [" + data.getLoc() + "]");
-//
-//				db.createConnection();
-//				db.insertFileData(data);
-//				db.close();
+				// String cloc = "./cloc-1.56.pl temp_file." + extension +
+				// " --quiet --csv";
+				// String[] output = Util.cmdExec(cloc.split(" "),
+				// this.props.get("git.home") + "git2db").split("\n");
+				// try {
+				// String[] result = output[2].split(",");
+				// int code = new Integer(result[4]);
+				// int comment = new Integer(result[3]);
+				// data.setCode(code);
+				// data.setComment(comment);
+				// data.setLoc(code + comment);
+				// double temp = MathUtil.div(comment, comment + code);
+				// float ratio = new Float(temp);
+				// data.setCommentRatio(ratio);
+				// } catch (IndexOutOfBoundsException e) {
+				// data.setCode(0);
+				// data.setComment(0);
+				// data.setLoc(0);
+				// data.setCommentRatio(0);
+				// }
+				//
+				// print("\t\tGot LOC [" + data.getLoc() + "]");
+				// log("\t\tGot LOC [" + data.getLoc() + "]");
+				//
+				// db.createConnection();
+				// db.insertFileData(data);
+				// db.close();
 			}
 		}
 
@@ -399,7 +441,8 @@ public class Git2DB {
 			monthString = Util.formatNumber("00", (double) month);
 			this.print("Year-Month: " + year + "-" + monthString);
 
-			String[] recoveredFiles = FileUtil.readCSVFirst(folder + filename, true);
+			String[] recoveredFiles = FileUtil.readCSVFirst(folder + filename,
+					true);
 			allFiles.addAll(Arrays.asList(recoveredFiles));
 			this.print("\tfiles: " + allFiles.size());
 
@@ -415,21 +458,26 @@ public class Git2DB {
 		}
 
 		while (year <= endYear) {
-			while (month <= 12 && this.beforeEquals(year, month, endYear, endMonth)) {
+			while (month <= 12
+					&& this.beforeEquals(year, month, endYear, endMonth)) {
 				monthString = Util.formatNumber("00", (double) month);
 				int counter = 0;
 				this.print(year + "-" + monthString);
 
 				db.createConnection();
-				List<String> files = db.getFilesByYearMonth(year, monthString, this.extensions);
+				List<String> files = db.getFilesByYearMonth(year, monthString,
+						this.extensions);
 				db.close();
 				allFiles.addAll(files);
-				this.print("\tFiles: " + files.size() + " [" + allFiles.size() + "]");
+				this.print("\tFiles: " + files.size() + " [" + allFiles.size()
+						+ "]");
 
-				int[][] adjacency = this.copyAdjacency(oldAdjacency, allFiles.size());
+				int[][] adjacency = this.copyAdjacency(oldAdjacency,
+						allFiles.size());
 
 				db.createConnection();
-				List<Integer> ids = db.getCommitIdByYearMonth(year, monthString);
+				List<Integer> ids = db
+						.getCommitIdByYearMonth(year, monthString);
 				db.close();
 
 				this.print("\tCommits: " + ids.size());
@@ -441,14 +489,18 @@ public class Git2DB {
 					db.close();
 
 					for (String file : filesCommit) {
-						int posFile = CollectionUtil.getPosition(files, file, true);
+						int posFile = CollectionUtil.getPosition(files, file,
+								true);
 						for (String neighbor : filesCommit) {
 							if (file.equals(neighbor) == false) {
-								int posNeighbor = CollectionUtil.getPosition(files, neighbor, true);
+								int posNeighbor = CollectionUtil.getPosition(
+										files, neighbor, true);
 								if (posNeighbor == -1) {
-									//System.err.println("neigh not found: [" + neighbor + "]");
+									// System.err.println("neigh not found: [" +
+									// neighbor + "]");
 								} else if (posFile == -1) {
-									//System.err.println("file not found: [" + file + "]");
+									// System.err.println("file not found: [" +
+									// file + "]");
 								} else {
 									adjacency[posFile][posNeighbor]++;
 								}
@@ -459,12 +511,14 @@ public class Git2DB {
 
 					counter++;
 					if (counter % 25 == 0) {
-						this.print("ids ... " + counter + "\t\t" + Util.getTime());
+						this.print("ids ... " + counter + "\t\t"
+								+ Util.getTime());
 					}
 				}
 
 				String outputFile = folder + year + "-" + monthString + ".csv";
-				this.print("Writing file: " + outputFile + "\t" + Util.getTime());
+				this.print("Writing file: " + outputFile + "\t"
+						+ Util.getTime());
 
 				String result = PrintUtil.printCollection(allFiles, ",") + "\n";
 				FileUtil.writeLine(outputFile, result, true);
@@ -503,7 +557,7 @@ public class Git2DB {
 	}
 
 	private void getCentrality() {
-		
+
 		DBConnector db = new DBConnector(props);
 		String folder = this.props.get("file.folder");
 		int year = this.props.getInt("year.init");
@@ -512,7 +566,7 @@ public class Git2DB {
 		int endMonth = this.props.getInt("month.end");
 		String loadFile = this.props.get("file.load");
 		String monthString = Util.formatNumber("00", (double) month);
-		
+
 		if (loadFile != null && loadFile.isEmpty() == false) {
 			this.print("Reading file: " + loadFile);
 			String[] date = loadFile.split("-");
@@ -520,25 +574,30 @@ public class Git2DB {
 			month = Integer.parseInt(date[1].substring(0, 2));
 			monthString = Util.formatNumber("00", (double) month);
 		}
-		
 
 		while (year <= endYear) {
-			while (month <= 12 && this.beforeEquals(year, month, endYear, endMonth)) {
+			while (month <= 12
+					&& this.beforeEquals(year, month, endYear, endMonth)) {
 				monthString = Util.formatNumber("00", (double) month);
 				String filenameNoExt = year + "-" + monthString;
 
-				this.print("Current: " + filenameNoExt + "\t\t" + Util.getTime());
-				String[] files = FileUtil.readCSVFirst(folder + filenameNoExt + ".csv", true);
+				this.print("Current: " + filenameNoExt + "\t\t"
+						+ Util.getTime());
+				String[] files = FileUtil.readCSVFirst(folder + filenameNoExt
+						+ ".csv", true);
 
 				// Run R
 				String infile = filenameNoExt + ".csv";
 				String outfile = filenameNoExt + ".cent";
 				if (FileUtil.fileExists(folder + outfile) == false) {
-					String result = this.runCentrality(this.props.get("r.folder"), "files/" + infile, "files/" + outfile);
+					String result = this.runCentrality(
+							this.props.get("r.folder"), "files/" + infile,
+							"files/" + outfile);
 					print(result + "\n\t\t\t\t" + Util.getTime());
 				}
 				// read generated file
-				List<String> centrality = FileUtil.readFileList(folder + outfile);
+				List<String> centrality = FileUtil.readFileList(folder
+						+ outfile);
 				print("Files: " + centrality.size());
 
 				db.createConnection();
@@ -546,10 +605,12 @@ public class Git2DB {
 				for (String file : files) {
 					String value = centrality.get(index);
 					Float temp = new Float(value);
-					int affected = db.updateCentrality(file, filenameNoExt, temp);
-//					this.print(affected + "\t[" + file + "] on [" + filenameNoExt + "] --> " + temp );
+					int affected = db.updateCentrality(file, filenameNoExt,
+							temp);
+					// this.print(affected + "\t[" + file + "] on [" +
+					// filenameNoExt + "] --> " + temp );
 					index++;
-					
+
 					if (index % 25 == 0) {
 						print("\t..." + index);
 					}
@@ -564,17 +625,21 @@ public class Git2DB {
 	}
 
 	/**
-	 * @param workingDir	where the R script is, and the working directory for R
-	 * @param infile		where R will find the input file (relative to working dir)
-	 * @param outfile		where R will put the outfile (relative to working dir)
+	 * @param workingDir
+	 *            where the R script is, and the working directory for R
+	 * @param infile
+	 *            where R will find the input file (relative to working dir)
+	 * @param outfile
+	 *            where R will put the outfile (relative to working dir)
 	 */
-	private String runCentrality(String workingDir, String infile, String outfile) {
+	private String runCentrality(String workingDir, String infile,
+			String outfile) {
 		workingDir = Util.fixPath(workingDir);
 		String[] params = { workingDir, infile, outfile };
 		String result = RUtil.runScript("centrality.r", workingDir, params);
 		return result;
 	}
-	
+
 	private void updateComplexity() {
 		String folder = this.props.get("file.folder");
 		String file = "complexity.csv";
@@ -583,23 +648,23 @@ public class Git2DB {
 		db.createConnection();
 		int size = contents.size();
 		print("Total: " + size);
-		
+
 		int count = 0;
 		for (String[] line : contents) {
 			String filename = line[0];
 			String date = line[1];
 			float complexity = Float.parseFloat(line[2]);
-			
+
 			db.updateComplexity(filename, date, complexity);
-			
+
 			if (count % 25 == 0) {
-				print ("\t... " + count + " / " + size);
+				print("\t... " + count + " / " + size);
 			}
 			count++;
 		}
-		
+
 		db.close();
-		
+
 	}
 
 	private boolean beforeEquals(int yearA, int monthA, int yearB, int monthB) {
@@ -615,17 +680,18 @@ public class Git2DB {
 
 	private void print(String msg) {
 		System.out.println(msg);
-		FileUtil.writeLine(this.getClass().getSimpleName().toLowerCase() + ".log", msg + "\n", false);
+		FileUtil.writeLine(this.getClass().getSimpleName().toLowerCase()
+				+ ".log", msg + "\n", false);
 	}
 
 	private void log(String msg) {
-		FileUtil.writeLine(this.getClass().getSimpleName().toLowerCase() + ".log", msg + "\n", false);
+		FileUtil.writeLine(this.getClass().getSimpleName().toLowerCase()
+				+ ".log", msg + "\n", false);
 	}
-	
+
 	private void getCommitsForProject() {
-				
-		if(this.project.equalsIgnoreCase("Mylyn"))
-		{
+
+		if (this.project.equalsIgnoreCase("Mylyn")) {
 			String projects[] = new String[8];
 
 			projects[0] = "org.eclipse.mylyn";
@@ -636,17 +702,17 @@ public class Git2DB {
 			projects[5] = "org.eclipse.mylyn.reviews";
 			projects[6] = "org.eclipse.mylyn.tasks";
 			projects[7] = "org.eclipse.mylyn.versions";
-			
-			for(int i=0; i<projects.length; i++)
-			{
-				this.gitFolder = Util.fixPath(this.props.get("git.home") + this.props.get("project.location") + "Mylyn/" + projects[i]);
+
+			for (int i = 0; i < projects.length; i++) {
+				this.gitFolder = Util.fixPath(this.props.get("git.home")
+						+ this.props.get("project.location") + "Mylyn/"
+						+ projects[i]);
 				this.getCommits();
 			}
-			
-		}
-		else
+
+		} else
 			this.getCommits();
-		
+
 	}
 
 }

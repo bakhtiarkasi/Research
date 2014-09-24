@@ -52,6 +52,8 @@ import com.beust.jcommander.JCommander;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 //-type n -ids 100671,102243,107146,113848,174993,213661,225538,391121 -tagger taggers/left3words-wsj-0-18.tagger
+// mylyn 100627,195727,193423,165088,155333,172580,135413,143567,195691,207228,101374,120790,219649,133113,117799,406470,134295,253790,172777,163139,113848,100671,102243,107146,174993,213661,225538,391121
+// hbase HBASE-10031,HBASE-8355,HBASE-8832,HBASE-9745,HBASE-9998,HBASE-10024,HBASE-10644,HBASE-11234,HBASE-6479,HBASE-7114,HBASE-7575,HBASE-8101,HBASE-8344,HBASE-8902,HBASE-9446,HBASE-9994,HBASE-9205
 public class LuceneIndexer {
 
 	/**
@@ -71,9 +73,14 @@ public class LuceneIndexer {
 	String results[];
 	private List<Task> allTasksList;
 	String resultText = "";
+	String resulNLPtText = "";
 	String commitResultText = "";
 
 	int res[];
+	private int seedSize;
+	private String globalHtml;
+	private String finalHtml;
+	private String finalResults;
 
 	public final static Logger LOGGER = Logger.getLogger(LuceneIndexer.class
 			.getName());
@@ -92,7 +99,7 @@ public class LuceneIndexer {
 		LOGGER.setLevel(Level.INFO);
 		FileHandler fileHandler = null;
 		try {
-			fileHandler = new FileHandler("myLogFile");
+			fileHandler = new FileHandler("myLogFileH");
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -217,8 +224,8 @@ public class LuceneIndexer {
 				if (!task.taskId.equals(taskId)) {
 
 					interectionFiles = Utils.intersection(
-							firstTask.getFileNamesList(),
-							task.getFileNamesList());
+							firstTask.getFileNamesList(false),
+							task.getFileNamesList(false));
 
 					if (interectionFiles.size() > 0) {
 						this.getCommitGraphResults(firstTask, task,
@@ -272,6 +279,8 @@ public class LuceneIndexer {
 
 		try {
 
+			final int FinalTaskSize = 6;
+
 			// task that is being searched for
 			Task firstTask = getTask(taskId);
 			String subTaskid;
@@ -280,6 +289,9 @@ public class LuceneIndexer {
 			LOGGER.info("\n");
 			LOGGER.info("Running task: " + taskId);
 
+			if (hits.length == 0)
+				return;
+
 			// copy all doc scores into a new array excluding score for the
 			// searched doc, which is usually the first in search results
 			float[] scores = new float[hits.length - 1];
@@ -287,43 +299,88 @@ public class LuceneIndexer {
 			for (int j = 0; j < hits.length; j++) {
 
 				serachRes += searcher.doc(hits[j].doc).get("taskid") + ",";
-				
-				//here
-			//	System.out.println(serachRes);
-				//System.out.println(taskId + " : " + searcher.doc(hits[j].doc).get("taskid"));
 
-				if (!searcher.doc(hits[j].doc).get("taskid").equals(taskId))
-				{
-					//here
-					//System.out.println("Not Same");
-					
-					if(l == scores.length)
+				if (!searcher.doc(hits[j].doc).get("taskid").equals(taskId)) {
+
+					if (l == scores.length)
 						break;
-					
+
 					scores[l++] = hits[j].score;
 				}
 			}
 			LOGGER.info(serachRes);
 
-
 			// get median value for search results
 			float median = getMedianValueIndex(scores);
+
+			// change here
+			median = 0.0f;
 
 			// from search results select only docs that have a score of median
 			// and above
 			List<String> tasksList = new ArrayList();
 			for (int j = 0; j < hits.length; j++) {
 				if (!searcher.doc(hits[j].doc).get("taskid").equals(taskId)) {
-					if (hits[j].score >= median)
+					if (hits.length <= 6) {
 						tasksList.add(searcher.doc(hits[j].doc).get("taskid"));
-					else
-						break;
+					} else {
+						if (hits[j].score >= median)
+							tasksList.add(searcher.doc(hits[j].doc).get(
+									"taskid"));
+						else
+							break;
+					}
 				}
 			}
 			String tasks[] = new String[tasksList.size()];
 			for (int i = 0; i < tasksList.size(); i++) {
 				tasks[i] = tasksList.get(i);
 			}
+
+			String selectedFile = "";
+			
+			DBConnector db = new DBConnector();
+			
+			List<String> initList = firstTask.getFileNamesList(true);
+			
+			if (initList.size() > FinalTaskSize) {
+				selectedFile = "";
+				for (String str : initList) {
+					if (selectedFile != "")
+						selectedFile += ",";
+					selectedFile += "'" + str + "'";
+				}
+
+				db.createConnection();
+				initList = db.getFrequentlyEditedFilesFrom(
+						selectedFile, FinalTaskSize, firstTask.fromDate);
+				db.close();
+			}
+
+			
+			
+			// change here
+			/*
+			finalResults += "\n" + firstTask.taskId + "(" + initList.size() + ")->" + tasks.length;
+			
+			for (int i = 0; i < tasks.length; i++) {
+				Task task = getTask(tasks[i]);
+				List<String> comm = Utils.intersection(
+						task.getFileNamesList(true), initList);
+				if (comm.size() > 0) {
+					initList.removeAll(comm);
+					finalResults += "\t" + i + ":" + comm.size() + "/" + task.getFileNamesList(true).size();
+				}
+				if (initList.size() == 0)
+					break;
+			}
+			if(!initList.isEmpty())
+				finalResults += "\t" + "[" + initList.size() + "]";
+			
+			
+			if(true)
+				return;
+				*/
 
 			// select 3 or more file as the seed set for the commit graph, any
 			// file that appears more than twice is a candidiate
@@ -333,50 +390,164 @@ public class LuceneIndexer {
 
 			int count = 0;
 			for (int i = 0; i < keys.size(); i++) {
-				if (fileFrequency.get(keys.get(i)) > 1)
+				if (fileFrequency.get(keys.get(i)) > 3)
 					count++;
 			}
-			if (count <= 3)
-				count = keys.size() > 3 ? 3 : keys.size();
 
-			
-			// reduce key size to the number of files in seed set
-			keys = keys.subList(0, count);
+			// select files median and above and send to db for ranking
+			// according to file freq function.
+			int middle = 0;
+			selectedFile = "";
 
-			String seedFiles = "";
-			// for file rankings
-			for (Object key : keys) {
-				if (seedFiles != "")
-					seedFiles += ",";
-				seedFiles += "'" + key.toString() + "'";
+			if (count > 0) {
+				middle = Math.max(count, (int) Math.floor(keys.size() / 2));
+			} else {
+				middle = keys.size();
 			}
 
-			DBConnector db = new DBConnector();
+			// compile results here for NLP search
+			db = new DBConnector();
+			List<String> intersectionFiles = new ArrayList(
+					fileFrequency.keySet());
+
+			if (count > 0) {
+
+				if (count < 3)
+					count = Math.max(count, intersectionFiles.size());
+
+				count = Math.min(count, FinalTaskSize);
+				intersectionFiles = intersectionFiles.subList(0, count);
+			}
+			else
+			{
+				if (intersectionFiles.size() > FinalTaskSize) {
+					selectedFile = "";
+					for (String str : intersectionFiles) {
+						if (selectedFile != "")
+							selectedFile += ",";
+						selectedFile += "'" + str + "'";
+					}
+
+					db.createConnection();
+					intersectionFiles = db.getFrequentlyEditedFilesFrom(
+							selectedFile, FinalTaskSize, firstTask.fromDate);
+					db.close();
+				}
+			}
+			// List<String> initList = firstTask.getFileNamesList(true);
+			// initList = firstTask.getFirstCommitFile(initList);
+
+			// initList = initList.subList(0,
+			// Math.min(initList.size(), FinalTaskSize));
+
+			int TP = Utils.intersection(intersectionFiles, initList).size();
+			int FP = 0;
+			int FN = 0;
+			FP = intersectionFiles.size() - TP;
+			FN = initList.size() - TP;
+
+			resulNLPtText += taskId + "\t" + "NLPRes" + "\t" + count + "\t"
+					+ TP + "\t" + FP + "\t" + FN + "\n";
+
+			// to remove this block later
+			/*
+			 * String html = "";
+			 * 
+			 * Map<String, String[]> htmlMap = new HashMap();
+			 * 
+			 * int mapindex = -1; for (String fileName :
+			 * firstTask.getFileNamesList()) { htmlMap.put(fileName, new
+			 * String[hits.length]); htmlMap.get(fileName)[0] = "X"; mapindex =
+			 * 0; }
+			 * 
+			 * for (int j = 0; j < hits.length; j++) { Task task =
+			 * this.getTask(searcher.doc(hits[j].doc) .get("taskid"));
+			 * 
+			 * if (!task.taskId.equals(taskId)) { mapindex++;
+			 * 
+			 * if (mapindex == hits.length) break;
+			 * 
+			 * for (String fileName : task.getFileNamesList()) { if
+			 * (!htmlMap.containsKey(fileName)) htmlMap.put(fileName, new
+			 * String[hits.length]);
+			 * 
+			 * htmlMap.get(fileName)[mapindex] = "X"; } } }
+			 * 
+			 * float prec = TP*1.0f; prec = (TP*1.0f + FP*1.0f) == 0.0f ? 0.0f :
+			 * (prec/(TP*1.0f + FP*1.0f));
+			 * 
+			 * float rec = TP*1.0f; rec = (TP*1.0f + FN*1.0f) == 0.0f ? 0.0f :
+			 * (prec/(TP*1.0f + FN*1.0f));
+			 * 
+			 * appendToHtml(htmlMap, taskId, tasks[tasks.length - 1], serachRes,
+			 * intersectionFiles, scores, (TP + "\t" + FP + "\t" + FN + "\tP:" +
+			 * String.format("%.04f",prec)+ "\tR:"
+			 * +String.format("%.04f",rec))); if (true) return;
+			 */
+			// end remove block here
+
+			LOGGER.info("TP FP FN " + taskId + "\t" + "NLPRes" + "\t" + count
+					+ "\t" + TP + "\t" + FP + "\t" + FN);
+
+			intersectionFiles = null;
+
+			// //////////////////////Till
+			// here///////////////////////////////////
+
+			if (middle <= 3)
+				middle = keys.size() > 3 ? 3 : keys.size();
+
+			keys = keys.subList(0, middle);
+
+			selectedFile = "";
+			// for file rankings
+			for (Object key : keys) {
+				if (selectedFile != "")
+					selectedFile += ",";
+				selectedFile += "'" + key.toString() + "'";
+			}
+
 			db.createConnection();
 
-			List<String> intersectionFiles = null;
+			count = seedSize;
+			List<String> selectFilesList = db.getFrequentlyEditedFilesFrom(
+					selectedFile, count, firstTask.fromDate);
+			db.close();
+
+			String seedFiles = "";
+			for (String str : selectFilesList) {
+				if (seedFiles != "")
+					seedFiles += ",";
+				seedFiles += "'" + str + "'";
+			}
+
+			db.createConnection();
+			intersectionFiles = null;
 			// Map results = new HashMap<String, List<String>>();
 
 			// get adjacent files within the last 6 month of commits for the
 			// seed set files.
-			Map results = db.getCommonAdjacentFiles(seedFiles, taskId);
+
+			String qTaskId = "'" + taskId + "'";
+			Map results = db.getCommonAdjacentFiles(seedFiles, qTaskId,
+					firstTask.fromDate);
 			db.close();
 
 			// Step 0 is to check for common files in adjacent files of seed set
 			// files.
 			String step = "Step0";
 			if (results != null) {
-				for (int i = 0; i < keys.size(); i++) {
-					if (results.get(keys.get(i)) != null) {
+				for (int i = 0; i < selectFilesList.size(); i++) {
+					if (results.get(selectFilesList.get(i)) != null) {
 						if (intersectionFiles == null)
-							intersectionFiles = (List<String>) results.get(keys
-									.get(i));
+							intersectionFiles = (List<String>) results
+									.get(selectFilesList.get(i));
 						else {
 							intersectionFiles = Utils.intersection(
-									intersectionFiles,
-									(List<String>) results.get(keys.get(i)));
-							if (intersectionFiles == null || intersectionFiles.size() == 0) 
-							{
+									intersectionFiles, (List<String>) results
+											.get(selectFilesList.get(i)));
+							if (intersectionFiles == null
+									|| intersectionFiles.size() == 0) {
 								intersectionFiles = null;
 								break;
 							}
@@ -390,18 +561,19 @@ public class LuceneIndexer {
 			// set
 			if (intersectionFiles == null) {
 				if (results != null) {
-					
+
 					LOGGER.info("Step1: Intersection in adjaceny files yields null now doing frequency");
 					step = "Step1";
-					
+
 					List<String> uniqFiles = new ArrayList();
 					fileFrequency = new HashMap();
 
 					// make frequency matrix, if no seed set file had adjacent
 					// files
 					// then this step wont result in anything
-					for (int i = 0; i < keys.size(); i++) {
-						uniqFiles = (List<String>) results.get(keys.get(i));
+					for (int i = 0; i < selectFilesList.size(); i++) {
+						uniqFiles = (List<String>) results.get(selectFilesList
+								.get(i));
 						if (uniqFiles != null) {
 							for (String fileName : uniqFiles) {
 								if (fileFrequency.containsKey(fileName)) {
@@ -424,7 +596,7 @@ public class LuceneIndexer {
 							intersectionFiles.add(key.toString());
 						}
 					}
-					
+
 					// have to improve this stpe as it will include all files =>
 					// higher FP
 					if (intersectionFiles.size() == 0) {
@@ -436,22 +608,65 @@ public class LuceneIndexer {
 			}
 
 			// finally make sure to include seed set files in the final list
-			
-			if(intersectionFiles == null)
+
+			if (intersectionFiles == null)
 				intersectionFiles = new ArrayList();
-				
-			for (Object key : keys) {
+
+			if (intersectionFiles.size() > FinalTaskSize) {
+				selectedFile = "";
+				for (String str : intersectionFiles) {
+					if (selectedFile != "")
+						selectedFile += ",";
+					selectedFile += "'" + str + "'";
+				}
+
+				db.createConnection();
+				intersectionFiles = db.getFrequentlyEditedFilesFrom(
+						selectedFile, FinalTaskSize, firstTask.fromDate);
+				db.close();
+			}
+
+			for (Object key : selectFilesList) {
 				String fileName = key.toString();
 				if (!intersectionFiles.contains(fileName))
 					intersectionFiles.add(fileName);
 			}
 
-			int TP = Utils.intersection(intersectionFiles,
-					firstTask.getFileNamesList()).size();
-			int FP = 0;
-			int FN = 0;
+			if (initList == null) {
+				initList = firstTask.getFileNamesList(true);
+				// initList = firstTask.getFirstCommitFile(initList);
+				// initList = initList.subList(0,
+				// Math.min(initList.size(), FinalTaskSize));
+				
+				if (initList.size() > FinalTaskSize) {
+					selectedFile = "";
+					for (String str : initList) {
+						if (selectedFile != "")
+							selectedFile += ",";
+						selectedFile += "'" + str + "'";
+					}
+
+					db.createConnection();
+					initList = db.getFrequentlyEditedFilesFrom(
+							selectedFile, FinalTaskSize, firstTask.fromDate);
+					db.close();
+				}
+			}
+
+			/*
+			 * if (initList.size() > 20) { selectedFile = ""; for (String str :
+			 * initList) { if (selectedFile != "") selectedFile += ",";
+			 * selectedFile += "'" + str + "'"; }
+			 * 
+			 * db.createConnection(); initList =
+			 * db.getFrequentlyEditedFilesFrom(selectedFile, 20); db.close(); }
+			 */
+
+			TP = Utils.intersection(intersectionFiles, initList).size();
+			FP = 0;
+			FN = 0;
 			FP = intersectionFiles.size() - TP;
-			FN = firstTask.getFileNamesList().size() - TP;
+			FN = initList.size() - TP;
 
 			LOGGER.info("final target task size " + intersectionFiles.size());
 			resultText += taskId + "\t" + step + "\t" + count + "\t" + TP
@@ -463,7 +678,74 @@ public class LuceneIndexer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println(resultText);
+			System.out
+					.println("\n\n\n*******************************************\n");
+			System.out.println("Printing results for NLP\n");
+			System.out.println(resulNLPtText);
 		}
+
+	}
+
+	private void appendToHtml(Map<String, String[]> htmlMap, String firstTask,
+			String middleTask, String serachRes,
+			List<String> intersectionFiles, float[] scores, String result) {
+
+		globalHtml = "<table><tr><td><table border=\"1\">";
+
+		List keys = new ArrayList(htmlMap.keySet());
+
+		serachRes = serachRes.split("-> ")[1];
+
+		String[] temp = serachRes.split(",");
+		globalHtml += "<tr><td><b>File Name</b></td>";
+		int count = 0;
+		for (int i = 0; i < temp.length; i++) {
+			String taskId = temp[i];
+			if (taskId.equals(firstTask) || taskId.equals(middleTask))
+				taskId = "<b>" + taskId + "<b/>";
+
+			globalHtml += "<td>"
+					+ taskId
+					+ (temp[i].equals(firstTask) ? "" : ("<br/>" + String
+							.format("%.04f", scores[count++]))) + "</td>";
+		}
+
+		globalHtml += "</tr>";
+
+		for (int i = 0; i < keys.size(); i++) {
+			globalHtml += "<tr>";
+
+			String fileName = keys.get(i).toString();
+			String trimFile = "";
+			int index = fileName.lastIndexOf("/");
+			if (index > 0)
+				trimFile = fileName.substring(index + 1, fileName.length());
+
+			if (intersectionFiles.contains(fileName))
+				globalHtml += "<td><b>" + trimFile + "</b></td>";
+			else
+				globalHtml += "<td>" + trimFile + "</td>";
+
+			String vals[] = htmlMap.get(fileName);
+			for (int j = 0; j < vals.length; j++) {
+				globalHtml += "<td>" + (vals[j] == null ? "" : vals[j])
+						+ "</td>";
+			}
+
+			globalHtml += "</tr>";
+		}
+
+		globalHtml += "</table></td><td></td><td valign=\"top\">";
+		for (String fileName : intersectionFiles) {
+			String trimFile = "";
+			int index = fileName.lastIndexOf("/");
+			if (index > 0)
+				trimFile = fileName.substring(index + 1, fileName.length());
+			globalHtml += trimFile + " <hr/> ";
+		}
+		globalHtml += result + "<br/>";
+
+		globalHtml += "</td></tr></table><div height=\"350px\"> &nbsp</div>";
 
 	}
 
@@ -498,19 +780,33 @@ public class LuceneIndexer {
 
 			// "100671,102243,107146,113848,174993,213661,225538,391121"
 			indexWriter = new IndexWriter(index, config);
+
+			if (idsForAnalysis != null && !idsForAnalysis.isEmpty()) {
+				String tokens[] = idsForAnalysis.split(",");
+				idsForAnalysis = "";
+				for (int i = 0; i < tokens.length; i++) {
+					if (idsForAnalysis != "")
+						idsForAnalysis += ",";
+					idsForAnalysis += "'" + tokens[i] + "'";
+				}
+			}
+
 			List<Task> taskList = db.getIssueDescription(idsForAnalysis);
 
 			this.allTasksList = taskList;
 
 			for (int i = 0; i < allTasksList.size(); i++) {
 				Task task = taskList.get(i);
-				addDocumentToIndexWithNLP(task);
+				// here changed task:
+				// addDocumentToIndexWithNLP(task);
 			}
 
 			LOGGER.info("All docs have been added \n");
-			indexWriter.close();
+			// here changed task:
+			// indexWriter.close();
+			// IndexReader reader = DirectoryReader.open(index);
 
-			IndexReader reader = DirectoryReader.open(index);
+			IndexReader reader;
 
 			/*
 			 * Fields fields = MultiFields.getFields(reader); Terms terms =
@@ -522,11 +818,24 @@ public class LuceneIndexer {
 			res = new int[5]; // 1,3,5,7,10
 
 			resultText = "";
-			
-			//here
+
+			finalHtml = "<!DOCTYPE html>\n<html>\n<boby>\n";
+			finalResults = "";
+
+			// here
 			for (int i = 0; i < allTasksList.size(); i++) {
 
 				Task task = taskList.get(i);
+
+				// here changed task
+				// skip for first 10 tasks:
+				addDocumentToIndexWithNLP(task);
+				if (i < 10)
+					continue;
+
+				// indexWriter.close();
+				reader = DirectoryReader.open(indexWriter, true);
+
 				String querystr = task.longDescription + " " + task.comments;
 				querystr = QueryParser.escape(querystr);
 				querystr = tagger.tagString(querystr);
@@ -539,7 +848,7 @@ public class LuceneIndexer {
 				// LOGGER.info("\n Query: " + q);
 
 				// 3. search
-				int hitsPerPage = 10;
+				int hitsPerPage = 60;
 
 				IndexSearcher searcher = new IndexSearcher(reader);
 				TopScoreDocCollector collector = TopScoreDocCollector.create(
@@ -549,22 +858,18 @@ public class LuceneIndexer {
 
 				compileResultsLatest(hits, searcher, task.taskId);
 
-				/*
-				 * for (int j = 0; j < hits.length; ++j) { int docId =
-				 * hits[j].doc; searcher.doc(docId); }
-				 */
+				// finalHtml += globalHtml + "\n";
+
 			}
-
-			/*
-			 * float allTasksLen = allTasksList.size() * 1.0f;
-			 * System.out.printf(
-			 * "Results:  1\t3\t5\t7\t10\n       %s\t%s\t%s\t%s\t%s", (res[0] *
-			 * 1.0f) / allTasksLen, (res[1] * 1.0f) / allTasksLen, (res[2] *
-			 * 1.0f) / allTasksLen, (res[3] * 1.0f) / allTasksLen, (res[4] *
-			 * 1.0f) / allTasksLen);
-			 */
-
+			// finalHtml += " </body>\n</html>";
+			// System.out.println(finalHtml);
+			
+			System.out.println(finalResults);
 			System.out.println(resultText);
+			System.out
+					.println("\n\n\n*******************************************\n");
+			System.out.println("Printing results for NLP\n");
+			System.out.println(resulNLPtText);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -757,26 +1062,27 @@ public class LuceneIndexer {
 
 		int max = tasks.length > maxBound ? maxBound : tasks.length;
 
-		List<String> unionFiles = task.getFileNamesList();
-		List<String> intersectionFiles = task.getFileNamesList();
+		List<String> unionFiles = task.getFileNamesList(false);
+		List<String> intersectionFiles = task.getFileNamesList(false);
 
 		for (int i = 1; i < max; i++) {
 			task = getTask(tasks[i]);
 			unionFiles = (ArrayList) Utils.union(unionFiles,
-					task.getFileNamesList());
+					task.getFileNamesList(false));
 			intersectionFiles = (ArrayList) Utils.intersection(
-					intersectionFiles, task.getFileNamesList());
+					intersectionFiles, task.getFileNamesList(false));
 		}
 
 		LOGGER.info("Union length " + unionFiles.size()
 				+ " intersection length " + intersectionFiles.size()
-				+ " target task lenght " + targetTask.getFileNamesList().size());
+				+ " target task lenght "
+				+ targetTask.getFileNamesList(false).size());
 
 		// for union
-		int TP = Utils.intersection(unionFiles, targetTask.getFileNamesList())
-				.size();
+		int TP = Utils.intersection(unionFiles,
+				targetTask.getFileNamesList(false)).size();
 		int FP = unionFiles.size() - TP;
-		int FN = targetTask.getFileNamesList().size() - TP;
+		int FN = targetTask.getFileNamesList(false).size() - TP;
 		LOGGER.info("For union with max bound " + maxBound);
 		LOGGER.info("TP FP FN " + TP + "\t" + FP + "\t" + FN);
 		results[resultIndex] += task.taskId + "\t" + maxBound
@@ -784,9 +1090,9 @@ public class LuceneIndexer {
 
 		// for intersection
 		TP = Utils.intersection(intersectionFiles,
-				targetTask.getFileNamesList()).size();
+				targetTask.getFileNamesList(false)).size();
 		FP = intersectionFiles.size() - TP;
-		FN = targetTask.getFileNamesList().size() - TP;
+		FN = targetTask.getFileNamesList(false).size() - TP;
 		LOGGER.info("For intersection with max bound " + maxBound);
 		LOGGER.info("TP FP FN " + TP + "\t" + FP + "\t" + FN);
 		results[resultIndex + 1] += task.taskId + "\t" + maxBound
@@ -804,9 +1110,10 @@ public class LuceneIndexer {
 		}
 
 		// for Ranking
-		TP = Utils.intersection(keys, targetTask.getFileNamesList()).size();
+		TP = Utils.intersection(keys, targetTask.getFileNamesList(false))
+				.size();
 		FP = keys.size() - TP;
-		FN = targetTask.getFileNamesList().size() - TP;
+		FN = targetTask.getFileNamesList(false).size() - TP;
 		LOGGER.info("For ranking with max bound " + maxBound);
 		LOGGER.info("TP FP FN " + TP + "\t" + FP + "\t" + FN);
 		results[resultIndex + 2] += task.taskId + "\t" + maxBound
@@ -825,7 +1132,7 @@ public class LuceneIndexer {
 		for (int i = 0; i < tasks.length; i++) {
 			task = getTask(tasks[i]);
 
-			for (Object f : task.getFileNamesList()) {
+			for (Object f : task.getFileNamesList(false)) {
 				String file = (String) f;
 				if (fileFrequency.containsKey(file)) {
 					fileFrequency.put(file, fileFrequency.get(file) + 1);
@@ -978,15 +1285,16 @@ public class LuceneIndexer {
 			files = db.getCommitGraphForFile(file, commitIds);
 
 			if (files == null || files.size() == 0)
-				files = task.getFileNamesList();
+				files = task.getFileNamesList(false);
 
 			// for intersection
-			int TP = Utils.intersection(files, firstTask.getFileNamesList())
+			int TP = Utils
+					.intersection(files, firstTask.getFileNamesList(true))
 					.size();
 			int FP = 0, FN = 0;
 			if (TP > 0) {
 				FP = files.size() - TP;
-				FN = firstTask.getFileNamesList().size() - TP;
+				FN = firstTask.getFileNamesList(true).size() - TP;
 			} else {
 				fileFrequency = new HashMap();
 
@@ -1015,12 +1323,13 @@ public class LuceneIndexer {
 				if (files.size() == 0)
 					files.addAll(keys);
 
-				TP = Utils.intersection(files, firstTask.getFileNamesList())
+				TP = Utils
+						.intersection(files, firstTask.getFileNamesList(true))
 						.size();
 				FP = 0;
 				FN = 0;
 				FP = files.size() - TP;
-				FN = firstTask.getFileNamesList().size() - TP;
+				FN = firstTask.getFileNamesList(true).size() - TP;
 			}
 
 			LOGGER.info("For Commit graphs with max bound");
@@ -1042,6 +1351,7 @@ public class LuceneIndexer {
 			System.exit(0);
 		}
 		LuceneIndexer lc = new LuceneIndexer();
+		lc.seedSize = jct.seedSize;
 
 		LOGGER.info("Starting for " + Arrays.toString(args));
 		if (jct.experimentType.equals("s")) {
