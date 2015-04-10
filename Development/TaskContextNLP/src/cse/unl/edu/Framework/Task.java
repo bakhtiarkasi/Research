@@ -3,7 +3,9 @@ package cse.unl.edu.Framework;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Task {
 
@@ -11,7 +13,8 @@ public class Task {
 	public String shortDescription;
 	public String longDescription;
 
-	public ArrayList nouns;
+	public List<String> nouns;
+	public Map<String,String> tfIDF;
 	public ArrayList verbs;
 	public ArrayList spKeywords;
 
@@ -28,6 +31,7 @@ public class Task {
 	public Task() {
 		nouns = new ArrayList();
 		verbs = new ArrayList();
+		tfIDF = new HashMap();
 		// contextIds = new ArrayList();
 		// files = new ArrayList();
 		spKeywords = new ArrayList();

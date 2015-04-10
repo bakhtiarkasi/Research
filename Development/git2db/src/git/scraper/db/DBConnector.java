@@ -108,11 +108,11 @@ public class DBConnector {
 	}
 
 	public int insertFile(String file, String hash, Integer commit_id,
-			String extension) {
+			String extension, String project) {
 		ResultSet keys = null;
 		try {
 			String query = "INSERT INTO " + prefix
-					+ "_file VALUES (0, ?, ?, ?, ?)";
+					+ "_file VALUES (0, ?, ?, ?, ?,?,?,?)";
 
 			statement = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
@@ -120,6 +120,9 @@ public class DBConnector {
 			statement.setString(2, file);
 			statement.setString(3, extension);
 			statement.setBoolean(4, true);
+			statement.setNull(5, java.sql.Types.VARCHAR);
+			statement.setNull(6,java.sql.Types.VARCHAR);
+			statement.setString(7, project);
 
 			statement.executeUpdate();
 			keys = statement.getGeneratedKeys();

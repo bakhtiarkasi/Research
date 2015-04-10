@@ -24,12 +24,20 @@ public class WebHelper {
 	
 	public static void main(String[] args) {
 		
-		String pre = "https://issues.apache.org/jira/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=project+%3D+HBASE+AND+created+%3E%3D+";
+		//Hbase pre 
+		//string : String pre = "https://issues.apache.org/jira/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=project+%3D+HBASE+AND+created+%3E%3D+";
+		
+		//Derby pre string
+		String pre = "https://issues.apache.org/jira/sr/jira.issueviews:searchrequest-xml/temp/SearchRequest.xml?jqlQuery=project+%3D+DERBY+AND+created+%3E%3D+";
 		String mid = "+AND+created+%3C+";
 		String pos = "&tempMax=100";
 		
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
-		DateTime start = new DateTime(2012,6,1,0,0);
+		//HBase Start Date: 
+		//DateTime start = new DateTime(2012,6,1,0,0);
+		
+		//yyyy,m,d
+		DateTime start = new DateTime(2004,9,24,0,0); //Derby start date 2004-09-24
 		DateTime end = start.plus(Period.days(8));
 		DateTime last = new DateTime(2014,9,9,0,0);
 		
@@ -40,7 +48,12 @@ public class WebHelper {
 			System.out.println("Current: " + date1);
 			
 			String url = pre + date1 + mid + fmt.print(end) + pos;
-			WebHelper.downloadURL(url, "files/issues/hbase_" + date1 + ".xml");
+			
+			//habse helper location
+			//WebHelper.downloadURL(url, "files/issues/hbase_" + date1 + ".xml");
+			
+			//Derby helper location
+			WebHelper.downloadURL(url, "files/issues/derby_" + date1 + ".xml");
 			
 			// next day
 			start = end;

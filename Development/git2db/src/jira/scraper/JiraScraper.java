@@ -4,14 +4,20 @@ import git.scraper.db.DBConnector;
 import git.scraper.pojo.Comment;
 import git.scraper.pojo.Issue;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -217,9 +223,23 @@ public class JiraScraper {
 	}
 
 	public static void main(String[] args) throws Exception {
+		
+		//hbase files name
+		//final String projectName = "hbase_";
+		
+		//derby project name
+		final String projectName = "derby_";
+		
+		FileFilter filter = new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+               return pathname.isFile() && pathname.getName().startsWith(projectName);
+            }
+         };
+		
 		JiraScraper scraper = new JiraScraper();
 		File folder = new File("files/issues");
-		File[] files = folder.listFiles();
+		File[] files = folder.listFiles(filter);
 
 		Arrays.sort(files, new Comparator<File>() {
 			@Override
@@ -228,9 +248,9 @@ public class JiraScraper {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd",
 						Locale.ENGLISH);
 
-				Date x1 = df.parse(o1.getName().replaceAll(".xml", "").replaceAll("hbase_", ""));
+				Date x1 = df.parse(o1.getName().replaceAll(".xml", "").replaceAll(projectName, ""));
 				
-				Date x2 = df.parse(o2.getName().replaceAll(".xml", "").replaceAll("hbase_", ""));
+				Date x2 = df.parse(o2.getName().replaceAll(".xml", "").replaceAll(projectName, ""));
 
 				return x1.compareTo(x2);
 				} catch (ParseException e) {
@@ -242,21 +262,108 @@ public class JiraScraper {
 			}
 		});
 
+		
 		for (File file : files) {
-			// if(file.getName().contains("12.xml"))
+			//if(file.getName().contains("24.xml"))
 			{
-				// scraper.getIssues(file.getAbsolutePath());
-				 //scraper.getCommits(file.getAbsolutePath());
+				//this is important only
+				//scraper.getIssues(file.getAbsolutePath());
+				 
+				//scraper.getCommits(file.getAbsolutePath());
 				 
 
 				//System.out.println(file.getAbsolutePath());
+				//break;
 			}
 		}
 
+		scraper.updateFileCreationDates();
 		scraper.updateCommitLinkage();
 		// scraper.getCommitsStatus();
 
 	}
+	
+	
+	private void updateFileCreationDates() {
+
+		try {
+
+			DBConnector db = new DBConnector(props);
+			db.createConnection();
+			List<String> file = db.getSourceFiles();
+			db.close();
+
+			StringBuilder builder = new StringBuilder();
+
+			Map<String, String> results = new HashMap();
+			List<String> nonFound = new ArrayList();
+
+			String[] command = null;
+			String path = "";
+			boolean found = false;
+			int count = 0;
+
+			for (String fil : file) {
+
+				String line = "";
+
+				command = new String[] { "git", "log", "--diff-filter=A",
+						"--format=%aD@%H", "--", fil };
+				path = gitFolder + this.project;
+
+				Process process = Runtime.getRuntime().exec(command, null,
+						new File(path));
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						process.getInputStream()));
+
+				String tmp = "";
+				while (isAlive(process)) {
+
+					while (br.ready() && (tmp = br.readLine()) != null) {
+						line = tmp;
+					}
+
+				}
+				while (br.ready() && (tmp = br.readLine()) != null) {
+					line = tmp;
+				}
+
+				builder = new StringBuilder();
+				for (String s : command) {
+					builder.append(s);
+					builder.append(" ");
+				}
+
+				if (line.isEmpty()) {
+					found = false;
+					System.out.println("Not Found " + fil);
+					System.out.println("cd " + path + " \n "
+							+ builder.toString());
+				} else {
+					line += "@" + path;
+					results.put(fil, line);
+					found = true;
+				}
+			}
+			db.createConnection();
+			db.updateFileCreationDates(results);
+			db.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static boolean isAlive(Process p) {
+		try {
+			p.exitValue();
+			return false;
+		} catch (IllegalThreadStateException e) {
+			return true;
+		}
+	}
+	
 
 	private void updateCommitLinkage() {
 		try {

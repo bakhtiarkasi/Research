@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,11 +23,13 @@ import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.DocsEnum;
 import org.apache.lucene.index.Fields;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.MultiFields;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -37,6 +41,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.Bits;
 import org.apache.lucene.util.Version;
 
 import cse.unl.edu.Framework.DBConnector;
@@ -67,6 +72,7 @@ public class LuceneIndexer {
 	StringBuffer verbs;
 	TaskDownloader tw;
 	Map<String, Integer> fileFrequency;
+	boolean nominal = false;
 
 	public final String descriptionField = "nouns";
 
@@ -338,11 +344,11 @@ public class LuceneIndexer {
 			}
 
 			String selectedFile = "";
-			
+
 			DBConnector db = new DBConnector();
-			
+
 			List<String> initList = firstTask.getFileNamesList(true);
-			
+
 			if (initList.size() > FinalTaskSize) {
 				selectedFile = "";
 				for (String str : initList) {
@@ -352,35 +358,27 @@ public class LuceneIndexer {
 				}
 
 				db.createConnection();
-				initList = db.getFrequentlyEditedFilesFrom(
-						selectedFile, FinalTaskSize, firstTask.fromDate);
+				initList = db.getFrequentlyEditedFilesFrom(selectedFile,
+						FinalTaskSize, firstTask.fromDate);
 				db.close();
 			}
 
-			
-			
 			// change here
 			/*
-			finalResults += "\n" + firstTask.taskId + "(" + initList.size() + ")->" + tasks.length;
-			
-			for (int i = 0; i < tasks.length; i++) {
-				Task task = getTask(tasks[i]);
-				List<String> comm = Utils.intersection(
-						task.getFileNamesList(true), initList);
-				if (comm.size() > 0) {
-					initList.removeAll(comm);
-					finalResults += "\t" + i + ":" + comm.size() + "/" + task.getFileNamesList(true).size();
-				}
-				if (initList.size() == 0)
-					break;
-			}
-			if(!initList.isEmpty())
-				finalResults += "\t" + "[" + initList.size() + "]";
-			
-			
-			if(true)
-				return;
-				*/
+			 * finalResults += "\n" + firstTask.taskId + "(" + initList.size() +
+			 * ")->" + tasks.length;
+			 * 
+			 * for (int i = 0; i < tasks.length; i++) { Task task =
+			 * getTask(tasks[i]); List<String> comm = Utils.intersection(
+			 * task.getFileNamesList(true), initList); if (comm.size() > 0) {
+			 * initList.removeAll(comm); finalResults += "\t" + i + ":" +
+			 * comm.size() + "/" + task.getFileNamesList(true).size(); } if
+			 * (initList.size() == 0) break; } if(!initList.isEmpty())
+			 * finalResults += "\t" + "[" + initList.size() + "]";
+			 * 
+			 * 
+			 * if(true) return;
+			 */
 
 			// select 3 or more file as the seed set for the commit graph, any
 			// file that appears more than twice is a candidiate
@@ -417,9 +415,7 @@ public class LuceneIndexer {
 
 				count = Math.min(count, FinalTaskSize);
 				intersectionFiles = intersectionFiles.subList(0, count);
-			}
-			else
-			{
+			} else {
 				if (intersectionFiles.size() > FinalTaskSize) {
 					selectedFile = "";
 					for (String str : intersectionFiles) {
@@ -637,7 +633,7 @@ public class LuceneIndexer {
 				// initList = firstTask.getFirstCommitFile(initList);
 				// initList = initList.subList(0,
 				// Math.min(initList.size(), FinalTaskSize));
-				
+
 				if (initList.size() > FinalTaskSize) {
 					selectedFile = "";
 					for (String str : initList) {
@@ -647,8 +643,8 @@ public class LuceneIndexer {
 					}
 
 					db.createConnection();
-					initList = db.getFrequentlyEditedFilesFrom(
-							selectedFile, FinalTaskSize, firstTask.fromDate);
+					initList = db.getFrequentlyEditedFilesFrom(selectedFile,
+							FinalTaskSize, firstTask.fromDate);
 					db.close();
 				}
 			}
@@ -791,29 +787,20 @@ public class LuceneIndexer {
 				}
 			}
 
+			// here
+
+			IndexReader reader;
 			List<Task> taskList = db.getIssueDescription(idsForAnalysis);
 
 			this.allTasksList = taskList;
 
 			for (int i = 0; i < allTasksList.size(); i++) {
-				Task task = taskList.get(i);
-				// here changed task:
-				// addDocumentToIndexWithNLP(task);
+				Task task = taskList.get(i); // here changed task: //
+				addDocumentToIndexWithNLP(task);
 			}
 
-			LOGGER.info("All docs have been added \n");
-			// here changed task:
-			// indexWriter.close();
-			// IndexReader reader = DirectoryReader.open(index);
-
-			IndexReader reader;
-
-			/*
-			 * Fields fields = MultiFields.getFields(reader); Terms terms =
-			 * fields.terms(descriptionField); TermsEnum te =
-			 * terms.iterator(null); while (te.next() != null) {
-			 * te.term().utf8ToString(); }
-			 */
+			LOGGER.info("All docs have been added \n"); // here changed task:
+			indexWriter.close();
 
 			res = new int[5]; // 1,3,5,7,10
 
@@ -822,21 +809,19 @@ public class LuceneIndexer {
 			finalHtml = "<!DOCTYPE html>\n<html>\n<boby>\n";
 			finalResults = "";
 
-			// here
+			// allTasksList = allTasksList.subList(0, 1000);
+			// System.out.println(allTasksList.size());
+			Set<String> t = new HashSet();
+
 			for (int i = 0; i < allTasksList.size(); i++) {
 
 				Task task = taskList.get(i);
 
-				// here changed task
-				// skip for first 10 tasks:
-				addDocumentToIndexWithNLP(task);
-				if (i < 10)
-					continue;
-
-				// indexWriter.close();
-				reader = DirectoryReader.open(indexWriter, true);
-
 				String querystr = task.longDescription + " " + task.comments;
+				String[] s = querystr.split("\\s+");
+				for (String tee : s)
+					t.add(tee.toLowerCase().trim());
+
 				querystr = QueryParser.escape(querystr);
 				querystr = tagger.tagString(querystr);
 				querystr = QueryParser.escape(querystr);
@@ -845,7 +830,21 @@ public class LuceneIndexer {
 				Query q = new QueryParser(Version.LUCENE_47, descriptionField,
 						analyzer).parse(querystr);
 
+				
 				// LOGGER.info("\n Query: " + q);
+				// LOGGER.info("\n Query: " + q.toString().replaceAll("nouns:",
+				// ""));
+
+				// for ML
+				task.nouns.addAll(Arrays.asList(q.toString()
+						.replaceAll("nouns:", "").split(" ")));
+
+				if (i % 300 == 0)
+					LOGGER.info("Done with " + i + " tasks "
+							+ allTasksList.size());
+
+				if (true)
+					continue;
 
 				// 3. search
 				int hitsPerPage = 60;
@@ -861,22 +860,175 @@ public class LuceneIndexer {
 				// finalHtml += globalHtml + "\n";
 
 			}
-			// finalHtml += " </body>\n</html>";
+			System.out.println("Unique " + t.size());
+
+			// finalHtml += " </body>\n</html>"; //
 			// System.out.println(finalHtml);
-			
-			System.out.println(finalResults);
-			System.out.println(resultText);
-			System.out
-					.println("\n\n\n*******************************************\n");
-			System.out.println("Printing results for NLP\n");
-			System.out.println(resulNLPtText);
+
+			// System.out.println(finalResults);
+			// System.out.println(resultText);
+			// System.out
+			// .println("\n\n\n*******************************************\n");
+			// System.out.println("Printing results for NLP\n");
+			// System.out.println(resulNLPtText);
+
+			// for ML
+			Set<String> attributes = new HashSet();
+			Set<String> labels = new HashSet();
+			List<String> filteredNouns = new ArrayList();
+			for (int i = 0; i < allTasksList.size(); i++) {
+				Task task = taskList.get(i);
+
+				for (String nou : task.nouns) {
+
+					// nou = nou.replaceAll("'|%", "");
+
+					// RAKEL doesn't work with this //
+
+					if (nou.length() >= 3) {
+						filteredNouns.add(nou);
+					}
+				}
+				task.nouns = new ArrayList(filteredNouns);
+				filteredNouns.clear();
+
+				attributes.addAll(task.nouns);
+				labels.addAll(task.getFileNamesList(true));
+
+				if (i % 300 == 0)
+					LOGGER.info("Nouns done with " + i + " tasks ");
+
+			}
+
+			// here i need to make a map and check
+
+			// here is teh part that i need to use for tfidf values?
+			reader = DirectoryReader.open(index);
+			Fields fields = MultiFields.getFields(reader);
+			Terms terms = fields.terms(descriptionField);
+			TermsEnum te = terms.iterator(null);
+
+			Bits livedocs = MultiFields.getLiveDocs(reader);
+
+			while (te.next() != null) {
+				if (te.term().utf8ToString().length() <= 2)
+					continue;
+
+				long docCount = te.docFreq();
+
+				DocsEnum docsEnum = MultiFields.getTermDocsEnum(reader,
+						livedocs, descriptionField, te.term());
+
+				int doc1 = DocsEnum.NO_MORE_DOCS;
+				while ((doc1 = docsEnum.nextDoc()) != DocsEnum.NO_MORE_DOCS) {
+					Task task = getTask(reader.document(doc1).get("taskid"));
+					double tf = docsEnum.freq();
+					double idf1 = Math
+							.log10(((reader.numDocs() * 1.0) / docCount));
+					/*
+					 * System.out.println(te.term().utf8ToString() + " tf: " +
+					 * tf + " idf: " + idf1 + " tfidf: " + String.format("%.5f",
+					 * tf * idf1));
+					 */
+					// System.out.println(te.term().utf8ToString());
+
+					// if (!task.tfIDF.containsKey(te.term().utf8ToString())) {
+
+					//System.out.println("Note heres  "+
+					//te.term().utf8ToString());
+					
+
+					task.tfIDF.put(te.term().utf8ToString(),
+							String.format("%.5f", tf * idf1));
+
+				}
+			}
+
+			LOGGER.info("Added nouns and files for all tasks");
+
+			List<String> attribs = new ArrayList(attributes);
+			List<String> labs = new ArrayList(labels);
+
+			Collections.sort(attribs);
+			Collections.sort(labs);
+
+			StringBuilder arFile = new StringBuilder();
+			StringBuilder xmlFile = new StringBuilder();
+
+			arFile.append("@relation mylyn_dataset\n\n");
+			xmlFile.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
+			xmlFile.append("<labels xmlns=\"http://mulan.sourceforge.net/labels\">\n");
+
+			for (int i = 0; i < attribs.size(); i++) {
+				if (nominal)
+					arFile.append("@attribute a" + i + " {0,1}\n");
+				else
+					arFile.append("@attribute a" + i + " numeric\n");
+			}
+
+			for (int i = 0; i < labs.size(); i++) {
+				arFile.append("@attribute TAG_" + labs.get(i) + " {0,1}\n");
+				xmlFile.append("<label name=\"TAG_" + labs.get(i)
+						+ "\"></label>\n");
+			}
+			arFile.append("\n@data\n");
+			xmlFile.append("</labels>");
+
+			for (int i = 0; i < allTasksList.size(); i++) {
+				Task task = taskList.get(i);
+
+				List<String> nouns = new ArrayList(new HashSet(task.nouns));
+				List<String> files = new ArrayList(new HashSet(
+						task.getFileNamesList(true)));
+
+				LOGGER.info("task: " + task.taskId + " nouns: " + nouns.size()
+						+ " files: " + files.size() + " arff len "
+						+ arFile.length());
+
+				Collections.sort(nouns);
+				Collections.sort(files);
+
+				if (nouns.size() > 0)
+					arFile.append("{");
+
+				for (int j = 0; j < nouns.size(); j++) {
+
+					int k = attribs.indexOf(nouns.get(j));
+					
+					if (nominal)
+						arFile.append(k + " 1,");
+					else
+						arFile.append(k + " " + task.tfIDF.get(nouns.get(j)) + ",");
+
+					if (!task.tfIDF.containsKey(nouns.get(j))) {
+						
+						System.out.println("Not here " + nouns.get(j));
+
+					}
+
+				}
+				for (int j = 0; j < files.size(); j++) {
+					int k = labs.indexOf(files.get(j)) + attribs.size();
+					arFile.append(k + " 1,");
+				}
+
+				if (nouns.size() > 0 || files.size() > 0) {
+					arFile.setLength(arFile.length() - 1);
+					arFile.append("}\n");
+				}
+
+				if (i % 300 == 0)
+					LOGGER.info("XML done with " + i + " tasks ");
+			}
+
+			System.out.println("arf file \n" + arFile.toString());
+			System.out.println("xml file \n" + xmlFile.toString());
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			LOGGER.info("Exception in initialize() " + e.getMessage());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+		} catch (ParseException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
 			LOGGER.info("Exception in initialize() " + e.getMessage());
 		} catch (ClassNotFoundException e) {
@@ -1258,14 +1410,36 @@ public class LuceneIndexer {
 		indexWriter.addDocument(doc);
 	}
 
-	private void addDocumentToIndexWithNLP(Task task) throws IOException {
+	private void addDocumentToIndexWithNLP(Task task) throws IOException,
+			ParseException {
 
 		Document doc = new Document();
 		doc.add(new StoredField("taskid", task.taskId));
-		String taggedString = tagger.tagString(task.longDescription + " "
-				+ task.comments);
-		doc.add(new TextField(descriptionField, taggedString, Field.Store.NO));
+		String querystr = task.longDescription + " " + task.comments;
+		
+		querystr = QueryParser.escape(querystr);
+		String taggedString = tagger.tagString(querystr);
+		querystr = QueryParser.escape(taggedString);
+		BooleanQuery.setMaxClauseCount(20000);
+		
+		Query q = new QueryParser(Version.LUCENE_47, descriptionField,
+				new NLPAnalyzerText()).parse(querystr);
+
+		String qtr = q.toString().replaceAll("nouns:", "")
+				.replaceAll("\\s+", "/VB ")
+				+ "/VB";
+
+		doc.add(new TextField(descriptionField, qtr, Field.Store.NO));
+		
 		indexWriter.addDocument(doc);
+
+		// Document doc = new Document();
+		// doc.add(new StoredField("taskid", task.taskId));
+		// String taggedString = tagger.tagString(task.longDescription + " "
+		// + task.comments);
+		// doc.add(new TextField(descriptionField, taggedString,
+		// Field.Store.NO));
+		// indexWriter.addDocument(doc);
 	}
 
 	private void getCommitGraphResults(Task firstTask, Task task,
@@ -1352,6 +1526,7 @@ public class LuceneIndexer {
 		}
 		LuceneIndexer lc = new LuceneIndexer();
 		lc.seedSize = jct.seedSize;
+		lc.nominal = Boolean.parseBoolean(jct.nominal);
 
 		LOGGER.info("Starting for " + Arrays.toString(args));
 		if (jct.experimentType.equals("s")) {

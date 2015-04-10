@@ -24,9 +24,13 @@ public class JCommanderArgs {
 	@Parameter(names = "-tagger", description = "Path of Maxent tagger to use for NLP")
 	public String taggerPath = "taggers/left3words-wsj-0-18.tagger";
 	
+	@Parameter(names = "-nominal", description = "Return nominal or decimal representation of tasks")
+	public String nominal;
+	
 	@Parameter(names = "--help", help = true)
 	private boolean help;
-
+	
+	
 
 	//@DynamicParameter(names = "-D", description = "Dynamic parameters go here")
 	//public Map<String, String> dynamicParams = new HashMap<String, String>();

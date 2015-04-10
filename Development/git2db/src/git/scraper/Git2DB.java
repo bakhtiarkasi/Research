@@ -115,9 +115,8 @@ public class Git2DB {
 
 			if (line.hasOption("c")) {
 
-				// git2db.getCommitsForProject();
-				//git2db.getCommits();
-				git2db.updateCommitDates();
+				git2db.getCommitsForProject();
+				
 			} else if (line.hasOption("f")) {
 				git2db.getFileData(start);
 			} else if (line.hasOption("a")) {
@@ -173,7 +172,7 @@ public class Git2DB {
 	}
 
 	public void getCommits() {
-		List<String> hashes = GitUtil.getCommits(this.gitFolder, "HEAD", null);
+		List<String> hashes = GitUtil.getCommits(this.gitFolder, "eac036999fab0e9f9509022d833a1c99cad1b415", null);
 		DBConnector db = new DBConnector(this.props);
 		db.createConnection();
 
@@ -203,7 +202,7 @@ public class Git2DB {
 			Set<String> files = GitUtil.getFiles(this.gitFolder, hash);
 			for (String file : files) {
 				other = db.insertFile(file, hash, id,
-						FileUtil.getExtension(file));
+						FileUtil.getExtension(file),this.gitFolder);
 				if (other == -1) {
 					System.err.println("FINISHING EARLY");
 					return;
@@ -225,8 +224,8 @@ public class Git2DB {
 
 			Commit commit = new Commit(hash, this.gitFolder);
 			db.updateCommitDate(commit);
-			db.close();
 		}
+		db.close();
 	}
 
 	private void getFileData(int start) {
