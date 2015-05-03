@@ -59,6 +59,7 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 //-type n -ids 100671,102243,107146,113848,174993,213661,225538,391121 -tagger taggers/left3words-wsj-0-18.tagger
 // mylyn 100627,195727,193423,165088,155333,172580,135413,143567,195691,207228,101374,120790,219649,133113,117799,406470,134295,253790,172777,163139,113848,100671,102243,107146,174993,213661,225538,391121
 // hbase HBASE-10031,HBASE-8355,HBASE-8832,HBASE-9745,HBASE-9998,HBASE-10024,HBASE-10644,HBASE-11234,HBASE-6479,HBASE-7114,HBASE-7575,HBASE-8101,HBASE-8344,HBASE-8902,HBASE-9446,HBASE-9994,HBASE-9205
+// derby  -ids DERBY-1,DERBY-100,DERBY-1000,DERBY-1001,DERBY-1002,DERBY-1004,DERBY-1005,DERBY-1006,DERBY-1007,DERBY-1009,DERBY-1010,DERBY-1014,DERBY-1015,DERBY-1016,DERBY-1019,DERBY-1024,DERBY-1025,DERBY-1028,DERBY-1029,DERBY-1030
 public class LuceneIndexer {
 
 	/**
@@ -158,13 +159,15 @@ public class LuceneIndexer {
 			}
 
 			res = new int[5]; // 1,3,5,7,10
-
+			
+			
 			for (int i = 0; i < allTasksList.size(); i++) {
 
 				Task task = taskList.get(i);
-				String querystr = task.longDescription + " " + task.comments;
+				String querystr = task.longDescription + " " + task.comments;		
+				
 				querystr = QueryParser.escape(querystr);
-				BooleanQuery.setMaxClauseCount(20000);
+				BooleanQuery.setMaxClauseCount(80000);
 
 				Query q = new QueryParser(Version.LUCENE_47, descriptionField,
 						analyzer).parse(querystr);
@@ -825,7 +828,7 @@ public class LuceneIndexer {
 				querystr = QueryParser.escape(querystr);
 				querystr = tagger.tagString(querystr);
 				querystr = QueryParser.escape(querystr);
-				BooleanQuery.setMaxClauseCount(20000);
+				BooleanQuery.setMaxClauseCount(80000);
 
 				Query q = new QueryParser(Version.LUCENE_47, descriptionField,
 						analyzer).parse(querystr);
@@ -1420,7 +1423,7 @@ public class LuceneIndexer {
 		querystr = QueryParser.escape(querystr);
 		String taggedString = tagger.tagString(querystr);
 		querystr = QueryParser.escape(taggedString);
-		BooleanQuery.setMaxClauseCount(20000);
+		BooleanQuery.setMaxClauseCount(80000);
 		
 		Query q = new QueryParser(Version.LUCENE_47, descriptionField,
 				new NLPAnalyzerText()).parse(querystr);
