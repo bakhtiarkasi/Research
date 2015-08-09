@@ -223,67 +223,58 @@ public class JiraScraper {
 	}
 
 	public static void main(String[] args) throws Exception {
-		
-		//hbase files name
-		//final String projectName = "hbase_";
-		
-		//derby project name
+
+		// hbase files name
+		// final String projectName = "hbase_";
+
+		// derby project name
 		final String projectName = "derby_";
-		
-		FileFilter filter = new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-               return pathname.isFile() && pathname.getName().startsWith(projectName);
-            }
-         };
-		
 		JiraScraper scraper = new JiraScraper();
-		File folder = new File("files/issues");
-		File[] files = folder.listFiles(filter);
 
-		Arrays.sort(files, new Comparator<File>() {
-			@Override
-			public int compare(File o1, File o2) {
-				try {
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd",
-						Locale.ENGLISH);
+		/*
+		 * 
+		 * FileFilter filter = new FileFilter() {
+		 * 
+		 * @Override public boolean accept(File pathname) { return
+		 * pathname.isFile() && pathname.getName().startsWith(projectName); } };
+		 * 
+		 * JiraScraper scraper = new JiraScraper(); File folder = new
+		 * File("files/issues"); File[] files = folder.listFiles(filter);
+		 * 
+		 * Arrays.sort(files, new Comparator<File>() {
+		 * 
+		 * @Override public int compare(File o1, File o2) { try { DateFormat df
+		 * = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		 * 
+		 * Date x1 = df.parse(o1.getName().replaceAll(".xml",
+		 * "").replaceAll(projectName, ""));
+		 * 
+		 * Date x2 = df.parse(o2.getName().replaceAll(".xml",
+		 * "").replaceAll(projectName, ""));
+		 * 
+		 * return x1.compareTo(x2); } catch (ParseException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } return 0;
+		 * 
+		 * } });
+		 * 
+		 * 
+		 * for (File file : files) { //if(file.getName().contains("24.xml")) {
+		 * //this is important only //scraper.getIssues(file.getAbsolutePath());
+		 * 
+		 * //scraper.getCommits(file.getAbsolutePath());
+		 * 
+		 * 
+		 * //System.out.println(file.getAbsolutePath()); //break; } }
+		 */
 
-				Date x1 = df.parse(o1.getName().replaceAll(".xml", "").replaceAll(projectName, ""));
-				
-				Date x2 = df.parse(o2.getName().replaceAll(".xml", "").replaceAll(projectName, ""));
-
-				return x1.compareTo(x2);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return 0;
-
-			}
-		});
-
-		
-		for (File file : files) {
-			//if(file.getName().contains("24.xml"))
-			{
-				//this is important only
-				//scraper.getIssues(file.getAbsolutePath());
-				 
-				//scraper.getCommits(file.getAbsolutePath());
-				 
-
-				//System.out.println(file.getAbsolutePath());
-				//break;
-			}
-		}
-
-		scraper.updateFileCreationDates();
-		scraper.updateCommitLinkage();
+		// scraper.updateFileCreationDates();
+		// scraper.updateCommitLinkage();
 		// scraper.getCommitsStatus();
 
+		scraper.reportDeletedFiles();
+
 	}
-	
-	
+
 	private void updateFileCreationDates() {
 
 		try {
@@ -302,6 +293,9 @@ public class JiraScraper {
 			String path = "";
 			boolean found = false;
 			int count = 0;
+
+			int foundP = 0;
+			int notfound = 0;
 
 			for (String fil : file) {
 
@@ -340,15 +334,107 @@ public class JiraScraper {
 					System.out.println("Not Found " + fil);
 					System.out.println("cd " + path + " \n "
 							+ builder.toString());
+					notfound++;
 				} else {
 					line += "@" + path;
 					results.put(fil, line);
 					found = true;
+					foundP++;
 				}
 			}
+			// db.createConnection();
+			// db.updateFileCreationDates(results);
+			// db.close();
+			System.out.println(foundP + "/" + notfound);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void reportDeletedFiles() {
+		try {
+
+			DBConnector db = new DBConnector(props);
 			db.createConnection();
-			db.updateFileCreationDates(results);
+			List<String> file = db.getSourceFiles();
 			db.close();
+
+			StringBuilder builder = new StringBuilder();
+
+			Map<String, String> results = new HashMap();
+			List<String> nonFound = new ArrayList();
+
+			String[] command = null;
+			String path = "";
+			boolean found = false;
+			int count = 0;
+
+			int foundP = 0;
+			int notfound = 0;
+
+			for (String fil : file) {
+
+				String fileName = fil.split(":")[0];
+				path = gitFolder + this.project;
+
+				if (this.project.equals("Mylyn")) {
+					String projectName = "";
+					if (fil.split(":").length == 2) {
+						projectName = fil.split(":")[1];
+						if (!projectName.isEmpty())
+							path += "/" + projectName;
+					}
+				}
+
+				String line = "";
+
+				command = new String[] { "git", "log", "--diff-filter=D",
+						"--summary", "--", fileName, "|", "grep", "delete" };
+
+				Process process = Runtime.getRuntime().exec(command, null,
+						new File(path));
+
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						process.getInputStream()));
+
+				String tmp = "";
+				while (isAlive(process)) {
+
+					while (br.ready() && (tmp = br.readLine()) != null) {
+						line = tmp;
+					}
+
+				}
+				while (br.ready() && (tmp = br.readLine()) != null) {
+					line = tmp;
+				}
+
+				builder = new StringBuilder();
+				for (String s : command) {
+					builder.append(s);
+					builder.append(" ");
+				}
+
+				if (line.isEmpty()) {
+					found = false;
+					// System.out.println("Not Found " + fileName);
+					// System.out.println("cd " + path + " \n "
+					// + builder.toString());
+					if (notfound % 500 == 0)
+						System.out.println("Done with " + notfound);
+
+					notfound++;
+				} else {
+					line += "@" + path;
+					found = true;
+					foundP++;
+				}
+			}
+			// db.createConnection();
+			// db.updateFileCreationDates(results);
+			// db.close();
+			System.out.println(foundP + "/" + notfound);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -363,7 +449,6 @@ public class JiraScraper {
 			return true;
 		}
 	}
-	
 
 	private void updateCommitLinkage() {
 		try {

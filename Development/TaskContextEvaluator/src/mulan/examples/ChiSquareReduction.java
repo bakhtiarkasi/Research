@@ -21,26 +21,45 @@ import mulan.data.MultiLabelInstances;
 import mulan.dimensionalityReduction.BinaryRelevanceAttributeEvaluator;
 import mulan.dimensionalityReduction.Ranker;
 import weka.attributeSelection.ASEvaluation;
+import weka.attributeSelection.ChiSquaredAttributeEval;
 import weka.attributeSelection.GainRatioAttributeEval;
-import weka.attributeSelection.ReliefFAttributeEval;
 import weka.core.Instances;
 import weka.core.Utils;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Remove;
 
-public class ReliefFDimensionalityReduction {
+/**
+ * Demonstrates the attribute selection capabilities of Mulan
+ * 
+ * @author Grigorios Tsoumakas
+ * @version 2012.02.02
+ */
+public class ChiSquareReduction {
 
+	/**
+	 * Executes this example
+	 * 
+	 * @param args
+	 *            command-line arguments -path and -filestem, e.g. -path
+	 *            datasets/ -filestem emotions
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		String path = Utils.getOption("path", args);
 		String filestem = Utils.getOption("filestem", args);
-		MultiLabelInstances mlData = new MultiLabelInstances(path + filestem
-				+ ".arff", path + filestem + ".xml");
 		String attributesToKeep = Utils.getOption("numattribs", args);
 		final int NUM_TO_KEEP = Integer.parseInt(attributesToKeep);
 
-		ASEvaluation ase = new ReliefFAttributeEval();
+		MultiLabelInstances mlData = new MultiLabelInstances(path + filestem
+				+ ".arff", path + filestem + ".xml");
+
+		ASEvaluation ase = new ChiSquaredAttributeEval();
 		BinaryRelevanceAttributeEvaluator ae = new BinaryRelevanceAttributeEvaluator(
-				ase, mlData, "max", "dl", "eval");
+				ase, mlData, "max", "none", "eval");
+
+		Ranker r = new Ranker();
+		int[] result = r.search(ae, mlData);
+		// System.out.println(Arrays.toString(result));
 
 		System.out.println(mlData.getDataSet().numAttributes());
 
@@ -55,12 +74,9 @@ public class ReliefFDimensionalityReduction {
 								.attribute(mlData.getFeatureIndices()[i])
 								.index()));
 			}
-		} else {
+		}
 
-			Ranker r = new Ranker();
-			int[] result = r.search(ae, mlData);
-			System.out.println(Arrays.toString(result));
-
+		else {
 			int[] toKeep = new int[NUM_TO_KEEP + mlData.getNumLabels()];
 			System.arraycopy(result, 0, toKeep, 0, NUM_TO_KEEP);
 			int[] labelIndices = mlData.getLabelIndices();
@@ -76,9 +92,8 @@ public class ReliefFDimensionalityReduction {
 			MultiLabelInstances mlFiltered = new MultiLabelInstances(filtered,
 					mlData.getLabelsMetaData());
 
-			System.out.println("\n\n\n\n" + mlFiltered.getDataSet());
+			System.out.println(mlFiltered.getDataSet());
 		}
 
-		// You can now work on the reduced multi-label dataset mlFiltered
 	}
 }

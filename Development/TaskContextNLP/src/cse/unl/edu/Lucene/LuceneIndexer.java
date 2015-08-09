@@ -88,6 +88,7 @@ public class LuceneIndexer {
 	private String globalHtml;
 	private String finalHtml;
 	private String finalResults;
+	private String dbPrefix;
 
 	public final static Logger LOGGER = Logger.getLogger(LuceneIndexer.class
 			.getName());
@@ -128,7 +129,7 @@ public class LuceneIndexer {
 		// 1. create the index
 		Directory index = new RAMDirectory();
 
-		DBConnector db = new DBConnector();
+		DBConnector db = new DBConnector(dbPrefix);
 		db.createConnection();
 
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47,
@@ -159,13 +160,12 @@ public class LuceneIndexer {
 			}
 
 			res = new int[5]; // 1,3,5,7,10
-			
-			
+
 			for (int i = 0; i < allTasksList.size(); i++) {
 
 				Task task = taskList.get(i);
-				String querystr = task.longDescription + " " + task.comments;		
-				
+				String querystr = task.longDescription + " " + task.comments;
+
 				querystr = QueryParser.escape(querystr);
 				BooleanQuery.setMaxClauseCount(80000);
 
@@ -348,7 +348,7 @@ public class LuceneIndexer {
 
 			String selectedFile = "";
 
-			DBConnector db = new DBConnector();
+			DBConnector db = new DBConnector(dbPrefix);
 
 			List<String> initList = firstTask.getFileNamesList(true);
 
@@ -407,7 +407,7 @@ public class LuceneIndexer {
 			}
 
 			// compile results here for NLP search
-			db = new DBConnector();
+			db = new DBConnector(dbPrefix);
 			List<String> intersectionFiles = new ArrayList(
 					fileFrequency.keySet());
 
@@ -767,7 +767,7 @@ public class LuceneIndexer {
 		// 1. create the index
 		Directory index = new RAMDirectory();
 
-		DBConnector db = new DBConnector();
+		DBConnector db = new DBConnector(dbPrefix);
 		db.createConnection();
 
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47,
@@ -833,7 +833,6 @@ public class LuceneIndexer {
 				Query q = new QueryParser(Version.LUCENE_47, descriptionField,
 						analyzer).parse(querystr);
 
-				
 				// LOGGER.info("\n Query: " + q);
 				// LOGGER.info("\n Query: " + q.toString().replaceAll("nouns:",
 				// ""));
@@ -896,7 +895,7 @@ public class LuceneIndexer {
 				filteredNouns.clear();
 
 				attributes.addAll(task.nouns);
-				labels.addAll(task.getFileNamesList(true));
+				labels.addAll(task.getFileNamesList(false));
 
 				if (i % 300 == 0)
 					LOGGER.info("Nouns done with " + i + " tasks ");
@@ -937,9 +936,8 @@ public class LuceneIndexer {
 
 					// if (!task.tfIDF.containsKey(te.term().utf8ToString())) {
 
-					//System.out.println("Note heres  "+
-					//te.term().utf8ToString());
-					
+					// System.out.println("Note heres  "+
+					// te.term().utf8ToString());
 
 					task.tfIDF.put(te.term().utf8ToString(),
 							String.format("%.5f", tf * idf1));
@@ -982,7 +980,7 @@ public class LuceneIndexer {
 
 				List<String> nouns = new ArrayList(new HashSet(task.nouns));
 				List<String> files = new ArrayList(new HashSet(
-						task.getFileNamesList(true)));
+						task.getFileNamesList(false)));
 
 				LOGGER.info("task: " + task.taskId + " nouns: " + nouns.size()
 						+ " files: " + files.size() + " arff len "
@@ -997,14 +995,15 @@ public class LuceneIndexer {
 				for (int j = 0; j < nouns.size(); j++) {
 
 					int k = attribs.indexOf(nouns.get(j));
-					
+
 					if (nominal)
 						arFile.append(k + " 1,");
 					else
-						arFile.append(k + " " + task.tfIDF.get(nouns.get(j)) + ",");
+						arFile.append(k + " " + task.tfIDF.get(nouns.get(j))
+								+ ",");
 
 					if (!task.tfIDF.containsKey(nouns.get(j))) {
-						
+
 						System.out.println("Not here " + nouns.get(j));
 
 					}
@@ -1419,12 +1418,12 @@ public class LuceneIndexer {
 		Document doc = new Document();
 		doc.add(new StoredField("taskid", task.taskId));
 		String querystr = task.longDescription + " " + task.comments;
-		
+
 		querystr = QueryParser.escape(querystr);
 		String taggedString = tagger.tagString(querystr);
 		querystr = QueryParser.escape(taggedString);
 		BooleanQuery.setMaxClauseCount(80000);
-		
+
 		Query q = new QueryParser(Version.LUCENE_47, descriptionField,
 				new NLPAnalyzerText()).parse(querystr);
 
@@ -1433,7 +1432,7 @@ public class LuceneIndexer {
 				+ "/VB";
 
 		doc.add(new TextField(descriptionField, qtr, Field.Store.NO));
-		
+
 		indexWriter.addDocument(doc);
 
 		// Document doc = new Document();
@@ -1450,7 +1449,7 @@ public class LuceneIndexer {
 		// TODO Auto-generated method stub
 		String commitIds = "";
 		List<String> files;
-		DBConnector db = new DBConnector();
+		DBConnector db = new DBConnector(dbPrefix);
 		db.createConnection();
 
 		LOGGER.info("Search Result for Task id " + firstTask.taskId
@@ -1530,6 +1529,7 @@ public class LuceneIndexer {
 		LuceneIndexer lc = new LuceneIndexer();
 		lc.seedSize = jct.seedSize;
 		lc.nominal = Boolean.parseBoolean(jct.nominal);
+		lc.dbPrefix = jct.dbPrefix;
 
 		LOGGER.info("Starting for " + Arrays.toString(args));
 		if (jct.experimentType.equals("s")) {

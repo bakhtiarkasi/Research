@@ -1,22 +1,34 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.trees.J48;
+import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
 import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.Normalize;
 import weka.filters.unsupervised.instance.RemovePercentage;
+import mulan.classifier.MultiLabelOutput;
 import mulan.classifier.lazy.BRkNN;
 import mulan.classifier.lazy.MLkNN;
+import mulan.classifier.lazy.BRkNN.ExtensionType;
 import mulan.classifier.meta.RAkEL;
 import mulan.classifier.transformation.BinaryRelevance;
+import mulan.classifier.transformation.CalibratedLabelRanking;
 import mulan.classifier.transformation.LabelPowerset;
 import mulan.data.MultiLabelInstances;
 import mulan.data.Statistics;
 import mulan.evaluation.Evaluation;
 import mulan.evaluation.Evaluator;
+import mulan.evaluation.measure.ExampleBasedAccuracy;
+import mulan.evaluation.measure.ExampleBasedFMeasure;
+import mulan.evaluation.measure.HammingLoss;
+import mulan.evaluation.measure.MacroPrecision;
 import mulan.evaluation.measure.Measure;
+import mulan.evaluation.measure.MicroPrecision;
 
 public class TaskContextIndentifierPerc {
 
@@ -30,10 +42,8 @@ public class TaskContextIndentifierPerc {
 		String xmlFile = null;
 		try {
 
-			
 			double percentage = 90;
-			
-			
+
 			arffFile = Utils.getOption('a', args);
 			xmlFile = Utils.getOption('x', args);
 			String unlabeledFilename = Utils.getOption("u", args);
@@ -61,25 +71,26 @@ public class TaskContextIndentifierPerc {
 					xmlFile);
 			MultiLabelInstances test = new MultiLabelInstances(testDataSet,
 					xmlFile);
-			
+
 			Evaluator eval = new Evaluator();
-			
+
 			Evaluation results;
-			
-			if(false)
-			{
-			System.out.println(dataSet.instance(0));
-			System.out.println(dataSet.instance(dataSet.size()-1));
-			
-			System.out.println(trainDataSet.instance(0));
-			System.out.println(trainDataSet.instance(trainDataSet.size()-1));
-			
-			System.out.println(testDataSet.instance(0));
-			System.out.println(testDataSet.instance(testDataSet.size()-1));
+
+			if (false) {
+				System.out.println(dataSet.instance(0));
+				System.out.println(dataSet.instance(dataSet.size() - 1));
+
+				System.out.println(trainDataSet.instance(0));
+				System.out
+						.println(trainDataSet.instance(trainDataSet.size() - 1));
+
+				System.out.println(testDataSet.instance(0));
+				System.out
+						.println(testDataSet.instance(testDataSet.size() - 1));
 			}
-			
-			
-			System.out.println(dataSet.size() + " Train: " + trainDataSet.size() + " Test: " + testDataSet.size());
+
+			System.out.println(dataSet.size() + " Train: "
+					+ trainDataSet.size() + " Test: " + testDataSet.size());
 
 			if (modelToRun.equals("stat")) {
 				Statistics st = new Statistics();
@@ -90,7 +101,7 @@ public class TaskContextIndentifierPerc {
 
 			if (modelToRun.equals("nb") || modelToRun.equals("all")) {
 				Classifier brClassifier = new NaiveBayes();
-				BinaryRelevance br = new BinaryRelevance(brClassifier);
+				CalibratedLabelRanking br = new CalibratedLabelRanking(brClassifier);
 				br.setDebug(true);
 				br.build(train);
 
@@ -105,11 +116,11 @@ public class TaskContextIndentifierPerc {
 
 			if (modelToRun.equals("svm") || modelToRun.equals("all")) {
 
-				BinaryRelevance SVM = new BinaryRelevance(
+				CalibratedLabelRanking SVM = new CalibratedLabelRanking(
 						new weka.classifiers.functions.SMO());
 				SVM.setDebug(true);
 				SVM.build(train);
-
+		
 				results = eval.evaluate(SVM, test, train);
 				System.out.println("Printing SVM Relevance: \n");
 				System.out.println(results.getMeasures().toString()
@@ -129,26 +140,46 @@ public class TaskContextIndentifierPerc {
 						.replaceAll(", ", "\n"));
 				System.out.println("*********************************\n\n");
 			}
-			
+
 			if (modelToRun.equals("brknn") || modelToRun.equals("all")) {
 
-				BRkNN brknn = new BRkNN();
+				BRkNN brknn = new BRkNN(10, ExtensionType.EXTB);
 				brknn.setDebug(true);
 				brknn.build(train);
-
+                
 				results = eval.evaluate(brknn, test, train);
 				System.out.println("Printing brknn Relevance: \n");
 				System.out.println(results.getMeasures().toString()
 						.replaceAll(", ", "\n"));
 				System.out.println("*********************************\n\n");
 			}
-			
+
 			if (modelToRun.equals("mlknn") || modelToRun.equals("all")) {
+
+				List<Measure> evaluationMeasures = new ArrayList();
+				evaluationMeasures.add(new HammingLoss());
+				evaluationMeasures.add(new MacroPrecision(11));
 
 				MLkNN mlknn = new MLkNN();
 				mlknn.setDebug(true);
 				mlknn.build(train);
 
+			int numInstances = test.getNumInstances();
+
+				for (int instanceIndex = 0; instanceIndex < numInstances; instanceIndex++) {
+					Instance instance = test.getDataSet().instance(instanceIndex);
+					MultiLabelOutput output = mlknn.makePrediction(instance);
+					
+					System.out.println(instance.toString());
+					
+					// do necessary operations with provided prediction output,
+					// here just print it out
+					//System.out.println(output.hasRanking());
+					System.out.println(Arrays.toString(output.getRanking()) );
+					//System.out.println(Arrays.toString(output.getBipartition()) );
+				}
+
+				
 				results = eval.evaluate(mlknn, test, train);
 				System.out.println("Printing mlknn Relevance: \n");
 				System.out.println(results.getMeasures().toString()

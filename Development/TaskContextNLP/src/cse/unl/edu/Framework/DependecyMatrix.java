@@ -8,6 +8,8 @@ public class DependecyMatrix {
 	
 	public List<String> allFiles;
 	
+	String dbPrefix = "mylyn";
+	
 	public DependecyMatrix()
 	{
 		allFiles = new ArrayList();
@@ -15,7 +17,7 @@ public class DependecyMatrix {
 
 	public void loadFileNames()
 	{
-		DBConnector db = new DBConnector();
+		DBConnector db = new DBConnector(dbPrefix);
 		db.createConnection();
 		
 		allFiles = db.getSortedAllFilesList();
@@ -25,7 +27,7 @@ public class DependecyMatrix {
 	
 	public void makeDependecyMatrix()
 	{
-		DBConnector db = new DBConnector();
+		DBConnector db = new DBConnector(dbPrefix);
 		db.createConnection();
 		
 		String [][] array;

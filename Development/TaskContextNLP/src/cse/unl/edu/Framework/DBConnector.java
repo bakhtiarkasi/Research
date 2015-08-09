@@ -29,12 +29,12 @@ public class DBConnector {
 
 	private String prefix = null;
 
-	public DBConnector() {
+	public DBConnector(String dbPrefix) {
 		this.url = "jdbc:mysql://cse.unl.edu";
 		this.url += "/" + "bkasi";
 		this.url += "?user=" + "bkasi";
 		this.url += "&password=" + "dj}3yv";
-		this.prefix = "hbase";
+		this.prefix = dbPrefix;
 	}
 
 	public void createConnection() {

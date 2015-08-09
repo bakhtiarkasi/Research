@@ -27,6 +27,9 @@ public class JCommanderArgs {
 	@Parameter(names = "-nominal", description = "Return nominal or decimal representation of tasks")
 	public String nominal;
 	
+	@Parameter(names = "-dbPrefix", description = "Which of teh prfix to use [mylyn|derby|hbase]")
+	public String dbPrefix;
+	
 	@Parameter(names = "--help", help = true)
 	private boolean help;
 	

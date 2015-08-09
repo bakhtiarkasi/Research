@@ -898,8 +898,8 @@ public class DBConnector {
 		List<String> files = new ArrayList();
 		try {
 
-			query = "select distinct filename from " + prefix + "_file"
-					+ " where isSource=1 and creationDate is null";
+			query = "select distinct concat(filename1,':', ifnull(gitproject, ''))  from " + prefix + "_file f"
+					+ " inner join " + prefix + "_issue2commit2 i2c on f.commit_id = i2c.commit_id";
 
 			statement = conn.prepareStatement(query);
 			result = statement.executeQuery();

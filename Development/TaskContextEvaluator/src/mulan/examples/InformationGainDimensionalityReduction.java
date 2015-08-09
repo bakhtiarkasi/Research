@@ -30,58 +30,53 @@ import weka.filters.unsupervised.attribute.Remove;
 
 public class InformationGainDimensionalityReduction {
 
-	
 	public static void main(String[] args) throws Exception {
 		String path = Utils.getOption("path", args);
 		String filestem = Utils.getOption("filestem", args);
 		MultiLabelInstances mlData = new MultiLabelInstances(path + filestem
 				+ ".arff", path + filestem + ".xml");
+		String attributesToKeep = Utils.getOption("numattribs", args);
+		final int NUM_TO_KEEP = Integer.parseInt(attributesToKeep);
 
 		ASEvaluation ase = new GainRatioAttributeEval();
-		// LabelPowersetAttributeEvaluator ae = new
-		// LabelPowersetAttributeEvaluator(ase, mlData);
 		BinaryRelevanceAttributeEvaluator ae = new BinaryRelevanceAttributeEvaluator(
 				ase, mlData, "max", "dl", "eval");
-		// MultiClassTransformation mt = new Copy();
-		// MultiClassAttributeEvaluator ae = new
-		// MultiClassAttributeEvaluator(ase, mt, mlData);
-		
-		
+
 		System.out.println(mlData.getDataSet().numAttributes());
-        
-        int count = 0;
-        for(int i= 0; i < mlData.getFeatureIndices().length; i++)
-        {
-        	System.out.println("Attribute " + mlData.getDataSet().attribute(mlData.getFeatureIndices()[i]).name() + " : " + ae.evaluateAttribute(mlData.getDataSet().attribute(mlData.getFeatureIndices()[i]).index()));
-        	if(ae.evaluateAttribute(mlData.getDataSet().attribute(mlData.getFeatureIndices()[i]).index()) > 0.0)
-        		count++;
-        }
-        System.out.println("\n\n\n" +  count + "\\" + mlData.getFeatureIndices().length + "\n\n");
 
-	
-		
-        Ranker r = new Ranker();
-		int[] result = r.search(ae, mlData);
-		System.out.println(Arrays.toString(result));
+		if (NUM_TO_KEEP == 0) {
+			for (int i = 0; i < mlData.getFeatureIndices().length; i++) {
+				System.out.println("Attribute "
+						+ mlData.getDataSet()
+								.attribute(mlData.getFeatureIndices()[i])
+								.name()
+						+ " : "
+						+ ae.evaluateAttribute(mlData.getDataSet()
+								.attribute(mlData.getFeatureIndices()[i])
+								.index()));
+			}
+		} else {
+			Ranker r = new Ranker();
+			int[] result = r.search(ae, mlData);
+			System.out.println(Arrays.toString(result));
 
-		final int NUM_TO_KEEP = 10;
-		int[] toKeep = new int[NUM_TO_KEEP + mlData.getNumLabels()];
-		System.arraycopy(result, 0, toKeep, 0, NUM_TO_KEEP);
-		int[] labelIndices = mlData.getLabelIndices();
-		System.arraycopy(labelIndices, 0, toKeep, NUM_TO_KEEP,
-				mlData.getNumLabels());
+			int[] toKeep = new int[NUM_TO_KEEP + mlData.getNumLabels()];
+			System.arraycopy(result, 0, toKeep, 0, NUM_TO_KEEP);
+			int[] labelIndices = mlData.getLabelIndices();
+			System.arraycopy(labelIndices, 0, toKeep, NUM_TO_KEEP,
+					mlData.getNumLabels());
 
-		Remove filterRemove = new Remove();
-		filterRemove.setAttributeIndicesArray(toKeep);
-		filterRemove.setInvertSelection(true);
-		filterRemove.setInputFormat(mlData.getDataSet());
-		Instances filtered = Filter
-				.useFilter(mlData.getDataSet(), filterRemove);
-		MultiLabelInstances mlFiltered = new MultiLabelInstances(filtered,
-				mlData.getLabelsMetaData());
-		
-		System.out.println("\n\n\n\n" + mlFiltered.getDataSet());
+			Remove filterRemove = new Remove();
+			filterRemove.setAttributeIndicesArray(toKeep);
+			filterRemove.setInvertSelection(true);
+			filterRemove.setInputFormat(mlData.getDataSet());
+			Instances filtered = Filter.useFilter(mlData.getDataSet(),
+					filterRemove);
+			MultiLabelInstances mlFiltered = new MultiLabelInstances(filtered,
+					mlData.getLabelsMetaData());
 
+			System.out.println("\n\n\n\n" + mlFiltered.getDataSet());
+		}
 		// You can now work on the reduced multi-label dataset mlFiltered
 	}
 }
